@@ -1,9 +1,16 @@
 'use client';
-
+import { format } from 'date-fns';
+// import { CalendarIcon } from 'lucide-react';
+import { cn } from '@/lib/utils';
+import { Calendar } from '@/components/ui/calendar';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '@/components/ui/popover';
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
   createClientComponentClient,
@@ -12,16 +19,18 @@ import {
 import {
   Form,
   FormControl,
+  FormDescription,
   FormField,
   FormItem,
+  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  first_name: z.string().min(2, {
-    message: 'Мінімум 2 літери.',
+  dob: z.date({
+    required_error: 'A date of birth is required.',
   }),
 });
 
@@ -33,21 +42,19 @@ export default function Age({ user }: { user: User | undefined }) {
       await supabase
         .from('profiles')
         .update({
-          first_name: values.first_name,
+          date_of_birth: values.dob,
         })
         .eq('id', user.id);
 
-      router.push('age');
+      router.push('gender');
     }
+
+    console.log(' :', values.dob);
   }
 
-  console.log(' :', user);
   const form = useForm<z.infer<typeof formSchema>>({
     //@ts-ignore
     resolver: zodResolver(formSchema),
-    defaultValues: {
-      first_name: '',
-    },
   });
 
   return (
@@ -56,22 +63,53 @@ export default function Age({ user }: { user: User | undefined }) {
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='mb-4 flex flex-col h-full justify-between '
+          className='mb-4 flex flex-col pt-10 h-full justify-between '
         >
           <FormField
             control={form.control}
-            name='first_name'
+            name='dob'
             render={({ field }) => (
-              <FormItem>
-                <FormControl>
-                  <Input
-                    className='border-t-0 border-x-0 rounded-none border-b-[3px] shadow-none border-b-purple-400 focus:border-b-purple-500 focus-visible:ring-0 duration-300 transition-colors ease-linear'
-                    type='text'
-                    placeholder='Ваше ім`я'
-                    {...field}
-                  />
-                </FormControl>
-
+              <FormItem className='flex flex-col'>
+                <FormLabel>Дата народження</FormLabel>
+                <Popover>
+                  <PopoverTrigger asChild>
+                    <FormControl>
+                      <Button
+                        variant={'ghost'}
+                        className={cn(
+                          'rounded-none w-full pl-3 text-left border-b-purple-400 border-b-2 font-normal',
+                          !field.value && 'text-muted-foreground'
+                        )}
+                      >
+                        {field.value ? (
+                          format(field.value, 'PPP')
+                        ) : (
+                          <span>Оберить дату</span>
+                        )}
+                        {/* <CalendarIcon className='ml-auto h-4 w-4 opacity-50' /> */}
+                      </Button>
+                    </FormControl>
+                  </PopoverTrigger>
+                  <PopoverContent className='w-auto p-0' align='start'>
+                    <Calendar
+                      mode='single'
+                      selected={field.value}
+                      onSelect={field.onChange}
+                      toYear={2006}
+                      disabled={(date) =>
+                        date > new Date() || date < new Date('1972-01-01')
+                      }
+                      initialFocus
+                      className='border-none'
+                    />
+                  </PopoverContent>
+                </Popover>
+                <FormDescription className='text-center font-bold text-2xl text-black'>
+                  Вам{' '}
+                  {isNaN(new Date().getFullYear() - field.value?.getFullYear())
+                    ? '17'
+                    : new Date().getFullYear() - field.value?.getFullYear()}
+                </FormDescription>
                 <FormMessage />
               </FormItem>
             )}
