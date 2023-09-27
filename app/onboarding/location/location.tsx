@@ -11,6 +11,7 @@ import { useLoadScript } from '@react-google-maps/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Map } from './map';
 import { debounce } from '@/lib/utils';
+import Link from 'next/link';
 
 export default function Location({ user }: { user: User | undefined }) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
@@ -25,7 +26,9 @@ export default function Location({ user }: { user: User | undefined }) {
       try {
         if (window.google.maps) {
           const geocoder = new window.google.maps.Geocoder();
+
           const res = await geocoder.geocode({
+            region: 'fr',
             location: {
               lat: markerPos.lat,
               lng: markerPos.lng,
@@ -71,7 +74,7 @@ export default function Location({ user }: { user: User | undefined }) {
         })
         .eq('id', user.id);
 
-      router.push('photos');
+      // router.push('prompts');
     }
   }
 
@@ -92,13 +95,16 @@ export default function Location({ user }: { user: User | undefined }) {
         />
       )}
 
-      <Button
-        onClick={handleLocation}
-        size='icon'
-        className='rounded-full self-end  bg-purple-400'
-      >
-        <ChevronRightIcon className='h-4 w-4' />
-      </Button>
+      <Link className='self-end' href={'/onboarding/prompts'}>
+        <Button
+          asChild
+          onClick={handleLocation}
+          size='icon'
+          className='rounded-full bg-purple-400'
+        >
+          <ChevronRightIcon className='h-4 w-4' />
+        </Button>
+      </Link>
     </div>
   );
 }

@@ -29,7 +29,7 @@ export default async function Home() {
 
   // const router = useRouter()
 
-  const index = Math.floor(Math.random() * profiles?.length!);
+  const index = Math.floor(Math.random() * profiles?.length!) || 0;
 
   if (user && !user.onboarded) {
     redirect('/onboarding');

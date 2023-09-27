@@ -8,6 +8,7 @@ import {
   User,
 } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
@@ -58,12 +59,10 @@ export default function Photos({ user }: { user: User | undefined }) {
           photos: {
             main: photos,
           },
-          onboarded: 'true',
+          onboarded: true,
         })
         .eq('id', user.id);
     }
-
-    router.push('/');
   };
 
   console.log(' photos:', photos);
@@ -100,13 +99,16 @@ export default function Photos({ user }: { user: User | undefined }) {
           </div>
         )}
       </div>
-      <Button
-        onClick={handlePhotos}
-        size='icon'
-        className='rounded-full self-end  bg-purple-400'
-      >
-        <ChevronRightIcon className='h-4 w-4' />
-      </Button>
+      <Link className='self-end' href={'/'}>
+        <Button
+          asChild
+          onClick={handlePhotos}
+          size='icon'
+          className='rounded-full bg-purple-400'
+        >
+          <ChevronRightIcon className='h-4 w-4' />
+        </Button>
+      </Link>
     </div>
   );
 }

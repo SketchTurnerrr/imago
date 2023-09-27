@@ -114,13 +114,11 @@ export default function Age({ user }: { user: User | undefined }) {
               </FormItem>
             )}
           />
-          <Button
-            type='submit'
-            size='icon'
-            className='rounded-full self-end  bg-purple-400'
-          >
-            <ChevronRightIcon className='h-4 w-4' />
-          </Button>
+          <button className='self-end' type='submit'>
+            <Button asChild size='icon' className='rounded-full bg-purple-400'>
+              <ChevronRightIcon className='h-4 w-4' />
+            </Button>
+          </button>
         </form>
       </Form>
     </div>

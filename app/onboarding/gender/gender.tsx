@@ -6,13 +6,12 @@ import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { useState } from 'react';
 
 export function Gender({ user }: { user: User | undefined }) {
   const [gender, setGender] = useState('male');
 
-  const router = useRouter();
   const handleSubmit = async () => {
     const supabase = createClientComponentClient<Database>();
     if (user) {
@@ -22,8 +21,6 @@ export function Gender({ user }: { user: User | undefined }) {
           gender: gender,
         })
         .eq('id', user.id);
-
-      router.push('denomination');
     }
   };
 
@@ -34,7 +31,7 @@ export function Gender({ user }: { user: User | undefined }) {
         <div className='flex items-center justify-between'>
           <label
             htmlFor='male'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Чоловіча
           </label>
@@ -48,7 +45,7 @@ export function Gender({ user }: { user: User | undefined }) {
         <div className='flex items-center justify-between'>
           <label
             htmlFor='female'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Жіноча
           </label>
@@ -60,13 +57,16 @@ export function Gender({ user }: { user: User | undefined }) {
           />
         </div>
       </div>
-      <Button
-        onClick={handleSubmit}
-        size='icon'
-        className='rounded-full self-end mb bg-purple-400'
-      >
-        <ChevronRightIcon className='h-4 w-4' />
-      </Button>
+      <Link className='self-end' href={'/onboarding/denomination'}>
+        <Button
+          asChild
+          onClick={handleSubmit}
+          size='icon'
+          className='rounded-full bg-purple-400'
+        >
+          <ChevronRightIcon className='h-4 w-4' />
+        </Button>
+      </Link>
     </div>
   );
 }

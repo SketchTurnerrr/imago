@@ -20,7 +20,7 @@ export function ProfilePage({ user, data }: PageProps) {
     <div className='h-screen p-4 flex flex-col  pt-20'>
       <Image
         //@ts-ignore
-        src={data.photos?.main}
+        src={data.photos?.photo1}
         alt={'photo'}
         width={190}
         height={190}

@@ -6,6 +6,7 @@ import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
+import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
@@ -22,8 +23,6 @@ export function Denomination({ user }: { user: User | undefined }) {
           denomination: denomination,
         })
         .eq('id', user.id);
-
-      router.push('location');
     }
   };
 
@@ -34,95 +33,98 @@ export function Denomination({ user }: { user: User | undefined }) {
         <div className='flex items-center justify-between'>
           <label
             htmlFor='catholic'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Католізм
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('catholic')}
-            checked={denomination === 'catholic' ? true : false}
+            onCheckedChange={() => setDenomination('Католізм')}
+            checked={denomination === 'Католізм' ? true : false}
             id='catholic'
           />
         </div>
         <div className='flex items-center justify-between'>
           <label
             htmlFor='ortho'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Православ'я
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('ortho')}
-            checked={denomination === 'ortho' ? true : false}
+            onCheckedChange={() => setDenomination("Православ'я")}
+            checked={denomination === "Православ'я" ? true : false}
             id='ortho'
           />
         </div>
         <div className='flex items-center justify-between'>
           <label
             htmlFor='baptist'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Баптизм
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('baptist')}
-            checked={denomination === 'baptist' ? true : false}
+            onCheckedChange={() => setDenomination('Баптизм')}
+            checked={denomination === 'Баптизм' ? true : false}
             id='baptist'
           />
         </div>
         <div className='flex items-center justify-between'>
           <label
             htmlFor='evangelical'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Євангелізм
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('evangelical')}
-            checked={denomination === 'evangelical' ? true : false}
+            onCheckedChange={() => setDenomination('Євангелізм')}
+            checked={denomination === 'Євангелізм' ? true : false}
             id='evangelical'
           />
         </div>
         <div className='flex items-center justify-between'>
           <label
             htmlFor='pentecostal'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             П'ятидесятництво
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('pentecostal')}
-            checked={denomination === 'pentecostal' ? true : false}
+            onCheckedChange={() => setDenomination("П'ятидесятництво")}
+            checked={denomination === "П'ятидесятництво" ? true : false}
             id='pentecostal'
           />
         </div>
         <div className='flex items-center justify-between'>
           <label
             htmlFor='other'
-            className='text-lg leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
             Інше
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('other')}
-            checked={denomination === 'other' ? true : false}
+            onCheckedChange={() => setDenomination('Інше')}
+            checked={denomination === 'Інше' ? true : false}
             id='other'
           />
         </div>
       </div>
-      <Button
-        onClick={handleSubmit}
-        size='icon'
-        className='rounded-full self-end mb bg-purple-400'
-      >
-        <ChevronRightIcon className='h-4 w-4' />
-      </Button>
+      <Link className='self-end' href={'/onboarding/location'}>
+        <Button
+          asChild
+          onClick={handleSubmit}
+          size='icon'
+          className='rounded-full bg-purple-400'
+        >
+          <ChevronRightIcon className='h-4 w-4' />
+        </Button>
+      </Link>
     </div>
   );
 }
