@@ -28,7 +28,7 @@ export default function Location({ user }: { user: User | undefined }) {
           const geocoder = new window.google.maps.Geocoder();
 
           const res = await geocoder.geocode({
-            region: 'fr',
+            region: 'uk',
             location: {
               lat: markerPos.lat,
               lng: markerPos.lng,

@@ -22,8 +22,9 @@ export default async function Home() {
   console.log('gender :', gender);
   const { data: profiles } = await supabase
     .from('profiles')
-    .select('*')
-    .eq('gender', gender);
+    .select('*, prompts(*)')
+    .eq('gender', gender)
+    .returns<ProfileWithPrompts[]>();
 
   console.log(' prof from server :', profiles);
 

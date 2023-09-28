@@ -6,17 +6,32 @@ import { SignOut } from './signout-btn';
 import { SkipProfileBtn } from './skip-profile-btn';
 import { LikeBtn } from './like-btn';
 import { HomeIcon } from '@radix-ui/react-icons';
+import { useState } from 'react';
 
 interface PageProps {
-  profile: ProfileType;
+  profile: ProfileWithPrompts;
 }
 
 export function Discover({ profile }: PageProps) {
-  // console.log('profile :', profile);
+  console.log('profile client discover page:', profile);
   const dob = format(parseISO(String(profile.date_of_birth)), 'yyyy/MM/dd');
   const date = parse(dob, 'yyyy/MM/dd', new Date());
 
   const age = differenceInYears(new Date(), date);
+
+  const { question: question0, answer: answer0, id: id0 } = profile.prompts[0];
+  const { question: question1, answer: answer1, id: id1 } = profile.prompts[1];
+  const { question: question2, answer: answer2, id: id2 } = profile.prompts[2];
+
+  const prompt = (question: string, answer: string, id: string) => {
+    return (
+      <div className='px-4 py-10 bg-white relative rounded-lg space-y-4'>
+        <p className='text-md font-semibold'>{question}</p>
+        <h2 className='text-4xl font-bold'>{answer}</h2>
+        <LikeBtn profileId={id} />
+      </div>
+    );
+  };
 
   return (
     <main className='bg-slate-100 flex gap-4 flex-col px-4 pt-20 pb-4'>
@@ -37,11 +52,11 @@ export function Discover({ profile }: PageProps) {
         <LikeBtn profileId='242' />
       </div>
 
-      <div className='px-4 py-10 bg-white relative rounded-lg space-y-4'>
-        <p className='text-lg'>I get along with people who</p>
-        <h2 className='text-3xl font-bold'>Like to dance</h2>
-        <LikeBtn profileId='ad' />
-      </div>
+      {prompt(question0, answer0, id0)}
+
+      {/*       
+      ----- INFO 
+      */}
 
       <div className='px-4 py-10 font-bold bg-white relative rounded-lg'>
         <div className='flex items-center gap-6 mb-6'>
@@ -65,9 +80,14 @@ export function Discover({ profile }: PageProps) {
         </div>
         <div className='flex items-center gap-4'>
           <HomeIcon className='w-6 h-6' />
+          {/* @ts-ignore */}
           {profile?.location?.toponym}
         </div>
       </div>
+
+      {/*       
+      ----- PHOTO1
+      */}
 
       <div className='relative w-fit'>
         <Image
@@ -84,6 +104,11 @@ export function Discover({ profile }: PageProps) {
         />
         <LikeBtn profileId='242' />
       </div>
+
+      {/*       
+      ----- PHOTO2
+      */}
+
       <div className='relative w-fit'>
         <Image
           priority
@@ -99,12 +124,12 @@ export function Discover({ profile }: PageProps) {
         />
         <LikeBtn profileId='242' />
       </div>
-      <div className='px-4 py-10 bg-white relative rounded-lg space-y-4'>
-        <p className='text-lg'>My favorite verse in the bible</p>
-        <h2 className='text-3xl font-bold'>I Corinthians 13:13</h2>
-        <LikeBtn profileId='ad' />
-      </div>
 
+      {prompt(question1, answer1, id1)}
+
+      {/*       
+      ----- PHOTO3
+      */}
       <div className='relative w-fit'>
         <Image
           priority
@@ -120,13 +145,12 @@ export function Discover({ profile }: PageProps) {
         />
         <LikeBtn profileId='242' />
       </div>
-      <div className='px-4 py-10 bg-white relative rounded-lg space-y-4'>
-        <p className='text-lg'>Lorem ipsum dolor sit amet.</p>
-        <h2 className='text-3xl font-bold'>
-          Lorem ipsum dolor sit amet consectetur adipisicing elit.
-        </h2>
-        <LikeBtn profileId='ad' />
-      </div>
+
+      {prompt(question2, answer2, id2)}
+
+      {/*       
+      ----- PHOTO4
+      */}
       <div className='relative w-fit'>
         <Image
           priority
@@ -142,6 +166,11 @@ export function Discover({ profile }: PageProps) {
         />
         <LikeBtn profileId='242' />
       </div>
+
+      {/*       
+      ----- PHOTO5
+      */}
+
       <div className='relative w-fit'>
         <Image
           priority

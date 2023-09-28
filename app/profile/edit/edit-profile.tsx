@@ -1,6 +1,5 @@
 'use client';
 import { User } from '@supabase/supabase-js';
-import { PromptsDialog } from './prompts';
 import Image from 'next/image';
 
 import { useRouter } from 'next/navigation';

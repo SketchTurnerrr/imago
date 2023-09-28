@@ -5,17 +5,14 @@ import {
   MixerHorizontalIcon,
   Pencil2Icon,
 } from '@radix-ui/react-icons';
-import { User } from '@supabase/supabase-js';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface PageProps {
-  user: User | undefined;
   data: ProfileType;
 }
 
-export function ProfilePage({ user, data }: PageProps) {
-  console.log('profiles :', data);
+export function ProfilePage({ data }: PageProps) {
   return (
     <div className='h-screen p-4 flex flex-col  pt-20'>
       <Image
