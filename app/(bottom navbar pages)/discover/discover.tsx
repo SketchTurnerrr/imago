@@ -8,6 +8,7 @@ import { HomeIcon } from '@radix-ui/react-icons';
 import { useLayoutEffect, useRef } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
+import { Prompt } from '@/components/prompt';
 
 interface PageProps {
   profile: FullProfile;
@@ -67,6 +68,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
     if (!src) {
       return null;
     } else {
+      const id = src.split('/')[9];
       return (
         <div className='relative w-fit'>
           <Image
@@ -80,7 +82,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
             alt='me'
             className='rounded-lg '
           />
-          <LikeBtn profileId='242' />
+          <LikeBtn itemId={id} type='photo' liker={userID} likee={profile.id} />
         </div>
       );
     }
@@ -89,14 +91,18 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
   const prompt = (question: string, answer: string, id: string) => {
     if (!question) {
       return null;
-    } else
+    } else {
       return (
-        <div className='px-4  py-10 bg-purple-50  relative rounded-lg space-y-4'>
-          <p className='text-md font-semibold'>{question}</p>
-          <h2 className='text-4xl font-bold'>{answer}</h2>
-          <LikeBtn profileId={id} />
-        </div>
+        <Prompt
+          liker={userID}
+          likee={profile.id}
+          question={question}
+          answer={answer}
+          id={id}
+          discover={true}
+        />
       );
+    }
   };
 
   if (!profile) {

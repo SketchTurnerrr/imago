@@ -48,11 +48,11 @@ export function Navbar({ userID }: { userID: string }) {
       icon: Compass,
     },
     {
-      url: 'likes',
+      url: '/likes',
       icon: Heart,
     },
     {
-      url: 'chats',
+      url: '/chats',
       icon: Message,
     },
   ];

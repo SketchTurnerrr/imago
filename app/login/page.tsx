@@ -14,15 +14,18 @@ import { Input } from '@/components/ui/input';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useToast } from '@/components/ui/use-toast';
 
 const formSchema = z.object({
-  email: z.string().email().min(2, {
+  email: z.string().email({ message: 'Це не схоже на адресу' }).min(2, {
     message: 'Username must be at least 2 characters.',
   }),
 });
 
 export default function SignIn() {
   const supabase = createClientComponentClient();
+
+  const { toast } = useToast();
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
@@ -57,7 +60,12 @@ export default function SignIn() {
       console.log('error :', error);
     }
 
-    console.log(values.email);
+    toast({
+      title: 'Перевірте, будь ласка свою пошту',
+      description: 'У листі ви знайдете посилання для входу',
+      duration: 10000,
+      style: { backgroundColor: '#bbf7d0' },
+    });
   }
 
   return (
@@ -99,24 +107,24 @@ export default function SignIn() {
                 Увійти
               </Button>
               <p className='text-center'>або</p>
-              <Button
-                variant='outline'
-                className='w-full p-6  text-lg font-bold'
-                type='submit'
-                onClick={signInWithGoogle}
-              >
-                <Image
-                  src='/google-logo.svg'
-                  alt='Google Logo'
-                  className='dark:invert mr-2'
-                  width={24}
-                  height={24}
-                  priority
-                />
-                Увійти з Google
-              </Button>
             </form>
           </Form>
+          <Button
+            variant='outline'
+            className='w-full p-6  text-lg font-bold'
+            type='submit'
+            onClick={signInWithGoogle}
+          >
+            <Image
+              src='/google-logo.svg'
+              alt='Google Logo'
+              className='dark:invert mr-2'
+              width={24}
+              height={24}
+              priority
+            />
+            Увійти з Google
+          </Button>
         </div>
       </div>
     </div>

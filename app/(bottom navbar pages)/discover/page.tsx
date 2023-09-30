@@ -29,7 +29,7 @@ export default async function DiscoverPage() {
   ];
 
   console.log('authedProfile :', authedProfile);
-  console.log('skippedProfiles :', skippedProfiles);
+  // console.log('skippedProfiles :', skippedProfiles);
 
   const { data: profiles, error } = await supabase
     .from('profiles')

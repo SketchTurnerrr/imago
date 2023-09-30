@@ -39,36 +39,39 @@ export interface Database {
           comment: string | null;
           created_at: string;
           id: string;
-          photo_id: string | null;
-          profile_id: string | null;
+          likee: string | null;
+          liker: string | null;
+          photo: string | null;
           prompt_id: string | null;
         };
         Insert: {
           comment?: string | null;
           created_at?: string;
           id?: string;
-          photo_id?: string | null;
-          profile_id?: string | null;
+          likee?: string | null;
+          liker?: string | null;
+          photo?: string | null;
           prompt_id?: string | null;
         };
         Update: {
           comment?: string | null;
           created_at?: string;
           id?: string;
-          photo_id?: string | null;
-          profile_id?: string | null;
+          likee?: string | null;
+          liker?: string | null;
+          photo?: string | null;
           prompt_id?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'likes_photo_id_fkey';
-            columns: ['photo_id'];
-            referencedRelation: 'photos';
+            foreignKeyName: 'likes_likee_fkey';
+            columns: ['likee'];
+            referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'likes_profile_id_fkey';
-            columns: ['profile_id'];
+            foreignKeyName: 'likes_liker_fkey';
+            columns: ['liker'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
@@ -84,7 +87,7 @@ export interface Database {
         Row: {
           created_at: string;
           id: string;
-          main_photo: string | null;
+          main_photo: string;
           photo2: string | null;
           photo3: string | null;
           photo4: string | null;
@@ -95,7 +98,7 @@ export interface Database {
         Insert: {
           created_at?: string;
           id?: string;
-          main_photo?: string | null;
+          main_photo?: string;
           photo2?: string | null;
           photo3?: string | null;
           photo4?: string | null;
@@ -106,7 +109,7 @@ export interface Database {
         Update: {
           created_at?: string;
           id?: string;
-          main_photo?: string | null;
+          main_photo?: string;
           photo2?: string | null;
           photo3?: string | null;
           photo4?: string | null;
@@ -136,7 +139,6 @@ export interface Database {
           location: Json;
           name: string | null;
           onboarded: boolean;
-          photos: Json | null;
           skipped_profiles: string[] | null;
         };
         Insert: {
@@ -151,7 +153,6 @@ export interface Database {
           location?: Json;
           name?: string | null;
           onboarded?: boolean;
-          photos?: Json | null;
           skipped_profiles?: string[] | null;
         };
         Update: {
@@ -166,7 +167,6 @@ export interface Database {
           location?: Json;
           name?: string | null;
           onboarded?: boolean;
-          photos?: Json | null;
           skipped_profiles?: string[] | null;
         };
         Relationships: [

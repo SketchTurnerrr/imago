@@ -11,7 +11,7 @@ export default async function Page() {
 
   const { data } = await supabase
     .from('profiles')
-    .select('*')
+    .select('*, photos(*)')
     .eq('id', session?.user.id)
     .single();
   if (!session) {

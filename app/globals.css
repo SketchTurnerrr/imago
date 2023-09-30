@@ -66,6 +66,12 @@
   }
 }
  
+ @layer utilities {
+    ._clip-path {
+      clip-path: polygon(46% 0, 94% 95%, 0 73%)
+    }
+ }
+
 @layer base {
   * {
     @apply border-border;

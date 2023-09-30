@@ -9,16 +9,16 @@ import Image from 'next/image';
 import Link from 'next/link';
 
 interface PageProps {
-  data: ProfileType;
+  data: FullProfile;
 }
 
 export function ProfilePage({ data }: PageProps) {
+  console.log('data :', data);
   return (
     <div className='h-screen p-4 flex flex-col mb-20 pt-20'>
       <Image
         priority
-        //@ts-ignore
-        src={data.photos?.photo1}
+        src={data.photos[0].main_photo}
         alt={'photo'}
         width={190}
         height={190}
