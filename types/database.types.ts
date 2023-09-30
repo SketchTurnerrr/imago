@@ -34,6 +34,95 @@ export interface Database {
   };
   public: {
     Tables: {
+      likes: {
+        Row: {
+          comment: string | null;
+          created_at: string;
+          id: string;
+          photo_id: string | null;
+          profile_id: string | null;
+          prompt_id: string | null;
+        };
+        Insert: {
+          comment?: string | null;
+          created_at?: string;
+          id?: string;
+          photo_id?: string | null;
+          profile_id?: string | null;
+          prompt_id?: string | null;
+        };
+        Update: {
+          comment?: string | null;
+          created_at?: string;
+          id?: string;
+          photo_id?: string | null;
+          profile_id?: string | null;
+          prompt_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'likes_photo_id_fkey';
+            columns: ['photo_id'];
+            referencedRelation: 'photos';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'likes_profile_id_fkey';
+            columns: ['profile_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'likes_prompt_id_fkey';
+            columns: ['prompt_id'];
+            referencedRelation: 'prompts';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      photos: {
+        Row: {
+          created_at: string;
+          id: string;
+          main_photo: string | null;
+          photo2: string | null;
+          photo3: string | null;
+          photo4: string | null;
+          photo5: string | null;
+          photo6: string | null;
+          profile_id: string | null;
+        };
+        Insert: {
+          created_at?: string;
+          id?: string;
+          main_photo?: string | null;
+          photo2?: string | null;
+          photo3?: string | null;
+          photo4?: string | null;
+          photo5?: string | null;
+          photo6?: string | null;
+          profile_id?: string | null;
+        };
+        Update: {
+          created_at?: string;
+          id?: string;
+          main_photo?: string | null;
+          photo2?: string | null;
+          photo3?: string | null;
+          photo4?: string | null;
+          photo5?: string | null;
+          photo6?: string | null;
+          profile_id?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'photos_profile_id_fkey';
+            columns: ['profile_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
       profiles: {
         Row: {
           avatar_url: string | null;
@@ -48,7 +137,7 @@ export interface Database {
           name: string | null;
           onboarded: boolean;
           photos: Json | null;
-          skipped_profiles: string | null;
+          skipped_profiles: string[] | null;
         };
         Insert: {
           avatar_url?: string | null;
@@ -63,7 +152,7 @@ export interface Database {
           name?: string | null;
           onboarded?: boolean;
           photos?: Json | null;
-          skipped_profiles?: string | null;
+          skipped_profiles?: string[] | null;
         };
         Update: {
           avatar_url?: string | null;
@@ -78,7 +167,7 @@ export interface Database {
           name?: string | null;
           onboarded?: boolean;
           photos?: Json | null;
-          skipped_profiles?: string | null;
+          skipped_profiles?: string[] | null;
         };
         Relationships: [
           {

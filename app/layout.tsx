@@ -1,4 +1,3 @@
-import { Navbar } from '@/components/navbar/navbar';
 import './globals.css';
 import type { Metadata } from 'next';
 import { Ysabeau } from 'next/font/google';
@@ -17,8 +16,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang='en'>
-      <body className={ysabeau.className}>
-        <Navbar />
+      <body suppressHydrationWarning className={ysabeau.className}>
         {children}
       </body>
     </html>

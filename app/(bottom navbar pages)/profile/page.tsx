@@ -18,6 +18,5 @@ export default async function Page() {
     redirect('/login');
   }
 
-  // console.log('profiles :', data);
   return <ProfilePage data={data} />;
 }

@@ -14,8 +14,9 @@ interface PageProps {
 
 export function ProfilePage({ data }: PageProps) {
   return (
-    <div className='h-screen p-4 flex flex-col  pt-20'>
+    <div className='h-screen p-4 flex flex-col mb-20 pt-20'>
       <Image
+        priority
         //@ts-ignore
         src={data.photos?.photo1}
         alt={'photo'}

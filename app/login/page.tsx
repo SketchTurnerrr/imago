@@ -2,15 +2,12 @@
 
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
-
 import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
@@ -22,18 +19,15 @@ const formSchema = z.object({
   email: z.string().email().min(2, {
     message: 'Username must be at least 2 characters.',
   }),
-  // password: z.string().min(6),
 });
 
 export default function SignIn() {
   const supabase = createClientComponentClient();
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-ignore
     resolver: zodResolver(formSchema),
     defaultValues: {
       email: '',
-      // password: '',
     },
   });
 
@@ -121,20 +115,6 @@ export default function SignIn() {
                 />
                 Увійти з Google
               </Button>
-              {/* <FormField
-                control={form.control}
-                name='password'
-                render={({ field }) => (
-                  <FormItem>
-                    <FormLabel>Password</FormLabel>
-                    <FormControl>
-                      <Input type='password' {...field} />
-                    </FormControl>
-
-                    <FormMessage />
-                  </FormItem>
-                )}
-              /> */}
             </form>
           </Form>
         </div>
