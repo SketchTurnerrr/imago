@@ -12,7 +12,7 @@ import { useRouter } from 'next/navigation';
 
 type PageProps = {
   user: User;
-  data: ProfileWithPrompts;
+  data: FullProfile;
 };
 
 export default function OnboardingPrompts({ user, data }: PageProps) {

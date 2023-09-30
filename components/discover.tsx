@@ -9,7 +9,7 @@ import { useState } from 'react';
 import { SkipProfileBtn } from './skip-profile-btn';
 
 interface PageProps {
-  profile: ProfileWithPrompts;
+  profile: FullProfile;
 }
 
 export function Discover({ profile }: PageProps) {

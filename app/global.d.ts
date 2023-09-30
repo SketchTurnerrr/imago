@@ -5,7 +5,9 @@ declare global {
 
   type ProfileType = DB['public']['Tables']['profiles']['Row'];
   type PromptsType = DB['public']['Tables']['prompts']['Row'][];
-  interface ProfileWithPrompts extends ProfileType {
+  type PhotosType = DB['public']['Tables']['photos']['Row'];
+  interface FullProfile extends ProfileType {
     prompts: PromptsType;
+    photos: PhotosType;
   }
 }

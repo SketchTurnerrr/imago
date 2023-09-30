@@ -7,7 +7,7 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { AddPromptDialog } from './add-prompt-dialog';
 interface PageProps {
   user: User;
-  data: ProfileWithPrompts;
+  data: FullProfile;
   onboarding: boolean;
 }
 

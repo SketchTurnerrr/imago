@@ -5,23 +5,24 @@ import Link from 'next/link';
 import { SignOut } from '@/components/signout-btn';
 import { LikeBtn } from '@/components/like-btn';
 import { HomeIcon } from '@radix-ui/react-icons';
-import { useEffect, useLayoutEffect, useRef, useState } from 'react';
+import { useLayoutEffect, useRef } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
-import { User } from '@supabase/supabase-js';
 
 interface PageProps {
-  profile: ProfileWithPrompts;
-  authedProfile: ProfileType;
+  profile: FullProfile;
+  authedProfile: {
+    gender: string;
+    skipped_profiles: string[];
+    onboarded: boolean;
+  };
   userID: string;
 }
 
 export function Discover({ profile, userID, authedProfile }: PageProps) {
   const profileRef = useRef(null);
-  const [timeline, setTimeline] = useState<any>();
-  // console.log('showAnimation :', showAnimation);
-  // console.log('timeline :', timeline);
 
+  console.log('profile photos:', profile);
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -42,7 +43,6 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
     return () => ctx.revert();
   }, []);
 
-  // console.log('profile client discover page:', profile);
   const dob = format(parseISO(String(profile?.date_of_birth)), 'yyyy/MM/dd');
   const date = parse(dob, 'yyyy/MM/dd', new Date());
   const age = differenceInYears(new Date(), date);
@@ -63,6 +63,29 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
     id: id2,
   } = profile?.prompts[2] || '';
 
+  const photo = (src: string | null) => {
+    if (!src) {
+      return null;
+    } else {
+      return (
+        <div className='relative w-fit'>
+          <Image
+            priority
+            src={
+              src ||
+              'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
+            }
+            height={400}
+            width={400}
+            alt='me'
+            className='rounded-lg '
+          />
+          <LikeBtn profileId='242' />
+        </div>
+      );
+    }
+  };
+
   const prompt = (question: string, answer: string, id: string) => {
     if (!question) {
       return null;
@@ -79,12 +102,11 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
   if (!profile) {
     return <div>no profiles left</div>;
   }
-  console.log('profile?.skipped_profiles :', profile?.skipped_profiles);
 
   return (
     <main
       ref={profileRef}
-      className='flex gap-4 pt-5 opacity-0 flex-col px-4 pb-4'
+      className='flex gap-4 pt-5 min-h-screen opacity-0 flex-col px-4 pb-4'
     >
       <SkipProfileBtn
         userID={userID}
@@ -92,23 +114,13 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
         skippedProfiles={authedProfile.skipped_profiles || []}
       />
       <h1 className='text-4xl font-bold mb-4 ml-4'>{profile?.first_name}</h1>
-      <div className='relative w-fit'>
-        <Image
-          priority
-          src={
-            //@ts-ignore
-            profile?.photos?.photo1 ||
-            'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
-          }
-          height={400}
-          width={400}
-          alt='me'
-          className='rounded-lg '
-        />
-        <LikeBtn profileId='242' />
-      </div>
 
-      {question0 === '' ? <div></div> : prompt(question0, answer0, id0)}
+      {
+        // @ts-ignore
+        photo(profile.photos[0]?.main_photo)
+      }
+
+      {prompt(question0, answer0, id0)}
 
       {/*       
       ----- INFO 
@@ -145,103 +157,49 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
       ----- PHOTO1
       */}
 
-      <div className='relative w-fit'>
-        <Image
-          priority
-          src={
-            //@ts-ignore
-            profile?.photos?.photo2 ||
-            'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
-          }
-          height={400}
-          width={400}
-          alt='me'
-          className='rounded-lg'
-        />
-        <LikeBtn profileId='242' />
-      </div>
+      {
+        // @ts-ignore
+        photo(profile.photos[0]?.photo2)
+      }
 
       {/*       
       ----- PHOTO2
       */}
 
-      <div className='relative w-fit'>
-        <Image
-          priority
-          src={
-            //@ts-ignore
-            profile?.photos?.photo3 ||
-            'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
-          }
-          height={400}
-          width={400}
-          alt='me'
-          className='rounded-lg'
-        />
-        <LikeBtn profileId='242' />
-      </div>
+      {
+        // @ts-ignore
+        photo(profile.photos[0]?.photo3)
+      }
 
       {prompt(question1, answer1, id1)}
 
       {/*       
       ----- PHOTO3
       */}
-      <div className='relative w-fit'>
-        <Image
-          priority
-          src={
-            //@ts-ignore
-            profile?.photos?.photo4 ||
-            'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
-          }
-          height={400}
-          width={400}
-          alt='me'
-          className='rounded-lg'
-        />
-        <LikeBtn profileId='242' />
-      </div>
+
+      {
+        // @ts-ignore
+        photo(profile.photos[0]?.photo4)
+      }
 
       {prompt(question2, answer2, id2)}
 
       {/*       
       ----- PHOTO4
       */}
-      <div className='relative w-fit'>
-        <Image
-          priority
-          src={
-            //@ts-ignore
-            profile?.photos?.photo5 ||
-            'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
-          }
-          height={400}
-          width={400}
-          alt='me'
-          className='rounded-lg'
-        />
-        <LikeBtn profileId='242' />
-      </div>
 
+      {
+        // @ts-ignore
+        photo(profile.photos[0]?.photo5)
+      }
       {/*       
       ----- PHOTO5
       */}
 
-      <div className='relative w-fit'>
-        <Image
-          priority
-          src={
-            //@ts-ignore
-            profile?.photos?.photo6 ||
-            'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
-          }
-          height={400}
-          width={400}
-          alt='me'
-          className='rounded-lg'
-        />
-        <LikeBtn profileId='242' />
-      </div>
+      {
+        // @ts-ignore
+        photo(profile.photos[0]?.photo6)
+      }
       {/* <SkipProfileBtn profileId={profile.id} /> */}
       {/* <SignOut /> */}
     </main>

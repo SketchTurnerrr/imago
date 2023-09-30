@@ -13,7 +13,7 @@ export default async function Page() {
     .from('profiles')
     .select('*, prompts(*)')
     .eq('id', session?.user.id)
-    .returns<ProfileWithPrompts>()
+    .returns<FullProfile>()
     .single();
 
   if (!session) redirect('/');
