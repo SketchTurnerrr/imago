@@ -80,13 +80,13 @@ export function Navbar({
           <Link href={'/profile'}>
             <Image
               priority
-              className={`${'rounded-full'} `}
+              className={'object-cover aspect-square rounded-full'}
               src={
                 photo[0]?.src ||
                 'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
               }
-              width={24}
-              height={24}
+              width={30}
+              height={30}
               alt='icon'
             />
           </Link>

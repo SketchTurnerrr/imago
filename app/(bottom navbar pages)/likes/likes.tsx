@@ -2,9 +2,7 @@
 
 import { Prompt } from '@/components/prompt';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
 import Image from 'next/image';
-import { Key } from 'react';
 
 interface PageProps {
   photoLikes: PhotoLike[];
@@ -19,6 +17,30 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
 
   return (
     <main className='gap-4 flex flex-col min-h-screen p-4'>
+      {photoLikes.length === 0 && promptLikes.length === 0 && (
+        <>
+          <h1 className='text-3xl font-bold'>Вподобали вас</h1>
+
+          <a
+            target='_blank'
+            rel='noopener noreferrer'
+            className='self-center'
+            href={
+              'https://www.behance.net/gallery/176439917/02-Our-little-heart?tracking_source=search_projects|heart+illustration'
+            }
+          >
+            <Image
+              src='/likes_you.png'
+              width={300}
+              height={300}
+              alt='https://www.behance.net/gallery/176439917/02-Our-little-heart?tracking_source=search_projects|heart+illustration'
+            />
+          </a>
+          <p className='self-center'>
+            <span className='font-bold'>Поки що</span>, немає вподобань
+          </p>
+        </>
+      )}
       {photoLikes?.map((item) => (
         <div key={item.id} className='mb-8'>
           <div className='relative mb-4'>

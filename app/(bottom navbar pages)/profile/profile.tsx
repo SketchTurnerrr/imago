@@ -21,27 +21,27 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
       />
       <h1 className='text-4xl font-bold self-center'>{profile?.first_name}</h1>
       <Separator className='my-4' />
-      <div className='flex items-center justify-between'>
-        <Link className='font-bold text-xl' href={'/profile/edit'}>
+      <Link className='font-bold text-xl' href={'/profile/edit'}>
+        <div className='flex items-center justify-between'>
           Редагувати профіль
-        </Link>
-        <Pencil2Icon className='w-7 h-7' />
-      </div>
+          <Pencil2Icon className='w-7 h-7' />
+        </div>
+      </Link>
 
       <Separator className='my-4' />
-      <div className='flex items-center justify-between'>
-        <Link className='font-bold text-xl' href={'/profile/preferences'}>
+      <Link className='font-bold text-xl' href={'/profile/preferences'}>
+        <div className='flex items-center justify-between'>
           Уподобання
-        </Link>
-        <MixerHorizontalIcon className='w-7 h-7' />
-      </div>
+          <MixerHorizontalIcon className='w-7 h-7' />
+        </div>
+      </Link>
       <Separator className='my-4' />
-      <div className='flex items-center justify-between'>
-        <Link className='font-bold text-xl' href={'/profile/settings'}>
+      <Link className='font-bold text-xl' href={'/profile/settings'}>
+        <div className='flex items-center justify-between'>
           Налаштування
-        </Link>
-        <GearIcon className='w-7 h-7' />
-      </div>
+          <GearIcon className='w-7 h-7' />
+        </div>
+      </Link>
     </div>
   );
 }

@@ -22,7 +22,8 @@ export function LikeBtn({
     console.log(' item id:', itemId);
 
     if (type === 'photo') {
-      const { error } = await supabase.from('likes').insert({
+      const { error } = await supabase.from('photo_likes').insert({
+        //@ts-ignore
         photo: itemId,
         liker: liker,
         likee: likee,
@@ -30,8 +31,9 @@ export function LikeBtn({
 
       console.log(' like error:', error);
     } else {
-      const { error } = await supabase.from('likes').insert({
-        prompt_id: itemId,
+      const { error } = await supabase.from('prompt_likes').insert({
+        //@ts-ignore
+        prompt: itemId,
         liker: liker,
         likee: likee,
       });
