@@ -9,16 +9,15 @@ export default async function Page() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (!session) redirect('/');
+
   const { data } = await supabase
     .from('profiles')
-    .select('*, prompts(*)')
-    .eq('id', session?.user.id)
+    .select('*, prompts(*), photos(*)')
+    .eq('id', session.user.id)
     .returns<FullProfile>()
     .single();
 
-  if (!session) redirect('/');
-
-  console.log('profiles :', data);
   return (
     <EditProfilePage user={session.user} data={data!} onboarding={false} />
   );

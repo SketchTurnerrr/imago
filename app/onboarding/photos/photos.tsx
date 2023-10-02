@@ -1,5 +1,6 @@
 'use client';
 
+import { PhotoGrid } from '@/app/(bottom navbar pages)/profile/edit/photo-grid';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { ChevronRightIcon, PlusIcon } from '@radix-ui/react-icons';
@@ -12,65 +13,33 @@ import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useEffect, useRef, useState } from 'react';
 
-export default function Photos({ user }: { user: User | undefined }) {
-  const photo1 = useRef<HTMLInputElement>(null);
-  const [photos, setPhotos] = useState('');
-  const [uploading, setUploading] = useState(false);
+interface PageProps {
+  user: User;
+  photos: PhotosType[];
+}
+
+export default function Photos({ user, photos }: PageProps) {
+  console.log('photos client:', photos);
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
-  const handlePick = () => {
-    photo1.current?.click();
-  };
-
-  const uploadPhoto: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
-    try {
-      setUploading(true);
-
-      if (!e.target.files || e.target.files.length === 0) {
-        throw new Error('Please select a photo');
-      }
-
-      const file = e.target.files[0];
-      const fileExt = file.name.split('.').pop();
-      const filePath = `${user?.id}/${file.name}`;
-      console.log('filePath :', filePath);
-
-      await supabase.storage
-        .from('photos')
-        .upload(filePath, file)
-        .then(async () => {
-          const { data } = await supabase.storage
-            .from('photos')
-            .getPublicUrl(`${user?.id}/${file.name}`);
-          setPhotos(data.publicUrl);
-        });
-    } catch (error) {
-      console.log(error);
-    } finally {
-      setUploading(false);
-    }
-  };
 
   const handlePhotos = async () => {
-    if (user) {
-      await supabase
-        .from('profiles')
-        .update({
-          photos: {
-            main: photos,
-          },
-          onboarded: true,
-        })
-        .eq('id', user.id);
-    }
+    await supabase
+      .from('profiles')
+      .update({
+        onboarded: true,
+      })
+      .eq('id', user.id);
   };
-
-  console.log(' photos:', photos);
 
   return (
     <div className='px-4 pt-20 pb-4 h-screen  flex flex-col justify-between'>
-      <h1 className='text-5xl font-bold mb-4'>Додайте фото</h1>
-      <div className='flex flex-wrap gap-4 mx-auto items-center'>
+      <div className='flex flex-col gap-6'>
+        <h1 className='text-5xl font-bold mb-4'>Додайте фото</h1>
+        <PhotoGrid user={user} photos={photos} />
+        <p className='text-gray-400 font-semibold'>Додайте мінімум 6 фото</p>
+      </div>
+      {/* <div className='flex flex-wrap gap-4 mx-auto items-center'>
         {photos ? (
           <Image
             src={
@@ -98,7 +67,7 @@ export default function Photos({ user }: { user: User | undefined }) {
             <PlusIcon className='w-6 h-6 font-bold text-purple-400' />
           </div>
         )}
-      </div>
+      </div> */}
       <Link className='self-end' href={'/'}>
         <Button
           asChild

@@ -5,6 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { AddPromptDialog } from './add-prompt-dialog';
+import { PhotoGrid } from './photo-grid';
 interface PageProps {
   user: User;
   data: FullProfile;
@@ -12,6 +13,7 @@ interface PageProps {
 }
 
 export function EditProfilePage({ user, data, onboarding }: PageProps) {
+  console.log('data profile edit:', data);
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   const handleDelete = async (id: string) => {
@@ -21,7 +23,9 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
 
   return (
     <div className='px-4 bg-slate-50 h-screen'>
-      <h1 className='text-2xl font-bold mb-4'>Фрази</h1>
+      <h2 className='text-2xl font-bold mb-4'>Фото</h2>
+      <PhotoGrid photos={data.photos || []} user={user} />
+      <h2 className='text-2xl font-bold mb-4'>Фрази</h2>
       <div className='flex flex-col gap-4'>
         {Array.isArray(data?.prompts) &&
           data?.prompts?.map((prompt) => {
@@ -39,13 +43,7 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
                   role='button'
                   className='absolute -top-1 -right-1 rounded-full bg-white p-1 shadow-md'
                 >
-                  <Image
-                    src='/x.svg'
-                    width={14}
-                    height={14}
-                    alt='close icon'
-                    className=''
-                  />
+                  <Image src='/x.svg' width={14} height={14} alt='close icon' />
                 </div>
               </div>
             );
