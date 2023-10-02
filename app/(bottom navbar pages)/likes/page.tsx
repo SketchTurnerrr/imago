@@ -13,12 +13,23 @@ export default async function LikesPage() {
   if (!session) {
     return <div>a</div>;
   }
-  const { data, error } = await supabase
-    .from('likes')
-    .select(
-      '*, prompts(*), liker("first_name", "id", "gender", photos("src")), photo("src") '
-    )
-    .eq('likee', session.user.id);
+  const { data: photoLikes, error } = await supabase
+    .from('photo_likes')
+    .select('*, photo(src), liker(first_name, id, gender, photos(src)) ')
+    .eq('likee', session.user.id)
+    .returns<PhotoLike[]>();
 
-  return <Likes data={data || []} />;
+  // console.log('error :', error);
+  const { data: promptLikes } = await supabase
+    .from('prompt_likes')
+    .select('*, prompt(*), liker(first_name, id, gender, photos(src))')
+    .eq('likee', session.user.id)
+    .returns<PromptLike[]>();
+
+  console.log('promptLikes :', promptLikes);
+  console.log('photoLikes :', photoLikes);
+
+  return (
+    <Likes photoLikes={photoLikes || []} promptLikes={promptLikes || []} />
+  );
 }

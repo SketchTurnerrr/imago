@@ -31,7 +31,6 @@ export default async function DiscoverLayout({
     redirect('/login');
   }
 
-  console.log('data pprof:', data);
   console.log('session :', session.user.id);
   return (
     <section>

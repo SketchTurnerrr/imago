@@ -34,57 +34,48 @@ export interface Database {
   };
   public: {
     Tables: {
-      likes: {
+      photo_likes: {
         Row: {
           comment: string | null;
           created_at: string;
           id: string;
-          likee: string | null;
-          liker: string | null;
-          photo: string | null;
-          prompt_id: string | null;
+          likee: string;
+          liker: string;
+          photo: string;
         };
         Insert: {
           comment?: string | null;
           created_at?: string;
           id?: string;
-          likee?: string | null;
-          liker?: string | null;
-          photo?: string | null;
-          prompt_id?: string | null;
+          likee: string;
+          liker: string;
+          photo: string;
         };
         Update: {
           comment?: string | null;
           created_at?: string;
           id?: string;
-          likee?: string | null;
-          liker?: string | null;
-          photo?: string | null;
-          prompt_id?: string | null;
+          likee?: string;
+          liker?: string;
+          photo?: string;
         };
         Relationships: [
           {
-            foreignKeyName: 'likes_likee_fkey';
+            foreignKeyName: 'photo_likes_likee_fkey';
             columns: ['likee'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'likes_liker_fkey';
+            foreignKeyName: 'photo_likes_liker_fkey';
             columns: ['liker'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'likes_photo_fkey';
+            foreignKeyName: 'photo_likes_photo_fkey';
             columns: ['photo'];
             referencedRelation: 'photos';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'likes_prompt_id_fkey';
-            columns: ['prompt_id'];
-            referencedRelation: 'prompts';
             referencedColumns: ['id'];
           }
         ];
@@ -165,6 +156,52 @@ export interface Database {
             foreignKeyName: 'profiles_id_fkey';
             columns: ['id'];
             referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
+      prompt_likes: {
+        Row: {
+          comment: string | null;
+          created_at: string;
+          id: string;
+          likee: string;
+          liker: string;
+          prompt: string;
+        };
+        Insert: {
+          comment?: string | null;
+          created_at?: string;
+          id?: string;
+          likee: string;
+          liker: string;
+          prompt: string;
+        };
+        Update: {
+          comment?: string | null;
+          created_at?: string;
+          id?: string;
+          likee?: string;
+          liker?: string;
+          prompt?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'prompt_likes_likee_fkey';
+            columns: ['likee'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'prompt_likes_liker_fkey';
+            columns: ['liker'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'prompt_likes_prompt_fkey';
+            columns: ['prompt'];
+            referencedRelation: 'prompts';
             referencedColumns: ['id'];
           }
         ];

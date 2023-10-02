@@ -5,6 +5,7 @@ import Link from 'next/link';
 import { SignOut } from '@/components/signout-btn';
 import { LikeBtn } from '@/components/like-btn';
 import { HomeIcon } from '@radix-ui/react-icons';
+import Cross from '@/public/cross.svg';
 import { useLayoutEffect, useRef } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
@@ -23,7 +24,7 @@ interface PageProps {
 export function Discover({ profile, userID, authedProfile }: PageProps) {
   const profileRef = useRef(null);
 
-  console.log('profile photos:', profile);
+  console.log('profile discover:', profile);
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -51,23 +52,31 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
   const {
     question: question0,
     answer: answer0,
-    id: id0,
-  } = profile?.prompts[0] || '124124';
+    id: promptId0,
+  } = profile?.prompts[0] || '';
   const {
     question: question1,
     answer: answer1,
-    id: id1,
+    id: promptId1,
   } = profile?.prompts[1] || '';
   const {
     question: question2,
     answer: answer2,
-    id: id2,
+    id: promptId2,
   } = profile?.prompts[2] || '';
+
+  const { src: src0, id: photoId0 } = profile?.photos[0] || '';
+  const { src: src1, id: photoId1 } = profile?.photos[1] || '';
+  const { src: src2, id: photoId2 } = profile?.photos[2] || '';
+  const { src: src3, id: photoId3 } = profile?.photos[3] || '';
+  const { src: src4, id: photoId4 } = profile?.photos[4] || '';
+  const { src: src5, id: photoId5 } = profile?.photos[5] || '';
 
   const photo = (src: string | null, id: string) => {
     if (!src) {
       return null;
     } else {
+      console.log('id from discover photo  :', id);
       return (
         <div className='relative w-fit'>
           <Image
@@ -120,12 +129,9 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
       />
       <h1 className='text-4xl font-bold mb-4 ml-4'>{profile?.first_name}</h1>
 
-      {
-        // @ts-ignore
-        photo(profile.photos[0]?.src)
-      }
+      {photo(src0, photoId0)}
 
-      {prompt(question0, answer0, id0)}
+      {prompt(question0, answer0, promptId0)}
 
       {/*       
       ----- INFO 
@@ -138,7 +144,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
             {age || '17'}
           </div>
           <div className='flex items-center gap-3'>
-            <Image src='/cross.svg' width={28} height={28} alt='cake icon' />
+            <Cross />
             {profile.denomination}
           </div>
           <div className='flex items-center gap-3'>
@@ -164,7 +170,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[1]?.src)
+        photo(src1, photoId1)
       }
 
       {/*       
@@ -173,10 +179,10 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[2]?.src)
+        photo(src2, photoId2)
       }
 
-      {prompt(question1, answer1, id1)}
+      {prompt(question1, answer1, promptId1)}
 
       {/*       
       ----- PHOTO3
@@ -184,10 +190,10 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[3]?.src)
+        photo(src3, photoId3)
       }
 
-      {prompt(question2, answer2, id2)}
+      {prompt(question2, answer2, promptId2)}
 
       {/*       
       ----- PHOTO4
@@ -195,7 +201,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[4]?.src)
+        photo(src4, photoId4)
       }
       {/*       
       ----- PHOTO5
@@ -203,7 +209,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[5]?.src)
+        photo(src5, photoId5)
       }
       {/* <SkipProfileBtn profileId={profile.id} /> */}
       {/* <SignOut /> */}
