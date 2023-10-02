@@ -64,11 +64,10 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
     id: id2,
   } = profile?.prompts[2] || '';
 
-  const photo = (src: string | null) => {
+  const photo = (src: string | null, id: string) => {
     if (!src) {
       return null;
     } else {
-      const id = src.split('/')[9];
       return (
         <div className='relative w-fit'>
           <Image
@@ -123,7 +122,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[0]?.main_photo)
+        photo(profile.photos[0]?.src)
       }
 
       {prompt(question0, answer0, id0)}
@@ -165,7 +164,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[0]?.photo2)
+        photo(profile.photos[1]?.src)
       }
 
       {/*       
@@ -174,7 +173,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[0]?.photo3)
+        photo(profile.photos[2]?.src)
       }
 
       {prompt(question1, answer1, id1)}
@@ -185,7 +184,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[0]?.photo4)
+        photo(profile.photos[3]?.src)
       }
 
       {prompt(question2, answer2, id2)}
@@ -196,7 +195,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[0]?.photo5)
+        photo(profile.photos[4]?.src)
       }
       {/*       
       ----- PHOTO5
@@ -204,7 +203,7 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
 
       {
         // @ts-ignore
-        photo(profile.photos[0]?.photo6)
+        photo(profile.photos[5]?.src)
       }
       {/* <SkipProfileBtn profileId={profile.id} /> */}
       {/* <SignOut /> */}

@@ -9,6 +9,9 @@ declare global {
   type LikesType = DB['public']['Tables']['likes']['Row'];
   interface FullProfile extends ProfileType {
     prompts: PromptsType;
+    photos: PhotosType;
+  }
+  interface ProfileWithPhotos extends ProfileType {
     photos: PhotosType[];
   }
 }

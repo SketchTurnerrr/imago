@@ -4,7 +4,7 @@ import { createServerClient } from '@/lib/supabase-server';
 
 type authedProfileType = {
   gender: string;
-  skipped_profiles: string[];
+  skipped_profiles: Array<string>;
   onboarded: boolean;
 };
 
@@ -15,17 +15,21 @@ export default async function DiscoverPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (!session) {
+    redirect('/login');
+  }
+
   const { data: authedProfile } = await supabase
     .from('profiles')
     .select('gender, skipped_profiles, onboarded')
-    .eq('id', session?.user.id)
+    .eq('id', session.user.id)
     .single();
 
   const gender = authedProfile?.gender === 'male' ? 'female' : 'male';
 
-  const skippedProfiles: string[] = [
-    ...(authedProfile?.skipped_profiles || ''),
-    session?.user.id,
+  const skippedProfiles = [
+    ...(authedProfile?.skipped_profiles || []),
+    session.user.id,
   ];
 
   console.log('authedProfile :', authedProfile);
@@ -46,9 +50,6 @@ export default async function DiscoverPage() {
 
   if (authedProfile && !authedProfile.onboarded) {
     redirect('/onboarding');
-  }
-  if (!session) {
-    redirect('/login');
   }
 
   return (

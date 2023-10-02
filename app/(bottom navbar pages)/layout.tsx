@@ -21,10 +21,21 @@ export default async function DiscoverLayout({
 
   if (!session) redirect('/login');
 
+  const { data } = await supabase
+    .from('profiles')
+    .select('photos("src")')
+    .eq('id', session?.user.id)
+    .single();
+
+  if (!data) {
+    redirect('/login');
+  }
+
+  console.log('data pprof:', data);
   console.log('session :', session.user.id);
   return (
     <section>
-      <Navbar userID={session?.user.id} />
+      <Navbar userID={session?.user.id} photo={data.photos} />
       {children}
     </section>
   );

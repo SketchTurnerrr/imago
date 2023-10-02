@@ -15,11 +15,10 @@ export default async function LikesPage() {
   }
   const { data, error } = await supabase
     .from('likes')
-    .select('*, prompts(*), liker("first_name", "id", "gender", photos(*)) ')
+    .select(
+      '*, prompts(*), liker("first_name", "id", "gender", photos("src")), photo("src") '
+    )
     .eq('likee', session.user.id);
-
-  console.log('error :', error);
-  console.log('likes serv :', data);
 
   return <Likes data={data || []} />;
 }

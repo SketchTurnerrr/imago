@@ -9,14 +9,21 @@ export default async function Page() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  const { data } = await supabase
-    .from('profiles')
-    .select('*, photos(*)')
-    .eq('id', session?.user.id)
-    .single();
   if (!session) {
     redirect('/login');
   }
 
-  return <ProfilePage data={data} />;
+  const { data } = await supabase
+    .from('profiles')
+    .select('*, photos(*)')
+    .eq('id', session?.user.id)
+    .returns<ProfileWithPhotos>()
+    .single();
+
+  console.log('data :', data);
+  if (!data) {
+    redirect('/');
+  }
+
+  return <ProfilePage profile={data} />;
 }

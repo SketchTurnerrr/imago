@@ -13,8 +13,6 @@ interface PageProps {
 export function Likes({ data }: PageProps) {
   const supabase = createClientComponentClient<Database>();
 
-  console.log(' data:', data || []);
-
   const photoLikes = data.filter(
     (like: { photo: string | null }) => like.photo !== null
   );
@@ -26,27 +24,26 @@ export function Likes({ data }: PageProps) {
   console.log('promptLikes :', promptLikes);
   console.log('photoLikes :', photoLikes);
 
-  //   console.log(
-  //     'photo :',
-  //     `https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/${data.likee}/${data.photo}`
-  //   );
   return (
     <main className='gap-4 flex flex-col min-h-screen p-4'>
       {photoLikes?.map(
         (item: {
           id: Key;
           likee: string;
-          photo: string;
+          photo: {
+            src: string;
+          };
           liker: {
             first_name: string;
             gender: string;
-            photos: { main_photo: string | StaticImport }[];
+            id: string;
+            photos: { src: string }[];
           };
         }) => (
           <div key={item.id} className='mb-8'>
             <div className='relative mb-4'>
               <Image
-                src={`https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/${item.likee}/${item.photo}`}
+                src={item.photo.src}
                 width={400}
                 height={100}
                 alt={item.liker.first_name}
@@ -63,7 +60,7 @@ export function Likes({ data }: PageProps) {
                 {item.liker.first_name}
               </h1>
               <Image
-                src={item.liker.photos[0].main_photo}
+                src={item.liker.photos[0].src}
                 width={400}
                 height={100}
                 alt={'person'}
@@ -80,7 +77,7 @@ export function Likes({ data }: PageProps) {
           prompts: { question: string; answer: string; id: string | undefined };
           liker: {
             gender: string;
-            photos: { main_photo: string | StaticImport }[];
+            photos: { src: string }[];
             first_name: string;
           };
         }) => (
@@ -103,7 +100,7 @@ export function Likes({ data }: PageProps) {
                 {item.liker.first_name}
               </h1>
               <Image
-                src={item.liker.photos[0].main_photo}
+                src={item.liker.photos[0].src}
                 width={400}
                 height={100}
                 alt={item.liker.first_name}

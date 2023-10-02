@@ -12,7 +12,13 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { usePathname } from 'next/navigation';
 
-export function Navbar({ userID }: { userID: string }) {
+export function Navbar({
+  userID,
+  photo,
+}: {
+  userID: string;
+  photo: { src: string }[];
+}) {
   const pathname = usePathname();
   const navbarRef = useRef(null);
 
@@ -76,6 +82,7 @@ export function Navbar({ userID }: { userID: string }) {
               priority
               className={`${'rounded-full'} `}
               src={
+                photo[0]?.src ||
                 'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
               }
               width={24}

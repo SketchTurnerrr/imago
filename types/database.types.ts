@@ -76,6 +76,12 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'likes_photo_fkey';
+            columns: ['photo'];
+            referencedRelation: 'photos';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'likes_prompt_id_fkey';
             columns: ['prompt_id'];
             referencedRelation: 'prompts';
@@ -87,35 +93,20 @@ export interface Database {
         Row: {
           created_at: string;
           id: string;
-          main_photo: string;
-          photo2: string | null;
-          photo3: string | null;
-          photo4: string | null;
-          photo5: string | null;
-          photo6: string | null;
-          profile_id: string | null;
+          profile_id: string;
+          src: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
-          main_photo?: string;
-          photo2?: string | null;
-          photo3?: string | null;
-          photo4?: string | null;
-          photo5?: string | null;
-          photo6?: string | null;
-          profile_id?: string | null;
+          profile_id: string;
+          src: string;
         };
         Update: {
           created_at?: string;
           id?: string;
-          main_photo?: string;
-          photo2?: string | null;
-          photo3?: string | null;
-          photo4?: string | null;
-          photo5?: string | null;
-          photo6?: string | null;
-          profile_id?: string | null;
+          profile_id?: string;
+          src?: string;
         };
         Relationships: [
           {
