@@ -20,6 +20,12 @@ export default function Location({ user }: { user: User | undefined }) {
     lng: 30.52,
   });
   const [toponym, setToponym] = useState('');
+  // console.log('toponym :', toponym);
+  const [userPermission, setUserPermission] = useState(false);
+  const [userPos, setUserPos] = useState<google.maps.LatLngLiteral>({
+    lat: 50.45,
+    lng: 30.52,
+  });
 
   useEffect(() => {
     const getLocationDetails = async () => {
@@ -30,11 +36,13 @@ export default function Location({ user }: { user: User | undefined }) {
           const res = await geocoder.geocode({
             region: 'uk',
             location: {
-              lat: markerPos.lat,
-              lng: markerPos.lng,
+              lat: userPermission ? userPos.lat : markerPos.lat,
+              lng: userPermission ? userPos.lng : markerPos.lng,
             },
           });
-          const result = res.results[0].formatted_address;
+          const result = res.results[0].address_components?.find(
+            (component: any) => component.types.includes('locality')
+          )?.long_name;
           if (result) setToponym(result);
         }
       } catch (error) {
@@ -63,6 +71,7 @@ export default function Location({ user }: { user: User | undefined }) {
   const router = useRouter();
   async function handleLocation() {
     if (user) {
+      console.log('toponym from handleLocation:', toponym);
       await supabase
         .from('profiles')
         .update({
@@ -78,6 +87,31 @@ export default function Location({ user }: { user: User | undefined }) {
     }
   }
 
+  const handleUserLocation = async () => {
+    if (navigator.geolocation) {
+      navigator.geolocation.getCurrentPosition(accessGranted, accessBlocked);
+    } else {
+      accessBlocked();
+    }
+
+    function accessGranted(position: {
+      coords: { latitude: number; longitude: number };
+    }) {
+      const { latitude, longitude } = position.coords;
+
+      setUserPos({
+        lat: latitude,
+        lng: longitude,
+      });
+
+      setUserPermission(true);
+    }
+
+    function accessBlocked() {
+      setUserPermission(false);
+    }
+  };
+
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
   });
@@ -85,15 +119,21 @@ export default function Location({ user }: { user: User | undefined }) {
   if (!isLoaded) return <div>loading..</div>;
   return (
     <div className='px-4 pt-20 pb-4 h-screen flex flex-col justify-between'>
-      <h1 className='text-5xl font-bold mb-4'>Де ви знаходитесь?</h1>
+      <div className='flex flex-col gap-4'>
+        <h1 className='text-5xl font-bold mb-4'>Де ви знаходитесь?</h1>
 
-      {isLoaded && (
-        <Map
-          markerPos={markerPos!}
-          onMapLoad={handleMapLoad}
-          onCenterChanged={handleCenterChanged}
-        />
-      )}
+        <Button onClick={handleUserLocation}>Знайти мене</Button>
+
+        {isLoaded && (
+          <Map
+            userPos={userPos}
+            userPermission={userPermission}
+            markerPos={markerPos!}
+            onMapLoad={handleMapLoad}
+            onCenterChanged={handleCenterChanged}
+          />
+        )}
+      </div>
 
       <Link className='self-end' href={'/onboarding/prompts'}>
         <Button
