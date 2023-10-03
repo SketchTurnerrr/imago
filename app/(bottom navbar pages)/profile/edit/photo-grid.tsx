@@ -1,6 +1,6 @@
 import Image from 'next/image';
 import CloseIcon from '@/public/x.svg';
-import { PlusIcon, ReloadIcon } from '@radix-ui/react-icons';
+import { PlusIcon, ReloadIcon, UploadIcon } from '@radix-ui/react-icons';
 import { Input } from '@/components/ui/input';
 import { Key, useRef, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
@@ -14,6 +14,7 @@ interface PageProps {
 
 export function PhotoGrid({ photos, user }: any) {
   const inputRef = useRef<any>(null);
+  console.log('inputRef :', inputRef);
   const [fileName, setFilename] = useState('');
   const [selectedPlaceholder, setSelectedPlaceholder] = useState<number | null>(
     null
@@ -37,7 +38,7 @@ export function PhotoGrid({ photos, user }: any) {
     inputRef.current?.click();
     setSelectedPlaceholder(placeholderId);
   };
-  //   console.log('placeholderId :', selectedPlaceholder);
+  console.log('placeholderId :', selectedPlaceholder);
 
   const uploadPhoto: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
     try {
@@ -78,22 +79,18 @@ export function PhotoGrid({ photos, user }: any) {
     } finally {
       setUploading(false);
       setSelectedPlaceholder(null);
-      //   if (inputRef === null) {
-
-      inputRef.current.value = null;
-      // }
       router.refresh();
     }
   };
 
   return (
-    <div className='grid grid-cols-3 gap-2 max-w-md'>
+    <div className='grid grid-cols-3 gap-2 max-w-md mb-4'>
       {filledPhotos.map((photo: { src: string; id: string }, index: number) => (
-        <div key={index} className='flex h-[114px]'>
+        <>
           {photo?.src ? (
-            <div className='relative'>
+            <div key={photo.id} className='relative'>
               <Image
-                className='object-cover w-full aspect-square rounded-lg'
+                className='object-cover aspect-square rounded-lg'
                 src={photo?.src}
                 alt='person'
                 width={800}
@@ -109,13 +106,14 @@ export function PhotoGrid({ photos, user }: any) {
             </div>
           ) : (
             <div
+              key={index}
               onClick={() => handlePlaceholderClick(index)}
-              className=' bg-slate-100  h-full w-full flex justify-center items-center border-purple-300 styledInput'
+              className='h-full w-full flex justify-center items-center'
             >
               <Input
                 ref={inputRef}
                 onChange={uploadPhoto}
-                //   disabled={uploading}
+                disabled={uploading}
                 type='file'
                 accept='image/*'
                 className='pointer-events-none opacity-0 h-0 w-0 leading-[0] overflow-hidden p-0 m-0'
@@ -123,11 +121,20 @@ export function PhotoGrid({ photos, user }: any) {
               {uploading && selectedPlaceholder === index ? (
                 <ReloadIcon className='text-purple-300 h-6 w-6 animate-spin' />
               ) : (
-                <PlusIcon className='w-6 h-6 font-bold text-purple-400' />
+                <div className='relative flex items-center justify-center'>
+                  <Image
+                    className='border-2 border-dashed rounded-lg border-orange-300'
+                    src='/placeholder.png'
+                    width={150}
+                    height={150}
+                    alt='placeholder'
+                  />
+                  <UploadIcon className='w-10 h-10 absolute text-white' />
+                </div>
               )}
             </div>
           )}
-        </div>
+        </>
       ))}
     </div>
   );
