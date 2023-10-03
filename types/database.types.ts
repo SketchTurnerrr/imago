@@ -115,7 +115,7 @@ export interface Database {
           date_of_birth: Date;
           denomination: string;
           email: string;
-          first_name: string | null;
+          first_name: string;
           gender: string;
           id: string;
           location: Json;
@@ -129,7 +129,7 @@ export interface Database {
           date_of_birth?: Date;
           denomination?: string;
           email: string;
-          first_name?: string | null;
+          first_name?: string;
           gender?: string;
           id: string;
           location?: Json;
@@ -143,7 +143,7 @@ export interface Database {
           date_of_birth?: Date;
           denomination?: string;
           email?: string;
-          first_name?: string | null;
+          first_name?: string;
           gender?: string;
           id?: string;
           location?: Json;

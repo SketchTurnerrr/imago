@@ -1,13 +1,13 @@
 'use client';
-import { LikeBtn } from './like-btn';
+import { LikeDialog } from './like-dialog';
 
 interface Props {
   question: string;
   answer: string;
-  id?: string;
+  id: string;
   discover: boolean;
-  liker?: string | undefined;
-  likee?: string | undefined;
+  liker: string;
+  likee: string;
 }
 
 export function Prompt({
@@ -23,7 +23,14 @@ export function Prompt({
       <p className='text-md font-semibold'>{question}</p>
       <h2 className='text-4xl font-bold'>{answer}</h2>
       {discover && (
-        <LikeBtn liker={liker} likee={likee} itemId={id} type='prompt' />
+        <LikeDialog
+          itemId={id}
+          type='prompt'
+          liker={liker}
+          likee={likee}
+          firstName={''}
+          src={''}
+        />
       )}
     </div>
   );

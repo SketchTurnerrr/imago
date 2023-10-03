@@ -3,13 +3,13 @@ import { differenceInYears, parse, format, parseISO } from 'date-fns';
 import Image from 'next/image';
 import Link from 'next/link';
 import { SignOut } from '@/components/signout-btn';
-import { LikeBtn } from '@/components/like-btn';
 import { HomeIcon } from '@radix-ui/react-icons';
 import Cross from '@/public/cross.svg';
 import { useLayoutEffect, useRef } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
 import { Prompt } from '@/components/prompt';
+import { LikeDialog } from '@/components/like-dialog';
 
 interface PageProps {
   profile: FullProfile;
@@ -76,7 +76,6 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
     if (!src) {
       return null;
     } else {
-      console.log('id from discover photo  :', id);
       return (
         <div className='relative w-fit'>
           <Image
@@ -90,7 +89,15 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
             alt='me'
             className='rounded-lg '
           />
-          <LikeBtn itemId={id} type='photo' liker={userID} likee={profile.id} />
+          {/* <LikeBtn itemId={id} type='photo' liker={userID} likee={profile.id} /> */}
+          <LikeDialog
+            itemId={id}
+            type='photo'
+            liker={userID}
+            likee={profile.id}
+            src={src}
+            firstName={profile.first_name}
+          />
         </div>
       );
     }
