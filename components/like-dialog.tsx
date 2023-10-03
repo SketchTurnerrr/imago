@@ -26,14 +26,17 @@ import { useState } from 'react';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { Prompt } from './prompt';
 
 interface ILikeDialog {
   itemId: string;
   liker: string;
   likee: string;
   type: string;
-  firstName: string;
-  src: string;
+  firstName: string | null;
+  src: string | null;
+  question: string | null;
+  answer: string | null;
 }
 
 const FormSchema = z.object({
@@ -47,10 +50,11 @@ export function LikeDialog({
   type,
   firstName,
   src,
+  question,
+  answer,
 }: ILikeDialog) {
   const supabase = createClientComponentClient<Database>();
   const [open, setOpen] = useState(false);
-  const [comment, setComment] = useState('');
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -58,10 +62,9 @@ export function LikeDialog({
     },
   });
   const handleLike = async (data: z.infer<typeof FormSchema>) => {
-    // console.log('type :', type);
-    // console.log(' item id:', itemId);
+    const { comment } = data;
 
-    if (type === 'photo') {
+    if (type === 'photo' && itemId) {
       const { error } = await supabase.from('photo_likes').insert({
         photo: itemId,
         liker: liker,
@@ -82,7 +85,6 @@ export function LikeDialog({
       console.log(' like error:', error);
     }
 
-    console.log(' com:', data);
     setOpen(false);
   };
 
@@ -104,13 +106,25 @@ export function LikeDialog({
           </LDialogTitle>
         </LDialogHeader>
         <div className='flex flex-col gap-2'>
-          <Image
-            src={src}
-            alt={firstName}
-            width={300}
-            height={300}
-            className='rounded-lg object-cover aspect-square'
-          />
+          {src && (
+            <Image
+              src={src}
+              alt={firstName!}
+              width={300}
+              height={300}
+              className='rounded-lg object-cover aspect-square'
+            />
+          )}
+          {type === 'prompt' && (
+            <Prompt
+              discover={false}
+              question={question}
+              answer={answer}
+              id={itemId}
+              likee={likee}
+              liker={liker}
+            />
+          )}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleLike)}

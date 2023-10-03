@@ -17,6 +17,7 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
 
   return (
     <main className='gap-4 flex flex-col min-h-screen p-4'>
+      {/* IF EMPTY PAGE */}
       {photoLikes.length === 0 && promptLikes.length === 0 && (
         <>
           <h1 className='text-3xl font-bold'>Вподобали вас</h1>
@@ -41,6 +42,7 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
           </p>
         </>
       )}
+
       {photoLikes?.map((item) => (
         <div key={item.id} className='mb-8'>
           <div className='relative mb-4'>
@@ -51,9 +53,14 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
               alt={item.liker.first_name}
               className='rounded-lg aspect-[24/9] object-cover'
             />
+
             <div className='absolute p-2 rounded-lg bg-indigo-200 -bottom-2 left-0'>
-              {item.liker.gender === 'male' ? 'Вподобав' : 'Вподобала'} ваше
-              фото
+              {item.comment
+                ? item.comment
+                : item.liker.gender === 'male'
+                ? 'Вподобав' + ' ваше фото'
+                : 'Вподобала' + ' ваше фото'}
+
               <span className='h-[0.6rem] w-[0.6rem] absolute -bottom-[4px] -left-[3px] _clip-path rotate-[207deg] bg-inherit'></span>
             </div>
           </div>
@@ -74,14 +81,20 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
         <div key={item.id} className='mb-8'>
           <div className='relative mb-4'>
             <Prompt
+              likee=''
+              liker=''
               question={item.prompt.question}
               answer={item.prompt.answer}
               discover={false}
               id={item.prompt.id}
             />
             <div className='absolute p-2 rounded-lg bg-indigo-200 -bottom-2 left-0'>
-              {item.liker.gender === 'male' ? 'Вподобав' : 'Вподобала'} вашу
-              відповідь
+              {item.comment
+                ? item.comment
+                : item.liker.gender === 'male'
+                ? 'Вподобав' + ' вашу відповідь'
+                : 'Вподобала' + ' вашу відповідь'}
+
               <span className='h-[0.6rem] w-[0.6rem] absolute -bottom-[4px] -left-[3px] _clip-path rotate-[207deg] bg-inherit'></span>
             </div>
           </div>

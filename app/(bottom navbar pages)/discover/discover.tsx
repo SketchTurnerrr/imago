@@ -97,6 +97,8 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
             likee={profile.id}
             src={src}
             firstName={profile.first_name}
+            question={null}
+            answer={null}
           />
         </div>
       );

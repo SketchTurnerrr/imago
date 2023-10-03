@@ -1,9 +1,9 @@
 'use client';
 import { LikeDialog } from './like-dialog';
 
-interface Props {
-  question: string;
-  answer: string;
+interface IPrompt {
+  question: string | null;
+  answer: string | null;
   id: string;
   discover: boolean;
   liker: string;
@@ -17,7 +17,7 @@ export function Prompt({
   liker,
   likee,
   discover = false,
-}: Props) {
+}: IPrompt) {
   return (
     <div className='px-4  py-10 bg-purple-50  relative rounded-lg space-y-4'>
       <p className='text-md font-semibold'>{question}</p>
@@ -28,8 +28,10 @@ export function Prompt({
           type='prompt'
           liker={liker}
           likee={likee}
-          firstName={''}
-          src={''}
+          firstName={null}
+          src={null}
+          question={question}
+          answer={answer}
         />
       )}
     </div>
