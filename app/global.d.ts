@@ -17,7 +17,7 @@ declare global {
   }
 
   interface PhotoLike extends PhotoLikesType {
-    photo: { src: string };
+    photo: { src: string; id: string };
     liker: {
       first_name: string;
       gender: string;

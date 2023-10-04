@@ -10,21 +10,31 @@ import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
 import { Prompt } from '@/components/prompt';
 import { LikeDialog } from '@/components/like-dialog';
+import { usePathname } from 'next/navigation';
+import { MatchDialog } from '@/components/match-btn';
 
 interface PageProps {
   profile: FullProfile;
-  authedProfile: {
+  authedProfile?: {
     gender: string;
     skipped_profiles: string[];
     onboarded: boolean;
   };
-  userID: string;
+  userId: string;
+  likeData: PhotoLike | PromptLike;
 }
 
-export function Discover({ profile, userID, authedProfile }: PageProps) {
+export function Profile({
+  profile,
+  userId,
+  authedProfile,
+  likeData,
+}: PageProps) {
   const profileRef = useRef(null);
 
-  console.log('profile discover:', profile);
+  const pathname = usePathname();
+
+  // console.log('profile discover:', profile);
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(
@@ -89,17 +99,18 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
             alt='me'
             className='rounded-lg '
           />
-          {/* <LikeBtn itemId={id} type='photo' liker={userID} likee={profile.id} /> */}
-          <LikeDialog
-            itemId={id}
-            type='photo'
-            liker={userID}
-            likee={profile.id}
-            src={src}
-            firstName={profile.first_name}
-            question={null}
-            answer={null}
-          />
+          {pathname === '/discover' && (
+            <LikeDialog
+              itemId={id}
+              type='photo'
+              liker={userId}
+              likee={profile.id}
+              src={src}
+              firstName={profile.first_name}
+              question={null}
+              answer={null}
+            />
+          )}
         </div>
       );
     }
@@ -111,12 +122,11 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
     } else {
       return (
         <Prompt
-          liker={userID}
+          liker={userId}
           likee={profile.id}
           question={question}
           answer={answer}
           id={id}
-          discover={true}
         />
       );
     }
@@ -129,13 +139,22 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
   return (
     <main
       ref={profileRef}
-      className='flex gap-4 pt-5 min-h-screen opacity-0 flex-col px-4 pb-4'
+      className='flex space-y-4  min-h-screen opacity-0 flex-col px-4 pb-4'
     >
       <SkipProfileBtn
-        userID={userID}
+        userId={userId}
         profileID={profile.id}
-        skippedProfiles={authedProfile.skipped_profiles || []}
+        skippedProfiles={authedProfile?.skipped_profiles || []}
       />
+      {pathname.split('/')[1] === 'likes' && (
+        <MatchDialog
+          likee={profile.id}
+          liker={userId}
+          src={profile.photos[0].src}
+          firstName={profile.first_name}
+          likeData={likeData}
+        />
+      )}
       <h1 className='text-4xl font-bold mb-4 ml-4'>{profile?.first_name}</h1>
 
       {photo(src0, photoId0)}
@@ -163,14 +182,14 @@ export function Discover({ profile, userID, authedProfile }: PageProps) {
               height={24}
               alt='map pin icon'
             />
-            Київ
+            {profile.location.toponym}
           </div>
         </div>
-        <div className='flex items-center gap-4'>
+        {/* <div className='flex items-center gap-4'>
           <HomeIcon className='w-6 h-6' />
-          {/* @ts-ignore */}
+        
           {profile?.location?.toponym}
-        </div>
+        </div> */}
       </div>
 
       {/*       

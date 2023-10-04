@@ -1,5 +1,12 @@
 'use client';
-import { Button } from '@/components/ui/button';
+
+import { Button } from './ui/button';
+import { useEffect, useRef } from 'react';
+import gsap from 'gsap';
+import { ScrollTrigger } from 'gsap/all';
+import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter, useSearchParams } from 'next/navigation';
+import Message from '@/public/message.svg';
 import {
   LDialog,
   LDialogContent,
@@ -10,17 +17,12 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import Heart from '@/public/heart.svg';
-
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import { useState } from 'react';
 
@@ -29,105 +31,113 @@ import { useForm } from 'react-hook-form';
 import * as z from 'zod';
 import { Prompt } from './prompt';
 
-interface ILikeDialog {
-  itemId: string;
+interface IMatchDialog {
   liker: string;
   likee: string;
-  type: 'prompt' | 'photo' | 'match';
   firstName: string | null;
-  src: string | null;
-  question: string | null;
-  answer: string | null;
+  src: string;
+  likeData: PhotoLike | PromptLike;
 }
 
 const FormSchema = z.object({
   comment: z.string(),
 });
 
-export function LikeDialog({
-  itemId,
+export function MatchDialog({
   liker,
   likee,
-  type,
   firstName,
   src,
-  question,
-  answer,
-}: ILikeDialog) {
+  likeData,
+}: IMatchDialog) {
   const supabase = createClientComponentClient<Database>();
+  console.log('likeData :', likeData);
   const [open, setOpen] = useState(false);
+  const router = useRouter();
+  const btnRef = useRef(null);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       comment: '',
     },
   });
-  const handleLike = async (data: z.infer<typeof FormSchema>) => {
+  const handleMatch = async (data: z.infer<typeof FormSchema>) => {
     const { comment } = data;
-
-    if (type === 'photo' && itemId) {
-      const { error } = await supabase.from('photo_likes').insert({
-        photo: itemId,
-        liker: liker,
-        likee: likee,
-        comment: comment ? comment : null,
-      });
-
-      console.log(' like error:', error);
-    }
-
-    if (type === 'prompt') {
-      const { error } = await supabase.from('prompt_likes').insert({
-        prompt: itemId,
-        liker: liker,
-        likee: likee,
-        comment: comment ? comment : null,
-      });
-      console.log(' like error:', error);
-    }
 
     setOpen(false);
   };
 
+  gsap.registerPlugin(ScrollTrigger);
+  useEffect(() => {
+    const showBtn = gsap
+      .fromTo(
+        btnRef.current,
+        {
+          top: '92%',
+        },
+        {
+          top: '83%',
+          duration: 0.3,
+        }
+      )
+      .progress(1);
+
+    ScrollTrigger.create({
+      start: 'top top',
+      end: 'max',
+      onUpdate: (self) => {
+        self.direction === -1 ? showBtn.play() : showBtn.reverse();
+      },
+    });
+  }, []);
+
   return (
     <LDialog open={open} onOpenChange={setOpen}>
-      <LDialogTrigger asChild>
-        <Button
-          variant='outline'
-          size='icon'
-          className='rounded-full text-purple-400 hover:text-purple-500 w-12 h-12 bottom-2 absolute right-2 bg-white'
+      <LDialogTrigger className='h-0' asChild>
+        <div
+          ref={btnRef}
+          style={{ margin: 0 }}
+          className='h-0 z-30 left-4 self-end sticky top-[83%]'
         >
-          <Heart width={24} height={24} />
-        </Button>
+          <Button
+            variant='outline'
+            size='icon'
+            className=' h-12 w-12 rounded-full  bg-white'
+          >
+            <Message />
+          </Button>
+        </div>
       </LDialogTrigger>
       <LDialogContent className='max-w-[350px] bg-transparent border-none shadow-none'>
         <LDialogHeader>
           <LDialogTitle className='text-3xl'>
-            {type === 'photo' ? firstName : ''}
+            {firstName ? firstName : ''}
           </LDialogTitle>
         </LDialogHeader>
         <div className='flex flex-col gap-2'>
-          {src && (
+          {'photo' in likeData && (
             <Image
-              src={src}
+              src={likeData?.photo?.src}
               alt={firstName!}
               width={300}
               height={300}
-              className='rounded-lg w-full object-cover aspect-square'
+              className='rounded-lg object-cover w-full aspect-square'
             />
           )}
-          {type === 'prompt' && (
+
+          {'prompt' in likeData && (
             <Prompt
-              question={question}
-              answer={answer}
-              id={itemId}
-              likee={likee}
-              liker={liker}
+              likee=''
+              liker=''
+              id={likeData.id}
+              question={likeData.prompt.question}
+              answer={likeData.prompt.answer}
             />
           )}
+
           <Form {...form}>
             <form
-              onSubmit={form.handleSubmit(handleLike)}
+              onSubmit={form.handleSubmit(handleMatch)}
               className='flex flex-col gap-2'
             >
               <FormField
@@ -153,7 +163,7 @@ export function LikeDialog({
                 type='submit'
                 // onClick={handleLike}
               >
-                Вподобати
+                Познайомитись
               </Button>
             </form>
           </Form>

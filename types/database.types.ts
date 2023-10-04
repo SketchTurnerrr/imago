@@ -118,7 +118,11 @@ export interface Database {
           first_name: string;
           gender: string;
           id: string;
-          location: Json;
+          location: {
+            lat: number;
+            long: number;
+            toponym: string;
+          };
           name: string | null;
           onboarded: boolean;
           skipped_profiles: string[] | null;
@@ -132,7 +136,11 @@ export interface Database {
           first_name?: string;
           gender?: string;
           id: string;
-          location?: Json;
+          location?: {
+            lat: number;
+            long: number;
+            toponym: string;
+          };
           name?: string | null;
           onboarded?: boolean;
           skipped_profiles?: string[] | null;
@@ -146,7 +154,11 @@ export interface Database {
           first_name?: string;
           gender?: string;
           id?: string;
-          location?: Json;
+          location?: {
+            lat: number;
+            long: number;
+            toponym: string;
+          };
           name?: string | null;
           onboarded?: boolean;
           skipped_profiles?: string[] | null;

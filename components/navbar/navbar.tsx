@@ -1,25 +1,14 @@
 'use client';
-
-import { HeartIcon } from '@radix-ui/react-icons';
 import Image from 'next/image';
 import Link from 'next/link';
 import Compass from '@/public/compass.svg';
 import Heart from '@/public/heart.svg';
 import Message from '@/public/message.svg';
-import { SkipProfileBtn } from '../skip-profile-btn';
-import { useEffect, useRef, useState } from 'react';
+import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
-import { usePathname } from 'next/navigation';
 
-export function Navbar({
-  userID,
-  photo,
-}: {
-  userID: string;
-  photo: { src: string }[];
-}) {
-  const pathname = usePathname();
+export function Navbar({ photo }: { photo: { src: string }[] }) {
   const navbarRef = useRef(null);
 
   gsap.registerPlugin(ScrollTrigger);
@@ -58,7 +47,7 @@ export function Navbar({
       icon: Heart,
     },
     {
-      url: '/chats',
+      url: '/matches',
       icon: Message,
     },
   ];

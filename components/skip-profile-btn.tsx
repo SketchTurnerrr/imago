@@ -8,11 +8,11 @@ import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 
 export function SkipProfileBtn({
-  userID,
+  userId,
   profileID,
   skippedProfiles,
 }: {
-  userID: string;
+  userId: string;
   profileID: string;
   skippedProfiles: string[];
 }) {
@@ -51,13 +51,13 @@ export function SkipProfileBtn({
     //   .update({
     //     skipped_profiles: [...skippedProfiles, profileID],
     //   })
-    //   .eq('id', userID);
+    //   .eq('id', userId);
 
     router.refresh();
   };
 
   return (
-    <div className='z-30 h-0 left-4 sticky top-[83%] ' ref={btnRef}>
+    <div className='m-0 z-30 h-0 left-4 sticky top-[83%] ' ref={btnRef}>
       <Button
         onClick={handleSkip}
         variant='outline'

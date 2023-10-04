@@ -15,7 +15,7 @@ export default async function LikesPage() {
   }
   const { data: photoLikes, error } = await supabase
     .from('photo_likes')
-    .select('*, photo(src), liker(first_name, id, gender, photos(src)) ')
+    .select('*, photo(src, id), liker(first_name, id, gender, photos(src)) ')
     .eq('likee', session.user.id)
     .returns<PhotoLike[]>();
 

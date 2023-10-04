@@ -20,7 +20,7 @@ export default function Location({ user }: { user: User | undefined }) {
     lng: 30.52,
   });
   const [toponym, setToponym] = useState('');
-  // console.log('toponym :', toponym);
+  console.log('toponym :', toponym);
   const [userPermission, setUserPermission] = useState(false);
   const [userPos, setUserPos] = useState<google.maps.LatLngLiteral>({
     lat: 50.45,
@@ -34,7 +34,6 @@ export default function Location({ user }: { user: User | undefined }) {
           const geocoder = new window.google.maps.Geocoder();
 
           const res = await geocoder.geocode({
-            region: 'uk',
             location: {
               lat: userPermission ? userPos.lat : markerPos.lat,
               lng: userPermission ? userPos.lng : markerPos.lng,
@@ -114,6 +113,8 @@ export default function Location({ user }: { user: User | undefined }) {
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
+    language: 'uk',
+    region: 'UA',
   });
 
   if (!isLoaded) return <div>loading..</div>;

@@ -1,5 +1,5 @@
 import { redirect } from 'next/navigation';
-import { Discover } from './discover';
+import { Profile } from './profile';
 import { createServerClient } from '@/lib/supabase-server';
 
 type authedProfileType = {
@@ -53,9 +53,9 @@ export default async function DiscoverPage() {
   }
 
   return (
-    <Discover
+    <Profile
       profile={profiles!![index]}
-      userID={session.user.id}
+      userId={session.user.id}
       authedProfile={authedProfile as authedProfileType}
     />
   );

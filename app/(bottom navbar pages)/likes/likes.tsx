@@ -3,6 +3,7 @@
 import { Prompt } from '@/components/prompt';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
+import Link from 'next/link';
 
 interface PageProps {
   photoLikes: PhotoLike[];
@@ -46,15 +47,7 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
       {photoLikes?.map((item) => (
         <div key={item.id} className='mb-8'>
           <div className='relative mb-4'>
-            <Image
-              src={item.photo.src}
-              width={400}
-              height={100}
-              alt={item.liker.first_name}
-              className='rounded-lg aspect-[24/9] object-cover'
-            />
-
-            <div className='absolute p-2 rounded-lg bg-indigo-200 -bottom-2 left-0'>
+            <div className='w-fit p-2 rounded-lg bg-indigo-200'>
               {item.comment
                 ? item.comment
                 : item.liker.gender === 'male'
@@ -64,50 +57,38 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
               <span className='h-[0.6rem] w-[0.6rem] absolute -bottom-[4px] -left-[3px] _clip-path rotate-[207deg] bg-inherit'></span>
             </div>
           </div>
-          <div className='a'>
+          <Link href={`/likes/${item.liker.id}?l=${item.id}:ph`}>
             <h1 className='text-4xl font-bold mb-4'>{item.liker.first_name}</h1>
             <Image
               src={item.liker.photos[0].src}
-              width={400}
-              height={100}
+              width={800}
+              height={800}
               alt={'person'}
-              className='rounded-lg'
+              className='rounded-lg aspect-square object-cover'
             />
-          </div>
+          </Link>
         </div>
       ))}
 
       {promptLikes?.map((item) => (
         <div key={item.id} className='mb-8'>
           <div className='relative mb-4'>
-            <Prompt
-              likee=''
-              liker=''
-              question={item.prompt.question}
-              answer={item.prompt.answer}
-              discover={false}
-              id={item.prompt.id}
-            />
-            <div className='absolute p-2 rounded-lg bg-indigo-200 -bottom-2 left-0'>
-              {item.comment
-                ? item.comment
-                : item.liker.gender === 'male'
-                ? 'Вподобав' + ' вашу відповідь'
-                : 'Вподобала' + ' вашу відповідь'}
-
+            <div className='w-fit p-2 rounded-lg bg-indigo-200'>
+              {item.liker.gender === 'male' ? 'Вподобав ' : 'Вподобала '}
+              вашу відповідь
               <span className='h-[0.6rem] w-[0.6rem] absolute -bottom-[4px] -left-[3px] _clip-path rotate-[207deg] bg-inherit'></span>
             </div>
           </div>
-          <div className='a'>
+          <Link href={`/likes/${item.liker.id}?l=${item.id}:p`}>
             <h1 className='text-4xl font-bold mb-4'>{item.liker.first_name}</h1>
             <Image
               src={item.liker.photos[0].src}
-              width={400}
-              height={100}
+              width={800}
+              height={800}
               alt={item.liker.first_name}
-              className='rounded-lg'
+              className='rounded-lg aspect-square object-cover'
             />
-          </div>
+          </Link>
         </div>
       ))}
     </main>
