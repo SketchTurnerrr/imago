@@ -19,5 +19,21 @@ export default async function MatchesPage() {
     redirect('/login');
   }
 
-  return <Matches />;
+  const { data: convos, error } = await supabase
+    .from('conversations')
+    .select(
+      '*, last_message(content), conversation_pid(id, photos(src), first_name)'
+    )
+    .returns<IConversations[]>();
+
+  console.log('convos :', convos);
+  console.log('convos error:', error);
+
+  // console.log('parties :', parties);
+
+  if (!convos) {
+    return;
+  }
+
+  return <Matches conversations={convos} userId={session.user.id} />;
 }
