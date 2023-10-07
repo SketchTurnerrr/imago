@@ -13,13 +13,10 @@ export default async function ConversationPage({
   } = await supabase.auth.getSession();
   const { data: messages, error } = await supabase
     .from('messages')
-    .select('*, conversation_id(conversation_pid(first_name, id))')
-
+    .select(
+      '*, conversation_id(conversation_pid(first_name, id, photos(src))),sender_id(id,first_name,photos(src))'
+    )
     .returns<IMessages[]>();
-  // .eq('id', params.id);
-
-  console.log('error :', error);
-  console.log('data serv :', messages);
 
   if (!session) {
     return;

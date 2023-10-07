@@ -26,14 +26,10 @@ export default async function MatchesPage() {
     )
     .returns<IConversations[]>();
 
-  console.log('convos :', convos);
-  console.log('convos error:', error);
+  // console.log('convos :', convos);
+  // console.log('convos error:', error);
 
   // console.log('parties :', parties);
 
-  if (!convos) {
-    return;
-  }
-
-  return <Matches conversations={convos} userId={session.user.id} />;
+  return <Matches conversations={convos ?? []} userId={session.user.id} />;
 }

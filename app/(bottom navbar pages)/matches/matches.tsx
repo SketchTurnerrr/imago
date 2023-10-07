@@ -10,7 +10,7 @@ interface IMatches {
 }
 
 export async function Matches({ conversations, userId }: IMatches) {
-  console.log('conversations :', conversations.length);
+  // console.log('conversations :', conversations);
 
   const supabase = createServerClient();
   const { data: parties, error } = await supabase
@@ -18,8 +18,7 @@ export async function Matches({ conversations, userId }: IMatches) {
     .select('*, profile_id(id,first_name, photos(src))')
     .returns<IParticipants[]>();
 
-  console.log('parties :', parties);
-  console.log('parties err:', error);
+  // console.log('parties err:', error);
 
   if (!parties) {
     return <div>ad</div>;

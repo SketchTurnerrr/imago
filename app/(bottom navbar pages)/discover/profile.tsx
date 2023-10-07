@@ -13,7 +13,7 @@ import { LikeDialog } from '@/components/like-dialog';
 import { usePathname } from 'next/navigation';
 import { MatchDialog } from '@/components/match-btn';
 
-interface PageProps {
+interface IProfile {
   profile: FullProfile;
   authedProfile?: {
     gender: string;
@@ -29,12 +29,11 @@ export function Profile({
   userId,
   authedProfile,
   likeData,
-}: PageProps) {
+}: IProfile) {
   const profileRef = useRef(null);
 
   const pathname = usePathname();
 
-  // console.log('profile discover:', profile);
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
       gsap.fromTo(

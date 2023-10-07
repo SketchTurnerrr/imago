@@ -49,11 +49,18 @@ declare global {
   }
 
   interface IMessages extends MessagesType {
-    sender_id: ProfileType;
+    sender_id: {
+      id: string;
+      first_name: string;
+      photos: {
+        src: string;
+      }[];
+    };
     conversation_id: {
       conversation_pid: {
         id: string;
         first_name: string;
+        photos: { src: string }[];
       };
     };
   }

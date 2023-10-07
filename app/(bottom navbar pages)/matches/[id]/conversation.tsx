@@ -15,6 +15,9 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
+import { Textarea } from '@/components/ui/textarea';
+import Image from 'next/image';
+import { useRouter } from 'next/navigation';
 
 const FormSchema = z.object({
   message: z
@@ -47,9 +50,24 @@ export function Conversation({
         {
           event: 'INSERT',
           schema: 'public',
+          table: 'messages',
+          filter: `conversation_id=eq.${conversationId}`,
         },
-        (payload) => {
-          setRTMessages([...rtMessages, payload.new as IMessages]);
+
+        async (payload: any) => {
+          let { data: newMessage, error } = await supabase
+            .from('messages')
+            .select(
+              '*, conversation_id(conversation_pid(first_name, id, photos(src))),sender_id(id,first_name,photos(src))'
+            )
+            .eq('id', payload.new.id)
+            .returns<IMessages[]>()
+            .maybeSingle();
+
+          if (error) {
+            console.log('error :', error);
+          }
+          setRTMessages([...rtMessages, newMessage as IMessages]);
         }
       )
       .subscribe();
@@ -57,7 +75,7 @@ export function Conversation({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [rtMessages, setRTMessages, supabase]);
+  }, [rtMessages, setRTMessages]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -72,55 +90,72 @@ export function Conversation({
       conversation_id: conversationId,
       sender_id: userId,
     });
+
     form.resetField('message');
   }
-  // console.log(
-  //   'conversation_id.conversation_pid.id === userId :',
-  //   messages[0].conversation_id.conversation_pid.id === userId
-  //   );
-  console.log('messages[0] :', messages[0]);
-  // console.log('userId :', userId);
-  // console.log(
-  //   'messages[0].conversation_id.conversation_pid.id  :',
-  //   messages[0].conversation_id.conversation_pid.id
-  // );
 
   return (
-    <div className='flex flex-col p-4'>
-      <h1 className='text-3xl font-bold mb-4'>
-        {messages[0].conversation_id.conversation_pid.id !== userId
-          ? messages[1].conversation_id.conversation_pid.first_name
-          : messages[0].conversation_id.conversation_pid.first_name}
-      </h1>
-      <Separator />
+    <div className='flex flex-col p-4 gap-2'>
+      <div>
+        <h1 className='text-3xl font-bold mb-4'>
+          {messages[0].conversation_id.conversation_pid.id !== userId
+            ? messages[1].conversation_id.conversation_pid.first_name
+            : messages[0].conversation_id.conversation_pid.first_name}
+        </h1>
+        <Separator />
+      </div>
       {
-        <div className='flex flex-col'>
+        <div className='flex flex-col overflow-y-scroll gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'>
           {rtMessages.map((message) => {
             return (
-              <div key={message.id} className='flex flex-col'>
-                {userId === String(message.sender_id) ? (
-                  <div className='self-end'>{message.content}</div>
+              <div
+                key={message.id}
+                className={`${
+                  userId !== message.sender_id.id
+                    ? 'justify-start'
+                    : 'justify-end'
+                } flex `}
+              >
+                {userId !== message.sender_id?.id ? (
+                  <div className='flex  items-center gap-2'>
+                    <Image
+                      src={message.sender_id.photos[0].src}
+                      width={35}
+                      height={35}
+                      className='object-cover aspect-square rounded-full'
+                      alt={
+                        message.sender_id?.first_name ||
+                        message.conversation_id.conversation_pid.first_name
+                      }
+                    />
+
+                    <div className=' p-2 max-w-[25ch] bg-slate-100 rounded-lg rounded-bl-none'>
+                      {message.content}
+                    </div>
+                  </div>
                 ) : (
-                  <div className='self-start'>{message.content}</div>
+                  <div className=' p-2 max-w-[25ch] bg-purple-400 text-white rounded-lg rounded-br-none'>
+                    {message.content}
+                  </div>
                 )}
               </div>
             );
           })}
         </div>
       }
-
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className='flex  gap-4'>
+        <form onSubmit={form.handleSubmit(onSubmit)} className='flex mb-auto'>
           <FormField
             control={form.control}
             name='message'
             render={({ field }) => (
-              <FormItem>
-                <FormControl className='w-full'>
+              <FormItem className='w-full'>
+                <FormControl>
                   <Input
-                    style={{ width: '100%' }}
-                    placeholder='Відправити повідомлення'
+                    type='text'
+                    placeholder='Написати повідомлення'
                     {...field}
+                    className='min-h-[20px] '
                   />
                 </FormControl>
 
@@ -128,7 +163,9 @@ export function Conversation({
               </FormItem>
             )}
           />
-          <Button type='submit'>Submit</Button>
+          <Button variant='ghost' type='submit'>
+            Відправити
+          </Button>
         </form>
       </Form>
     </div>
