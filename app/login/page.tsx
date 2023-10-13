@@ -38,7 +38,7 @@ export default function SignIn() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: getURL(),
+        redirectTo: `${location.origin}/auth/callback`,
       },
     });
   }
@@ -48,7 +48,7 @@ export default function SignIn() {
       await supabase.auth.signInWithOtp({
         email: values.email,
         options: {
-          emailRedirectTo: getURL(),
+          emailRedirectTo: `${location.origin}/auth/callback`,
           data: {
             email: values.email,
             name: null,
