@@ -49,7 +49,7 @@ export function Denomination({ user }: { user: User | undefined }) {
             htmlFor='ortho'
             className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
-            Православ'я
+            Православ&apos;я
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'
@@ -91,7 +91,7 @@ export function Denomination({ user }: { user: User | undefined }) {
             htmlFor='pentecostal'
             className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
           >
-            П'ятидесятництво
+            П&apos;ятидесятництво
           </label>
           <Checkbox
             className='data-[state=checked]:bg-purple-400 border-purple-400'

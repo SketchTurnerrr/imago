@@ -9,14 +9,14 @@ export default async function Page() {
     data: { session },
   } = await supabase.auth.getSession();
 
+  if (!session) redirect('/login');
+
   const { data } = await supabase
     .from('profiles')
     .select('*, prompts(*)')
-    .eq('id', session?.user.id)
+    .eq('id', session.user.id)
     .returns<FullProfile>()
     .single();
-
-  if (!session) redirect('/login');
 
   return <OnboardingPrompts user={session.user} data={data!} />;
 }

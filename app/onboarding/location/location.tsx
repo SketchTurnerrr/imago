@@ -20,7 +20,6 @@ export default function Location({ user }: { user: User | undefined }) {
     lng: 30.52,
   });
   const [toponym, setToponym] = useState('');
-  console.log('toponym :', toponym);
   const [userPermission, setUserPermission] = useState(false);
   const [userPos, setUserPos] = useState<google.maps.LatLngLiteral>({
     lat: 50.45,
@@ -50,7 +49,7 @@ export default function Location({ user }: { user: User | undefined }) {
     };
 
     getLocationDetails();
-  }, [markerPos.lat, markerPos.lng]);
+  }, [markerPos.lat, markerPos.lng, userPermission, userPos.lat, userPos.lng]);
 
   const handleMapLoad = (map: google.maps.Map) => {
     setMap(map);

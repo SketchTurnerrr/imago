@@ -1,3 +1,4 @@
+export const dynamic = 'force-dynamic';
 import { Toaster } from '@/components/ui/toaster';
 import './globals.css';
 import type { Metadata } from 'next';

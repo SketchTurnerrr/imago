@@ -132,7 +132,7 @@ export function AddPromptDialog({ user }: { user: User }) {
                         Люди дивуються, коли я кажу
                       </SelectItem>
                       <SelectItem value="Цього року, я обов'язково">
-                        Цього року, я обов'язково
+                        Цього року, я обов&apos;язково
                       </SelectItem>
                       <SelectItem value='Хочеш - вір, хочеш - ні'>
                         Хочеш - вір, хочеш - ні

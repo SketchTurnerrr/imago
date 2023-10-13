@@ -54,12 +54,38 @@ export function MatchDialog({
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const btnRef = useRef(null);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       comment: '',
     },
   });
+
+  gsap.registerPlugin(ScrollTrigger);
+  useEffect(() => {
+    const showBtn = gsap
+      .fromTo(
+        btnRef.current,
+        {
+          top: '92%',
+        },
+        {
+          top: '83%',
+          duration: 0.3,
+        }
+      )
+      .progress(1);
+
+    ScrollTrigger.create({
+      start: 'top top',
+      end: 'max',
+      onUpdate: (self) => {
+        self.direction === -1 ? showBtn.play() : showBtn.reverse();
+      },
+    });
+  }, []);
+
   const handleMatch = async (data: z.infer<typeof FormSchema>) => {
     const { comment } = data;
 
@@ -89,30 +115,6 @@ export function MatchDialog({
   if (!likeData) {
     return; // TODO
   }
-
-  gsap.registerPlugin(ScrollTrigger);
-  useEffect(() => {
-    const showBtn = gsap
-      .fromTo(
-        btnRef.current,
-        {
-          top: '92%',
-        },
-        {
-          top: '83%',
-          duration: 0.3,
-        }
-      )
-      .progress(1);
-
-    ScrollTrigger.create({
-      start: 'top top',
-      end: 'max',
-      onUpdate: (self) => {
-        self.direction === -1 ? showBtn.play() : showBtn.reverse();
-      },
-    });
-  }, []);
 
   return (
     <LDialog open={open} onOpenChange={setOpen}>

@@ -97,7 +97,7 @@ export function Conversation({
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [rtMessages, setRTMessages]);
+  }, [rtMessages, setRTMessages, conversationId, supabase]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
