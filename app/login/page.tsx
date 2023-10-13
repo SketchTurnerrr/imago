@@ -1,5 +1,4 @@
 'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -15,6 +14,7 @@ import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useToast } from '@/components/ui/use-toast';
+import { getURL } from '@/lib/utils';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Це не схоже на адресу' }).min(2, {
@@ -38,7 +38,7 @@ export default function SignIn() {
     await supabase.auth.signInWithOAuth({
       provider: 'google',
       options: {
-        redirectTo: 'http://localhost:3000/auth/callback',
+        redirectTo: getURL(),
       },
     });
   }
@@ -48,7 +48,7 @@ export default function SignIn() {
       await supabase.auth.signInWithOtp({
         email: values.email,
         options: {
-          emailRedirectTo: 'http://localhost:3000/auth/callback',
+          emailRedirectTo: getURL(),
           data: {
             email: values.email,
             name: null,

@@ -1,10 +1,8 @@
 import { createServerClient } from '@/lib/supabase-server';
 import { Likes } from './likes';
-import { createServerComponentClient } from '@supabase/auth-helpers-nextjs';
-import { cookies } from 'next/headers';
 
 export default async function LikesPage() {
-  const supabase = createServerComponentClient<Database>({ cookies });
+  const supabase = createServerClient();
 
   const {
     data: { session },
