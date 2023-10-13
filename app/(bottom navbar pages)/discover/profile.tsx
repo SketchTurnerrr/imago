@@ -21,7 +21,7 @@ interface IProfile {
     onboarded: boolean;
   };
   userId: string;
-  likeData: PhotoLike | PromptLike;
+  likeData?: PhotoLike | PromptLike | undefined;
 }
 
 export function Profile({
@@ -115,6 +115,8 @@ export function Profile({
     }
   };
 
+  console.log('userId :', userId);
+  console.log('profile.id :', profile.id);
   const prompt = (question: string, answer: string, id: string) => {
     if (!question) {
       return null;

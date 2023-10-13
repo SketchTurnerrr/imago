@@ -42,7 +42,16 @@ declare global {
 
   interface IConversations extends ConversationsType {
     last_message: MessagesType;
-    conversation_pid: ProfileWithPhotos;
+    participant1: {
+      id: string;
+      first_name: string;
+      photos: PhotosType[];
+    };
+    participant2: {
+      id: string;
+      first_name: string;
+      photos: PhotosType[];
+    };
   }
   interface IParticipants extends ParticipantsType {
     profile_id: ProfileWithPhotos;
@@ -57,10 +66,14 @@ declare global {
       }[];
     };
     conversation_id: {
-      conversation_pid: {
+      id: string;
+      participant1: {
         id: string;
         first_name: string;
-        photos: { src: string }[];
+      };
+      participant2: {
+        id: string;
+        first_name: string;
       };
     };
   }

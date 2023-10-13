@@ -15,6 +15,10 @@ export default async function Page({
 }) {
   const supabase = createServerClient();
 
+  const {
+    data: { session },
+  } = await supabase.auth.getSession();
+
   const { data: profile } = await supabase
     .from('profiles')
     .select('*, prompts(*), photos(*)')
@@ -92,14 +96,15 @@ export default async function Page({
       </div>
     );
 
-  if (!profile) {
-    return <div>uhm</div>;
+  if (!profile || !session) {
+    return; //TODO;
   }
+
   return (
     <>
       {renderLike}
 
-      <Profile userId={params.id} profile={profile} likeData={like} />
+      <Profile userId={session.user.id} profile={profile} likeData={like} />
     </>
   );
 }

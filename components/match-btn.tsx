@@ -36,7 +36,7 @@ interface IMatchDialog {
   likee: string;
   firstName: string | null;
   src: string;
-  likeData: PhotoLike | PromptLike;
+  likeData: PhotoLike | PromptLike | undefined;
 }
 
 const FormSchema = z.object({
@@ -51,7 +51,6 @@ export function MatchDialog({
   likeData,
 }: IMatchDialog) {
   const supabase = createClientComponentClient<Database>();
-  console.log('likeData :', likeData);
   const [open, setOpen] = useState(false);
   const router = useRouter();
   const btnRef = useRef(null);
@@ -64,8 +63,32 @@ export function MatchDialog({
   const handleMatch = async (data: z.infer<typeof FormSchema>) => {
     const { comment } = data;
 
+    const { data: conversation, error } = await supabase
+      .from('conversations')
+      .insert({
+        participant1: liker,
+        participant2: likee,
+      })
+      .returns<ConversationsType>()
+      .select()
+      .single();
+
+    if (comment && conversation) {
+      const { error: mError } = await supabase.from('messages').insert({
+        content: comment,
+        conversation_id: conversation.id,
+        sender_id: liker,
+      });
+      console.log('mError :', mError);
+    }
+
+    console.log('error match:', error);
     setOpen(false);
   };
+
+  if (!likeData) {
+    return; // TODO
+  }
 
   gsap.registerPlugin(ScrollTrigger);
   useEffect(() => {

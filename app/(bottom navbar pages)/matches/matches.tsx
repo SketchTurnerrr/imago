@@ -1,29 +1,13 @@
-// 'use client';
-import { createServerClient } from '@/lib/supabase-server';
+'use client';
 import Image from 'next/image';
 import Link from 'next/link';
 
 interface IMatches {
   conversations: IConversations[];
-  // parties: IParticipants[];
   userId: string;
 }
 
-export async function Matches({ conversations, userId }: IMatches) {
-  // console.log('conversations :', conversations);
-
-  const supabase = createServerClient();
-  const { data: parties, error } = await supabase
-    .from('conversation_participants')
-    .select('*, profile_id(id,first_name, photos(src))')
-    .returns<IParticipants[]>();
-
-  // console.log('parties err:', error);
-
-  if (!parties) {
-    return <div>ad</div>;
-  }
-
+export function Matches({ conversations, userId }: IMatches) {
   return (
     <>
       {conversations.length === 0 && (
@@ -49,10 +33,10 @@ export async function Matches({ conversations, userId }: IMatches) {
             href={`/matches/${conversation.id}`}
             className='flex gap-4 items-center'
           >
-            {conversation.conversation_pid.id === userId ? (
+            {conversation.participant2.id === userId ? (
               <Image
                 className='rounded-full aspect-square object-cover'
-                src={parties[0].profile_id.photos[0].src}
+                src={conversation.participant1.photos[0].src}
                 width={75}
                 height={75}
                 alt='me'
@@ -60,7 +44,7 @@ export async function Matches({ conversations, userId }: IMatches) {
             ) : (
               <Image
                 className='rounded-full aspect-square object-cover'
-                src={parties[1].profile_id.photos[0].src}
+                src={conversation.participant2.photos[0].src}
                 width={75}
                 height={75}
                 alt='me'
@@ -69,9 +53,9 @@ export async function Matches({ conversations, userId }: IMatches) {
 
             <div className=''>
               <p className='font-bold text-base'>
-                {conversation.conversation_pid.id === userId
-                  ? parties[0].profile_id.first_name
-                  : parties[1].profile_id.first_name}
+                {conversation.participant2.id === userId
+                  ? conversation.participant1.first_name
+                  : conversation.participant2.first_name}
               </p>
               <p className='text-gray-400'>
                 {conversation.last_message?.content}

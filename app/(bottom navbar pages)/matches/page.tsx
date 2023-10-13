@@ -2,12 +2,6 @@ import { redirect } from 'next/navigation';
 import { createServerClient } from '@/lib/supabase-server';
 import { Matches } from './matches';
 
-type authedProfileType = {
-  gender: string;
-  skipped_profiles: Array<string>;
-  onboarded: boolean;
-};
-
 export default async function MatchesPage() {
   const supabase = createServerClient();
 
@@ -19,17 +13,12 @@ export default async function MatchesPage() {
     redirect('/login');
   }
 
-  const { data: convos, error } = await supabase
+  const { data, error } = await supabase
     .from('conversations')
     .select(
-      '*, last_message(content), conversation_pid(id, photos(src), first_name)'
+      '*, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content)'
     )
     .returns<IConversations[]>();
 
-  // console.log('convos :', convos);
-  // console.log('convos error:', error);
-
-  // console.log('parties :', parties);
-
-  return <Matches conversations={convos ?? []} userId={session.user.id} />;
+  return <Matches conversations={data ?? []} userId={session.user.id} />;
 }

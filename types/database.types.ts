@@ -34,69 +34,29 @@ export interface Database {
   };
   public: {
     Tables: {
-      conversation_participants: {
-        Row: {
-          conversation_id: string;
-          created_at: string;
-          id: string;
-          profile_id: string;
-        };
-        Insert: {
-          conversation_id: string;
-          created_at?: string;
-          id?: string;
-          profile_id: string;
-        };
-        Update: {
-          conversation_id?: string;
-          created_at?: string;
-          id?: string;
-          profile_id?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: 'conversation_participants_conversation_id_fkey';
-            columns: ['conversation_id'];
-            referencedRelation: 'conversations';
-            referencedColumns: ['id'];
-          },
-          {
-            foreignKeyName: 'conversation_participants_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
-          }
-        ];
-      };
       conversations: {
         Row: {
-          conversation_pid: string;
           created_at: string;
           id: string;
-          last_message: string;
-          last_message_pid: string;
+          last_message: string | null;
+          participant1: string | null;
+          participant2: string | null;
         };
         Insert: {
-          conversation_pid?: string;
           created_at?: string;
           id?: string;
-          last_message: string;
-          last_message_pid: string;
+          last_message?: string | null;
+          participant1?: string | null;
+          participant2?: string | null;
         };
         Update: {
-          conversation_pid?: string;
           created_at?: string;
           id?: string;
-          last_message?: string;
-          last_message_pid?: string;
+          last_message?: string | null;
+          participant1?: string | null;
+          participant2?: string | null;
         };
         Relationships: [
-          {
-            foreignKeyName: 'conversations_conversation_pid_fkey';
-            columns: ['conversation_pid'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
-          },
           {
             foreignKeyName: 'conversations_last_message_fkey';
             columns: ['last_message'];
@@ -104,8 +64,14 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'conversations_last_message_pid_fkey';
-            columns: ['last_message_pid'];
+            foreignKeyName: 'conversations_participant1_fkey';
+            columns: ['participant1'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'conversations_participant2_fkey';
+            columns: ['participant2'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           }
@@ -178,8 +144,8 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
-            foreignKeyName: 'messages_profile_id_fkey';
-            columns: ['profile_id'];
+            foreignKeyName: 'messages_sender_id_fkey';
+            columns: ['sender_id'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
           }
@@ -402,7 +368,13 @@ export interface Database {
       [_ in never]: never;
     };
     Functions: {
-      [_ in never]: never;
+      is_conversation_participant: {
+        Args: {
+          conversation_id: string;
+          profile_id: string;
+        };
+        Returns: boolean;
+      };
     };
     Enums: {
       [_ in never]: never;

@@ -14,7 +14,7 @@ export default async function ConversationPage({
   const { data: messages, error } = await supabase
     .from('messages')
     .select(
-      '*, conversation_id(conversation_pid(first_name, id, photos(src))),sender_id(id,first_name,photos(src))'
+      '*, conversation_id(participant1(id,first_name), participant2(first_name)),sender_id(id, first_name,photos(src))'
     )
     .returns<IMessages[]>();
 
