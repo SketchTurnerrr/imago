@@ -1,4 +1,5 @@
 'use client';
+import { Separator } from '@/components/ui/separator';
 import Image from 'next/image';
 import Link from 'next/link';
 
@@ -10,9 +11,10 @@ interface IMatches {
 export function Matches({ conversations, userId }: IMatches) {
   return (
     <>
+      <h1 className='text-4xl p-4 font-bold self-start'>Знайомства</h1>
+      <Separator />
       {conversations.length === 0 && (
         <div className='flex p-4 flex-col gap-3 items-center'>
-          <h1 className='text-4xl font-bold self-start'>Метчі</h1>
           <div>
             <Image
               className='mx-auto'

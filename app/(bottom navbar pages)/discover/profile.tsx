@@ -87,16 +87,19 @@ export function Profile({
     } else {
       return (
         <div className='relative w-fit'>
+          <h1 className='text-4xl font-bold mb-4 md:self-start'>
+            {profile?.first_name}
+          </h1>
           <Image
             priority
             src={
               src ||
               'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
             }
-            height={400}
-            width={400}
+            height={500}
+            width={500}
             alt='me'
-            className='rounded-lg '
+            className='rounded-lg'
           />
           {pathname === '/discover' && (
             <LikeDialog
@@ -140,7 +143,7 @@ export function Profile({
   return (
     <main
       ref={profileRef}
-      className='flex space-y-4  min-h-screen opacity-0 flex-col px-4 pb-4'
+      className='flex space-y-4 md:items-center min-h-screen opacity-0 flex-col px-4 pb-4'
     >
       <SkipProfileBtn
         userId={userId}
@@ -156,7 +159,6 @@ export function Profile({
           likeData={likeData}
         />
       )}
-      <h1 className='text-4xl font-bold mb-4 ml-4'>{profile?.first_name}</h1>
 
       {photo(src0, photoId0)}
 
@@ -166,8 +168,8 @@ export function Profile({
       ----- INFO 
       */}
 
-      <div className='px-4 py-10 bg-purple-50 font-bold  relative rounded-lg'>
-        <div className='flex items-center gap-6 mb-6'>
+      <div className='px-4 py-10 bg-purple-50 font-bold md:w-[500px] relative rounded-lg'>
+        <div className='flex items-center gap-6 '>
           <div className='flex items-center gap-3'>
             <Image src='/cake.svg' width={22} height={22} alt='cake icon' />
             {age || '17'}
@@ -186,30 +188,19 @@ export function Profile({
             {profile.location.toponym}
           </div>
         </div>
-        {/* <div className='flex items-center gap-4'>
-          <HomeIcon className='w-6 h-6' />
-        
-          {profile?.location?.toponym}
-        </div> */}
       </div>
 
       {/*       
       ----- PHOTO1
       */}
 
-      {
-        // @ts-ignore
-        photo(src1, photoId1)
-      }
+      {photo(src1, photoId1)}
 
       {/*       
       ----- PHOTO2
       */}
 
-      {
-        // @ts-ignore
-        photo(src2, photoId2)
-      }
+      {photo(src2, photoId2)}
 
       {prompt(question1, answer1, promptId1)}
 
@@ -217,10 +208,7 @@ export function Profile({
       ----- PHOTO3
       */}
 
-      {
-        // @ts-ignore
-        photo(src3, photoId3)
-      }
+      {photo(src3, photoId3)}
 
       {prompt(question2, answer2, promptId2)}
 
@@ -228,20 +216,12 @@ export function Profile({
       ----- PHOTO4
       */}
 
-      {
-        // @ts-ignore
-        photo(src4, photoId4)
-      }
+      {photo(src4, photoId4)}
       {/*       
       ----- PHOTO5
       */}
 
-      {
-        // @ts-ignore
-        photo(src5, photoId5)
-      }
-      {/* <SkipProfileBtn profileId={profile.id} /> */}
-      {/* <SignOut /> */}
+      {photo(src5, photoId5)}
     </main>
   );
 }

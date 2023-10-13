@@ -1,6 +1,7 @@
 'use client';
 
 import { Prompt } from '@/components/prompt';
+import { Separator } from '@/components/ui/separator';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
@@ -19,10 +20,10 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
   return (
     <main className='gap-4 flex flex-col min-h-screen p-4'>
       {/* IF EMPTY PAGE */}
+      <h1 className='text-4xl self-start font-bold'>Вподобали вас</h1>
+      <Separator />
       {photoLikes.length === 0 && promptLikes.length === 0 && (
         <>
-          <h1 className='text-3xl font-bold'>Вподобали вас</h1>
-
           <a
             target='_blank'
             rel='noopener noreferrer'

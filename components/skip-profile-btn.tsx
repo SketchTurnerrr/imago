@@ -57,7 +57,10 @@ export function SkipProfileBtn({
   };
 
   return (
-    <div className='m-0 z-30 h-0 left-4 sticky top-[83%] ' ref={btnRef}>
+    <div
+      className='m-0 z-30 h-0 md:self-start left-4 sticky top-[83%] '
+      ref={btnRef}
+    >
       <Button
         onClick={handleSkip}
         variant='outline'
