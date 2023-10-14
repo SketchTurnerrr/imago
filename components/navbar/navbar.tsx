@@ -99,7 +99,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
 
   const links = items.map((item) => (
     <Link className=' text-gray-300 relative' key={item.url} href={item.url}>
-      {party && item.url === '/matches' && (
+      {!party && item.url === '/matches' && (
         <div className='unread-count before:content-[attr(data-unread)]'></div>
       )}
       <item.icon />

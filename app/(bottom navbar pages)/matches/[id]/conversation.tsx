@@ -135,7 +135,6 @@ export function Conversation({
     const party =
       participants?.participant1.id !== userId ? 'party1_read' : 'party2_read';
     // mark conversation as read on open
-    // if (participants?.party1_read)
     await supabase
       .from('conversations')
       .update({
