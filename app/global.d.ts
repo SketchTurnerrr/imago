@@ -10,8 +10,6 @@ declare global {
   type PromptLikesType = DB['public']['Tables']['prompt_likes']['Row'];
   type ConversationsType = DB['public']['Tables']['conversations']['Row'];
   type MessagesType = DB['public']['Tables']['messages']['Row'];
-  type ParticipantsType =
-    DB['public']['Tables']['conversation_participants']['Row'];
 
   interface FullProfile extends ProfileType {
     prompts: PromptsType[];
@@ -53,9 +51,6 @@ declare global {
       photos: PhotosType[];
     };
   }
-  interface IParticipants extends ParticipantsType {
-    profile_id: ProfileWithPhotos;
-  }
 
   interface IMessages extends MessagesType {
     sender_id: {
@@ -77,4 +72,23 @@ declare global {
       };
     };
   }
+  interface IParticipantsNames extends ConversationsType {
+    participant1: {
+      id: string;
+      first_name: string;
+    };
+    participant2: {
+      id: string;
+      first_name: string;
+    };
+  }
+}
+
+interface IConversationReadStatus {
+  participant1: id;
+
+  participant2: id;
+
+  party1_read: boolean;
+  party2_read: boolean;
 }

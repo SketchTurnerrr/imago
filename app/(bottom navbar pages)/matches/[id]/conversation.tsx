@@ -32,12 +32,14 @@ interface IConversations {
   messages: IMessages[];
   userId: string;
   conversationId: string;
+  participants: IParticipantsNames | null;
 }
 
 export function Conversation({
   messages,
   userId,
   conversationId,
+  participants,
 }: IConversations) {
   const supabase = createClientComponentClient<Database>();
   const [rtMessages, setRTMessages] = useState(messages);
@@ -46,10 +48,6 @@ export function Conversation({
   const scrollToBottom = () => {
     scrollToLastMsgRef.current?.scrollIntoView({ behavior: 'smooth' });
   };
-
-  useEffect(() => {
-    scrollToBottom();
-  }, [rtMessages]);
 
   function shouldShowAvatar(previous: IMessages, message: IMessages) {
     const isFirst = !previous;
@@ -63,6 +61,27 @@ export function Conversation({
       return false;
     }
   }
+
+  useEffect(() => {
+    scrollToBottom();
+  }, [rtMessages]);
+
+  useEffect(() => {
+    async function markAsRead() {
+      const party =
+        participants?.participant1.id === userId
+          ? 'party1_read'
+          : 'party2_read';
+      await supabase
+        .from('conversations')
+        .update({
+          [party]: true,
+        })
+        .eq('id', conversationId);
+    }
+
+    markAsRead();
+  }, [participants?.party1_read, participants?.party2_read]);
 
   useEffect(() => {
     const channel = supabase
@@ -113,6 +132,17 @@ export function Conversation({
       sender_id: userId,
     });
 
+    const party =
+      participants?.participant1.id !== userId ? 'party1_read' : 'party2_read';
+    // mark conversation as read on open
+    // if (participants?.party1_read)
+    await supabase
+      .from('conversations')
+      .update({
+        [party]: false,
+      })
+      .eq('id', conversationId);
+
     form.resetField('message');
   }
 
@@ -120,9 +150,9 @@ export function Conversation({
     <div className='flex flex-col '>
       <div className='flex p-4 items-center justify-between '>
         <h1 className='text-3xl  font-bold '>
-          {messages[0].conversation_id.participant1.id !== userId
-            ? messages[0].conversation_id.participant1.first_name
-            : messages[0].conversation_id.participant2.first_name}
+          {participants?.participant1.id !== userId
+            ? participants?.participant1.first_name
+            : participants?.participant2.first_name}
         </h1>
         <ThreeDotsMenu conversationId={conversationId} participantId={userId} />
       </div>
@@ -154,8 +184,8 @@ export function Conversation({
                         height={35}
                         className='object-cover aspect-square rounded-full'
                         alt={
-                          message.conversation_id.participant1.id ===
-                          message.sender_id.id
+                          message?.conversation_id.participant1.id ===
+                          message?.sender_id.id
                             ? message.conversation_id.participant1.first_name
                             : message.conversation_id.participant2.first_name
                         }

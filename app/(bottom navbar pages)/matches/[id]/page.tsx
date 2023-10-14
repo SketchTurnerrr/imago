@@ -14,9 +14,20 @@ export default async function ConversationPage({
   const { data: messages, error } = await supabase
     .from('messages')
     .select(
-      '*, conversation_id(participant1(id,first_name), participant2(first_name)),sender_id(id, first_name,photos(src))'
+      '*, conversation_id(participant1(id,first_name), participant2(id,first_name)),sender_id(id, first_name,photos(src))'
     )
+    .order('created_at')
     .returns<IMessages[]>();
+
+  const { data } = await supabase
+    .from('conversations')
+    .select(
+      'party1_read,party2_read,participant1(id,first_name), participant2(id,first_name)'
+    )
+    .eq('id', params.id)
+    .returns<IParticipantsNames>()
+    .single();
+  // console.log('participant2 :', data?.participant2);
 
   if (!session) {
     return;
@@ -27,6 +38,7 @@ export default async function ConversationPage({
       conversationId={params.id}
       messages={messages ?? []}
       userId={session.user.id}
+      participants={data}
     />
   );
 }

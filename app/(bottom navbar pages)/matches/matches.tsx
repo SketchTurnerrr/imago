@@ -60,7 +60,8 @@ export function Matches({ conversations, userId }: IMatches) {
                   : conversation.participant2.first_name}
               </p>
               <p className='text-gray-400'>
-                {conversation.last_message?.content}
+                {conversation.last_message?.content ??
+                  'Почни знайомство першим'}
               </p>
             </div>
           </Link>

@@ -91,3 +91,14 @@
 .msg-avatar > div:last-child img  {
   display:block 
 }
+
+.unread-count::before {
+  position:absolute;
+  top: -0.20rem;
+  right: -0.20rem;
+  width: 0.7em;
+  height: 0.7em;
+  border-radius: 50%;
+  background-color: MediumOrchid;
+  pointer-events:none;
+}

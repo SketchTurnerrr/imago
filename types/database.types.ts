@@ -41,6 +41,8 @@ export interface Database {
           last_message: string | null;
           participant1: string | null;
           participant2: string | null;
+          party1_read: boolean | null;
+          party2_read: boolean | null;
         };
         Insert: {
           created_at?: string;
@@ -48,6 +50,8 @@ export interface Database {
           last_message?: string | null;
           participant1?: string | null;
           participant2?: string | null;
+          party1_read?: boolean | null;
+          party2_read?: boolean | null;
         };
         Update: {
           created_at?: string;
@@ -55,6 +59,8 @@ export interface Database {
           last_message?: string | null;
           participant1?: string | null;
           participant2?: string | null;
+          party1_read?: boolean | null;
+          party2_read?: boolean | null;
         };
         Relationships: [
           {
