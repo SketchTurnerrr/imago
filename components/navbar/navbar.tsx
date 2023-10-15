@@ -93,9 +93,9 @@ export function Navbar({ photo, status, userId }: INavbar) {
   }, []);
 
   const party =
-    rtStatus.participant1 !== userId
-      ? rtStatus.party2_read
-      : rtStatus.party1_read;
+    rtStatus?.participant1 !== userId
+      ? rtStatus?.party2_read
+      : rtStatus?.party1_read;
 
   const links = items.map((item) => (
     <Link className=' text-gray-300 relative' key={item.url} href={item.url}>
