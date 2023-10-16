@@ -41,7 +41,7 @@ export default async function DiscoverLayout({
   console.log('session :', session.user.id);
   return (
     <section>
-      <Navbar photo={data.photos} status={status!} userId={session.user.id} />
+      <Navbar photo={data?.photos} status={status!} userId={session.user.id} />
       {children}
     </section>
   );

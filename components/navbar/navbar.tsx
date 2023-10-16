@@ -12,9 +12,11 @@ import { IConversationReadStatus } from '@/app/global';
 import { useRouter } from 'next/navigation';
 
 interface INavbar {
-  photo: {
-    src: string;
-  }[];
+  photo:
+    | {
+        src: string;
+      }[]
+    | undefined;
   status: IConversationReadStatus;
   userId: string;
 }
@@ -119,8 +121,9 @@ export function Navbar({ photo, status, userId }: INavbar) {
               priority
               className={'object-cover aspect-square rounded-full'}
               src={
-                photo[0]?.src ||
-                'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
+                photo
+                  ? photo[0].src
+                  : 'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
               }
               width={30}
               height={30}
