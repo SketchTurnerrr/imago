@@ -1,5 +1,5 @@
 'use client';
-import { format } from 'date-fns';
+import { format, isValid, parse } from 'date-fns';
 // import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
@@ -27,33 +27,37 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { ChangeEventHandler, useState } from 'react';
+import { DayPicker, SelectSingleEventHandler } from 'react-day-picker';
+import uk from 'date-fns/locale/uk';
 
 const formSchema = z.object({
   dob: z.date({
     required_error: 'A date of birth is required.',
   }),
+  input: z.string(),
 });
 
 export default function Age({ user }: { user: User | undefined }) {
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
-  async function onSubmit(values: z.infer<typeof formSchema>) {
-    if (user) {
-      await supabase
-        .from('profiles')
-        .update({
-          date_of_birth: values.dob,
-        })
-        .eq('id', user.id);
 
-      router.push('gender');
-    }
+  async function onSubmit(values: z.infer<typeof formSchema>) {
+    // if (user) {
+    //   await supabase
+    //     .from('profiles')
+    //     .update({
+    //       date_of_birth: values.dob,
+    //     })
+    //     .eq('id', user.id);
+
+    //   router.push('gender');
+    // }
 
     console.log(' :', values.dob);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-ignore
     resolver: zodResolver(formSchema),
   });
 
@@ -70,7 +74,6 @@ export default function Age({ user }: { user: User | undefined }) {
             name='dob'
             render={({ field }) => (
               <FormItem className='flex flex-col'>
-                <FormLabel>Дата народження</FormLabel>
                 <Popover>
                   <PopoverTrigger asChild>
                     <FormControl>
@@ -82,19 +85,20 @@ export default function Age({ user }: { user: User | undefined }) {
                         )}
                       >
                         {field.value ? (
-                          format(field.value, 'PPP')
+                          format(field.value, 'PPP', { locale: uk })
                         ) : (
-                          <span>Оберить дату</span>
+                          <span>Оберіть дату</span>
                         )}
-                        {/* <CalendarIcon className='ml-auto h-4 w-4 opacity-50' /> */}
                       </Button>
                     </FormControl>
                   </PopoverTrigger>
                   <PopoverContent className='w-auto p-0' align='start'>
                     <Calendar
+                      captionLayout='dropdown-buttons'
                       mode='single'
                       selected={field.value}
                       onSelect={field.onChange}
+                      fromYear={1977}
                       toYear={2006}
                       disabled={(date) =>
                         date > new Date() || date < new Date('1972-01-01')

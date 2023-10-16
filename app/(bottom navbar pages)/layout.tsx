@@ -24,9 +24,13 @@ export default async function DiscoverLayout({
 
   const { data } = await supabase
     .from('profiles')
-    .select('photos("src")')
+    .select('photos("src"),onboarded')
     .eq('id', session?.user.id)
     .single();
+
+  if (data?.onboarded === false) {
+    redirect('/onboarding');
+  }
 
   const { data: status, error } = await supabase
     .from('conversations')
@@ -34,21 +38,10 @@ export default async function DiscoverLayout({
     .returns<IConversationReadStatus>()
     .single();
 
-  console.log('status :', status);
-
-  // if (!data) {
-  //   redirect('/login');
-  // }
-
   console.log('session :', session.user.id);
   return (
     <section>
-      <Navbar
-        //@ts-ignore
-        photo={data.photos}
-        status={status!}
-        userId={session.user.id}
-      />
+      <Navbar photo={data.photos} status={status!} userId={session.user.id} />
       {children}
     </section>
   );

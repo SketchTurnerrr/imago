@@ -42,7 +42,6 @@ export default function FirstName({ user }: { user: User | undefined }) {
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
-    //@ts-ignore
     resolver: zodResolver(formSchema),
     defaultValues: {
       first_name: '',
