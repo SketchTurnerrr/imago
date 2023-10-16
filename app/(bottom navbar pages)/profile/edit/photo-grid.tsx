@@ -1,25 +1,25 @@
+'use client';
 import Image from 'next/image';
-import CloseIcon from '@/public/x.svg';
-import { PlusIcon, ReloadIcon, UploadIcon } from '@radix-ui/react-icons';
+import { ReloadIcon, UploadIcon } from '@radix-ui/react-icons';
 import { Input } from '@/components/ui/input';
-import { Key, useRef, useState } from 'react';
+import { useRef, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
-import { StaticImport } from 'next/dist/shared/lib/get-img-props';
+import { cn } from '@/lib/utils';
 
-interface PageProps {
+interface IPhotoGrid {
   photos: PhotosType[];
+  user: { id: string };
 }
-
-export function PhotoGrid({ photos, user }: any) {
-  const inputRef = useRef<any>(null);
-  console.log('inputRef :', inputRef);
+export function PhotoGrid({ photos, user }: IPhotoGrid) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [imgLoading, setImgLoading] = useState(true);
+  const [loading, setLoading] = useState(false);
   const [fileName, setFilename] = useState('');
   const [selectedPlaceholder, setSelectedPlaceholder] = useState<number | null>(
     null
   );
-  const [uploading, setUploading] = useState(false);
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   const filledPhotos = photos.concat(
@@ -28,7 +28,7 @@ export function PhotoGrid({ photos, user }: any) {
 
   const handleDelete = async (id: string) => {
     const { error } = await supabase.from('photos').delete().eq('id', id);
-    const { data, error: storageError } = await supabase.storage
+    const { error: storageError } = await supabase.storage
       .from('photos')
       .remove([`${user.id}/${fileName}`]);
     router.refresh();
@@ -38,11 +38,14 @@ export function PhotoGrid({ photos, user }: any) {
     inputRef.current?.click();
     setSelectedPlaceholder(placeholderId);
   };
-  console.log('placeholderId :', selectedPlaceholder);
 
   const uploadPhoto: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
+    if (!e.target.files || e.target.files.length === 0) {
+      return;
+    }
+
     try {
-      setUploading(true);
+      setLoading(true);
       if (!e.target.files || e.target.files.length === 0) {
         throw new Error('Please select a photo');
       }
@@ -57,6 +60,7 @@ export function PhotoGrid({ photos, user }: any) {
           const { data } = await supabase.storage
             .from('photos')
             .getPublicUrl(`${user?.id}/${file.name}`);
+
           const { error } = await supabase.from('photos').insert({
             profile_id: user.id,
             src: data.publicUrl,
@@ -77,65 +81,83 @@ export function PhotoGrid({ photos, user }: any) {
     } catch (error) {
       console.log(error);
     } finally {
-      setUploading(false);
+      setLoading(false);
       setSelectedPlaceholder(null);
       router.refresh();
     }
   };
 
   return (
-    <div className='grid grid-cols-3 gap-2 max-w-md mb-4'>
-      {filledPhotos.map((photo: { src: string; id: string }, index: number) => (
-        <>
-          {photo?.src ? (
-            <div key={photo.id} className='relative'>
-              <Image
-                className='object-cover aspect-square rounded-lg'
-                src={photo?.src}
-                alt='person'
-                width={800}
-                height={800}
-              />
-              <div
-                onClick={() => handleDelete(photo.id)}
-                role='button'
-                className='absolute -top-1 -right-1 rounded-full bg-white p-1 shadow-md'
-              >
-                <Image src='/x.svg' width={14} height={14} alt='close icon' />
-              </div>
-            </div>
-          ) : (
-            <div
-              key={index}
-              onClick={() => handlePlaceholderClick(index)}
-              className='h-full w-full flex justify-center items-center'
-            >
-              <Input
-                ref={inputRef}
-                onChange={uploadPhoto}
-                disabled={uploading}
-                type='file'
-                accept='image/*'
-                className='pointer-events-none opacity-0 h-0 w-0 leading-[0] overflow-hidden p-0 m-0'
-              />
-              {uploading && selectedPlaceholder === index ? (
-                <ReloadIcon className='text-purple-300 h-6 w-6 animate-spin' />
+    <>
+      <Input
+        name='photoUpload'
+        ref={inputRef}
+        onChange={uploadPhoto}
+        disabled={loading}
+        type='file'
+        accept='image/*'
+        className='pointer-events-none opacity-0 h-0 w-0 leading-[0] overflow-hidden p-0 m-0'
+      />
+      <div className='grid grid-cols-3 mx-auto gap-2 max-w-md mb-4'>
+        {filledPhotos.map(
+          (photo: { src: string; id: string }, index: number) => (
+            <div key={index}>
+              {photo?.src ? (
+                <div className='relative '>
+                  <div className='aspect-square'>
+                    <Image
+                      layout='fill'
+                      objectFit='cover'
+                      className={cn(
+                        'duration-700 ease-in-out rounded-lg',
+                        imgLoading
+                          ? 'scale-90 blur-lg grayscale'
+                          : 'scale-100 blur-0 grayscale-0'
+                      )}
+                      src={photo?.src}
+                      alt='person'
+                      onLoadingComplete={() => setImgLoading(false)}
+                    />
+                  </div>
+                  <div
+                    onClick={() => handleDelete(photo.id)}
+                    role='button'
+                    className='absolute -top-1 -right-1 rounded-full bg-white p-1 shadow-md'
+                  >
+                    <Image
+                      src='/x.svg'
+                      width={14}
+                      height={14}
+                      alt='close icon'
+                    />
+                  </div>
+                </div>
               ) : (
-                <div className='relative flex items-center justify-center'>
-                  <Image
-                    className='border-2 border-dashed rounded-lg border-orange-300'
-                    src='/placeholder.png'
-                    width={150}
-                    height={150}
-                    alt='placeholder'
-                  />
-                  <UploadIcon className='w-10 h-10 absolute text-white' />
+                <div
+                  key={index}
+                  onClick={() => handlePlaceholderClick(index)}
+                  className='h-full w-full flex justify-center items-center'
+                >
+                  {loading && selectedPlaceholder === index ? (
+                    <ReloadIcon className='text-purple-300 h-6 w-6 animate-spin' />
+                  ) : (
+                    <div className='relative flex items-center justify-center'>
+                      <Image
+                        className='border-2 border-dashed rounded-lg border-orange-300'
+                        src='/placeholder.png'
+                        width={150}
+                        height={150}
+                        alt='placeholder'
+                      />
+                      <UploadIcon className='w-10 h-10 absolute text-white' />
+                    </div>
+                  )}
                 </div>
               )}
             </div>
-          )}
-        </>
-      ))}
-    </div>
+          )
+        )}
+      </div>
+    </>
   );
 }

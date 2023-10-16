@@ -43,16 +43,16 @@ export default function Age({ user }: { user: User | undefined }) {
   const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    // if (user) {
-    //   await supabase
-    //     .from('profiles')
-    //     .update({
-    //       date_of_birth: values.dob,
-    //     })
-    //     .eq('id', user.id);
+    if (user) {
+      await supabase
+        .from('profiles')
+        .update({
+          date_of_birth: values.dob,
+        })
+        .eq('id', user.id);
 
-    //   router.push('gender');
-    // }
+      router.push('gender');
+    }
 
     console.log(' :', values.dob);
   }

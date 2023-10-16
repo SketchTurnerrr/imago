@@ -9,7 +9,7 @@ export default async function Page() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) redirect('/');
+  if (!session) redirect('/login');
 
   const { data } = await supabase
     .from('profiles')
@@ -18,7 +18,7 @@ export default async function Page() {
     .returns<FullProfile>()
     .single();
 
-  return (
-    <EditProfilePage user={session.user} data={data!} onboarding={false} />
-  );
+  if (!data) return;
+
+  return <EditProfilePage user={session.user} data={data} onboarding={false} />;
 }

@@ -38,6 +38,7 @@ import {
   User,
   createClientComponentClient,
 } from '@supabase/auth-helpers-nextjs';
+import { useState } from 'react';
 
 const FormSchema = z.object({
   question: z.string({
@@ -48,6 +49,7 @@ const FormSchema = z.object({
 
 export function AddPromptDialog({ user }: { user: User }) {
   const router = useRouter();
+  const [open, setOpen] = useState(false);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -66,10 +68,12 @@ export function AddPromptDialog({ user }: { user: User }) {
 
     // setPrompts([...prompts, data]);
     router.refresh();
+
+    setOpen(false);
   }
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <div className='flex relative flex-col  p-4 rounded-lg bg-slate-50 border-2 border-dashed font-bold text-gray-500 text-sm border-gray-300'>
           <p>Оберіть фразу</p>
@@ -79,7 +83,7 @@ export function AddPromptDialog({ user }: { user: User }) {
             width={24}
             height={24}
             alt='plus icon'
-            className='absolute -top-2 -right-2'
+            className='absolute  -top-2 -right-2'
           />
         </div>
       </DialogTrigger>

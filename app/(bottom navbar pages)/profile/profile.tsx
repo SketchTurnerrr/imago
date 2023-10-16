@@ -9,11 +9,14 @@ import {
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
+  const router = useRouter();
   async function signOut() {
     const supabase = createClientComponentClient();
     await supabase.auth.signOut();
+    router.refresh();
   }
   return (
     <div className='h-screen p-4 flex flex-col mb-20 pt-20'>

@@ -22,6 +22,7 @@ export default async function DiscoverLayout({
 
   if (!session) redirect('/login');
 
+  console.log('session :', session.user);
   const { data } = await supabase
     .from('profiles')
     .select('photos("src"),onboarded')

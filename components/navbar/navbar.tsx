@@ -95,13 +95,13 @@ export function Navbar({ photo, status, userId }: INavbar) {
   }, []);
 
   const party =
-    rtStatus?.participant1 !== userId
+    rtStatus?.participant1.id !== userId
       ? rtStatus?.party2_read
       : rtStatus?.party1_read;
 
   const links = items.map((item) => (
     <Link className=' text-gray-300 relative' key={item.url} href={item.url}>
-      {!party && item.url === '/matches' && (
+      {rtStatus && !party && item.url === '/matches' && (
         <div className='unread-count before:content-[attr(data-unread)]'></div>
       )}
       <item.icon />
@@ -122,7 +122,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
               className={'object-cover aspect-square rounded-full'}
               src={
                 photo
-                  ? photo[0].src
+                  ? photo[0]?.src
                   : 'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
               }
               width={30}
