@@ -13,6 +13,7 @@ import { LikeDialog } from '@/components/like-dialog';
 import { usePathname } from 'next/navigation';
 import { MatchDialog } from '@/components/match-btn';
 import { cn } from '@/lib/utils';
+import { Filter } from '@/components/filter';
 
 interface IProfile {
   profile: FullProfile;
@@ -32,6 +33,14 @@ export function Profile({
   likeData,
 }: IProfile) {
   const profileRef = useRef(null);
+
+  // const currentSearchParams = useMemo<{ [key: string]: string }>(() => {
+  //   const params: { [key: string]: string } = {};
+  //   searchParams.forEach((value, key) => {
+  //     params[key] = value;
+  //   });
+  //   return params;
+  // }, [searchParams]);
 
   const pathname = usePathname();
 
@@ -88,11 +97,6 @@ export function Profile({
     } else {
       return (
         <div className={'relative w-fit'}>
-          {id === photoId0 && (
-            <h1 className='text-4xl font-bold mb-4 md:self-start'>
-              {profile?.first_name}
-            </h1>
-          )}
           <Image
             priority
             src={
@@ -146,8 +150,14 @@ export function Profile({
   return (
     <main
       ref={profileRef}
-      className='flex space-y-4 md:items-center min-h-screen opacity-0 flex-col px-4 pb-4'
+      className='flex space-y-4 md:items-center min-h-screen opacity-0 flex-col p-4'
     >
+      <div className='flex items-center justify-between'>
+        <h1 className='text-4xl font-bold  md:self-start'>
+          {profile?.first_name}
+        </h1>
+        <Filter />
+      </div>
       <SkipProfileBtn
         userId={userId}
         profileID={profile.id}
