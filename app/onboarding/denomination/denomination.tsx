@@ -8,7 +8,7 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function Denomination({ user }: { user: User | undefined }) {
   const [denomination, setDenomination] = useState('nondeno');
@@ -27,10 +27,22 @@ export function Denomination({ user }: { user: User | undefined }) {
     router.push('/onboarding/location');
   };
 
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
+
   return (
-    <div className='px-4 pb-4 pt-20 h-screen flex flex-col justify-between'>
+    <div
+      style={{ height: height }}
+      className='p-4  h-screen flex flex-col justify-between'
+    >
       <div className='flex flex-col gap-8'>
-        <h1 className='text-5xl font-bold mb-4'>Ваша конфесія?</h1>
+        <h1 className='text-5xl mt-20 font-bold '>Ваша конфесія?</h1>
         <div className='flex items-center justify-between'>
           <label
             htmlFor='catholic'

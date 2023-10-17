@@ -116,10 +116,23 @@ export default function Location({ user }: { user: User | undefined }) {
     region: 'UA',
   });
 
+  // style hack :(
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
+
   return (
-    <div className='px-4 pt-20 pb-4 h-screen flex flex-col justify-between'>
+    <div
+      style={{ height: height }}
+      className='p-4  h-screen flex flex-col justify-between'
+    >
       <div className='flex flex-col gap-4'>
-        <h1 className='text-5xl font-bold mb-4'>Де ви знаходитесь?</h1>
+        <h1 className='text-5xl pt-20 font-bold mb-4'>Де ви знаходитесь?</h1>
 
         {isLoaded && <Button onClick={handleUserLocation}>Знайти мене</Button>}
 

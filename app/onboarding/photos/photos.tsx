@@ -32,16 +32,30 @@ export default function Photos({ user, photos }: PageProps) {
       .eq('id', user.id);
   };
 
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
+
   return (
-    <div className='px-4 pt-20 pb-4 h-screen  flex flex-col justify-between'>
+    <div
+      style={{ height: height }}
+      className='p-4 h-screen flex flex-col justify-between'
+    >
       <div className='flex flex-col gap-6'>
-        <h1 className='text-5xl font-bold mb-4'>Додайте фото</h1>
+        <h1 className='text-5xl mt-20 font-bold '>Додайте фото</h1>
         <div>
           <PhotoGrid user={user} photos={photos ?? []} />
         </div>
         <div className='flex flex-col gap-1'>
           <p className='text-gray-400 font-semibold'>Додайте мінімум 3 фото.</p>
-          <p className='text-sm'>* Перше фото буде головним</p>
+          <p className='text-sm font-semibold text-gray-400'>
+            * Перше фото буде головним
+          </p>
         </div>
       </div>
 

@@ -1,13 +1,23 @@
 'use client';
 
 import { Button } from '@/components/ui/button';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
-import { useEffect } from 'react';
+import { useEffect, useState } from 'react';
 
 export default function Onboarding() {
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
   return (
-    <div className='flex flex-col items-center justify-center h-screen p-4'>
+    <div
+      style={{ height: height }}
+      className='flex flex-col items-center justify-center h-screen p-4'
+    >
       <div className='flex flex-col items-center gap-40'>
         <h1 className='text-5xl font-bold'>
           Давайте спершу заповнимо базову інформацію

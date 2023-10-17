@@ -9,6 +9,7 @@ import {
 import Image from 'next/image';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useEffect, useState } from 'react';
 
 type PageProps = {
   user: User;
@@ -22,10 +23,22 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
     await supabase.from('prompts').delete().eq('id', id);
     router.refresh();
   };
+
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
   return (
-    <div className='h-screen px-4 pb-4 pt-20 flex flex-col justify-between'>
+    <div
+      style={{ height: height }}
+      className='h-screen p-4 flex flex-col justify-between'
+    >
       <div className='flex flex-col gap-4'>
-        <h1 className='text-5xl font-bold mb-4'>Додайте три фрази</h1>
+        <h1 className='text-5xl mt-20 font-bold mb-4'>Додайте три фрази</h1>
         {data?.prompts?.map((prompt) => {
           return (
             <div
@@ -53,7 +66,9 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
           );
         })}
         {data.prompts.length < 3 && <AddPromptDialog user={user} />}
-        <p className='text-gray-400 font-semibold'>Додайте мінімум 3 фрази.</p>
+        <p className='text-gray-400 text-sm font-semibold'>
+          Додайте мінімум 3 фрази.
+        </p>
       </div>
       <Button
         size='icon'

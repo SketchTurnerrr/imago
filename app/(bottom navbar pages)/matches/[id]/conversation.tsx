@@ -146,6 +146,15 @@ export function Conversation({
     form.resetField('message');
   }
 
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window.innerHeight;
+      const h = windowSize - 190;
+      setHeight(h);
+    }
+  }, []);
+
   return (
     <div className='flex flex-col '>
       <div className='flex p-4 items-center justify-between '>
@@ -158,7 +167,10 @@ export function Conversation({
       </div>
       <Separator className='' />
       {
-        <div className='flex flex-col overflow-y-scroll p-4 gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'>
+        <div
+          style={{ height: height }}
+          className='flex flex-col overflow-y-scroll p-4 gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'
+        >
           <RandomVerse />
 
           {rtMessages.map((message, index) => {

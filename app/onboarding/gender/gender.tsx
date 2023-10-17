@@ -9,7 +9,7 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 export function Gender({ user }: { user: User | undefined }) {
   const [gender, setGender] = useState('male');
@@ -27,21 +27,31 @@ export function Gender({ user }: { user: User | undefined }) {
       router.push('/onboarding/denomination');
     }
   };
-
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
   return (
-    <div className='px-4 pb-4 pt-20 h-screen flex flex-col justify-between'>
+    <div
+      style={{ height: height }}
+      className='p-4 h-screen flex flex-col justify-between'
+    >
       <div className='flex flex-col gap-8'>
-        <h1 className='text-5xl font-bold mb-4'>Ваша стать?</h1>
+        <h1 className='text-5xl mt-20 font-bold '>Ваша стать?</h1>
         <div className='flex gap-2 items-center'>
           <Toggle
-            className='data-[state=on]:bg-purple-400 data-[state=on]:text-white'
+            className='data-[state=on]:bg-purple-400 bg-accent data-[state=on]:text-white'
             pressed={gender === 'male'}
             onClick={() => setGender('male')}
           >
             Чоловіча
           </Toggle>
           <Toggle
-            className='data-[state=on]:bg-purple-400 data-[state=on]:text-white'
+            className='data-[state=on]:bg-purple-400 bg-accent data-[state=on]:text-white'
             pressed={gender === 'female'}
             onClick={() => setGender('female')}
           >

@@ -18,8 +18,7 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
-import { cn } from '@/lib/utils';
+import { useEffect, useState } from 'react';
 
 const formSchema = z.object({
   first_name: z
@@ -69,7 +68,7 @@ export default function FirstName({ user }: { user: User | undefined }) {
   return (
     <div
       style={{ height: height }}
-      className={cn('flex flex-col justify-between h-screen p-4')}
+      className='flex flex-col justify-between h-screen p-4'
     >
       <h1 className='text-5xl font-bold mt-20 mb-4'>Як вас звати?</h1>
       <Form {...form}>

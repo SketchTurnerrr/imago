@@ -27,7 +27,7 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { ChangeEventHandler, useState } from 'react';
+import { ChangeEventHandler, useEffect, useState } from 'react';
 import { DayPicker, SelectSingleEventHandler } from 'react-day-picker';
 import uk from 'date-fns/locale/uk';
 
@@ -60,13 +60,26 @@ export default function Age({ user }: { user: User | undefined }) {
     resolver: zodResolver(formSchema),
   });
 
+  const [height, setHeight] = useState<number>();
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+
+      const h = windowSize;
+      setHeight(h);
+    }
+  }, []);
+
   return (
-    <div className='px-4 pt-20 h-screen flex flex-col justify-between'>
-      <h1 className='text-5xl font-bold mb-4'>Коли ви народились?</h1>
+    <div
+      style={{ height: height }}
+      className='p-4 h-screen flex flex-col justify-between'
+    >
+      <h1 className='text-5xl mt-20 font-bold'>Коли ви народились?</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='mb-4 flex flex-col pt-10 h-full justify-between '
+          className='flex flex-col pt-10 h-full justify-between '
         >
           <FormField
             control={form.control}
@@ -79,7 +92,7 @@ export default function Age({ user }: { user: User | undefined }) {
                       <Button
                         variant={'ghost'}
                         className={cn(
-                          'rounded-none w-full pl-3 text-left border-b-purple-400 border-b-2 font-normal',
+                          'rounded-none w-[150px] mx-auto pl-3 text-left border-b-purple-400 border-b-2 font-normal',
                           !field.value && 'text-muted-foreground'
                         )}
                       >
