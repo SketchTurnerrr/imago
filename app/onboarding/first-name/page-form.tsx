@@ -18,6 +18,7 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
+import { useEffect, useRef, useState } from 'react';
 
 const formSchema = z.object({
   first_name: z
@@ -29,6 +30,17 @@ const formSchema = z.object({
 });
 
 export default function FirstName({ user }: { user: User | undefined }) {
+  const [height, setHeight] = useState('h-screen');
+
+  useEffect(() => {
+    if (window) {
+      const windowSize = window?.innerHeight;
+
+      const h = `h-[${windowSize}px]`;
+      setHeight(h);
+    }
+  }, []);
+
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -54,12 +66,16 @@ export default function FirstName({ user }: { user: User | undefined }) {
   });
 
   return (
-    <div className='px-4 pt-20 h-screen flex flex-col justify-between'>
-      <h1 className='text-5xl font-bold mb-4'>Як вас звати?</h1>
+    <div
+      className={`px-4 ${
+        height ? height : 'h-[calc(100vh-12.3rem)]'
+      } flex flex-col justify-between pb-4`}
+    >
+      <h1 className='text-5xl font-bold mt-20 mb-4'>Як вас звати?</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className='mb-4 flex flex-col h-full justify-between '
+          className=' flex flex-col h-full justify-between '
         >
           <FormField
             control={form.control}
