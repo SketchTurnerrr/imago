@@ -1,6 +1,6 @@
 'use client';
 import { Button } from '@/components/ui/button';
-import { Checkbox } from '@/components/ui/checkbox';
+import { Toggle } from '@/components/ui/toggle';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
   createClientComponentClient,
@@ -11,7 +11,7 @@ import { useRouter } from 'next/navigation';
 import { useEffect, useState } from 'react';
 
 export function Denomination({ user }: { user: User | undefined }) {
-  const [denomination, setDenomination] = useState('nondeno');
+  const [denomination, setDenomination] = useState('');
 
   const router = useRouter();
   const handleSubmit = async () => {
@@ -43,96 +43,75 @@ export function Denomination({ user }: { user: User | undefined }) {
     >
       <div className='flex flex-col gap-8'>
         <h1 className='text-5xl mt-20 font-bold '>Ваша конфесія?</h1>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='catholic'
-            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+        <div className='flex flex-wrap gap-3 items-center'>
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            pressed={denomination === 'Католізм'}
+            onClick={() => setDenomination('Католізм')}
           >
             Католізм
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('Католізм')}
-            checked={denomination === 'Католізм' ? true : false}
-            id='catholic'
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='ortho'
-            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+          </Toggle>
+
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            onClick={() => setDenomination("Православ'я")}
+            pressed={denomination === "Православ'я"}
+            id='ortho'
           >
             Православ&apos;я
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination("Православ'я")}
-            checked={denomination === "Православ'я" ? true : false}
-            id='ortho'
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='baptist'
-            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
-          >
-            Баптизм
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('Баптизм')}
-            checked={denomination === 'Баптизм' ? true : false}
-            id='baptist'
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='evangelical'
-            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+          </Toggle>
+
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            onClick={() => setDenomination('Євангелізм')}
+            pressed={denomination === 'Євангелізм'}
+            id='evangelical'
           >
             Євангелізм
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('Євангелізм')}
-            checked={denomination === 'Євангелізм' ? true : false}
-            id='evangelical'
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='pentecostal'
-            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+          </Toggle>
+
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            onClick={() => setDenomination('Баптизм')}
+            pressed={denomination === 'Баптизм'}
+            id='baptist'
+          >
+            Баптизм
+          </Toggle>
+
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            onClick={() => setDenomination("П'ятидесятництво")}
+            pressed={denomination === "П'ятидесятництво"}
+            id='pentecostal'
           >
             П&apos;ятидесятництво
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination("П'ятидесятництво")}
-            checked={denomination === "П'ятидесятництво" ? true : false}
-            id='pentecostal'
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='other'
-            className='text-lg leading-none font-semibold peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+          </Toggle>
+
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            onClick={() => setDenomination('Неконфесійна')}
+            pressed={denomination === 'Неконфесійна'}
+            id='nondeno'
+          >
+            Неконфесійна
+          </Toggle>
+
+          <Toggle
+            className='data-[state=on]:bg-purple-400 bg-accent font-semibold data-[state=on]:text-white'
+            onClick={() => setDenomination('Інше')}
+            pressed={denomination === 'Інше'}
+            id='other'
           >
             Інше
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setDenomination('Інше')}
-            checked={denomination === 'Інше' ? true : false}
-            id='other'
-          />
+          </Toggle>
         </div>
       </div>
       <Button
         onClick={handleSubmit}
         size='icon'
-        disabled={denomination === 'nondeno'}
-        className='rounded-full self-end bg-purple-400'
+        disabled={denomination === ''}
+        className='rounded-full self-end bg-purple-400 '
       >
         <ChevronRightIcon className='h-7 w-7' />
       </Button>
