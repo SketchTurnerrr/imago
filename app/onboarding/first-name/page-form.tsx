@@ -31,13 +31,13 @@ const formSchema = z.object({
 });
 
 export default function FirstName({ user }: { user: User | undefined }) {
-  const [height, setHeight] = useState('');
+  const [height, setHeight] = useState<number>();
 
   useEffect(() => {
     if (window) {
       const windowSize = window?.innerHeight;
 
-      const h = `[${windowSize}px]`;
+      const h = windowSize;
       setHeight(h);
     }
   }, []);
@@ -68,11 +68,8 @@ export default function FirstName({ user }: { user: User | undefined }) {
 
   return (
     <div
-      // className={`px-4 ${cn()
-      //   height ? `h-${height}` : ''
-      // }  `}
       style={{ height: height }}
-      className={cn('flex flex-col justify-between  h-screen p-4')}
+      className={cn('flex flex-col justify-between h-screen p-4')}
     >
       <h1 className='text-5xl font-bold mt-20 mb-4'>Як вас звати?</h1>
       <Form {...form}>
