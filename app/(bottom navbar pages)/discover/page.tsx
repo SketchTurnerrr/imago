@@ -36,25 +36,26 @@ export default async function DiscoverPage() {
   // console.log('skippedProfiles :', skippedProfiles);
 
   const { data: profiles, error } = await supabase
-    .from('profiles')
+    .from('random_profiles')
     .select('*, prompts(*), photos(*)')
+
     .not('id', 'in', `(${skippedProfiles.join(',')})`)
     .eq('gender', gender)
-    .returns<FullProfile[]>();
+    .returns<FullProfile>()
+    .limit(1)
+    .single();
 
   console.log('error :', error);
-  // console.log('profiles :', profiles);
-  console.log('profiles serv:', profiles?.length);
-
-  const index = Math.floor(Math.random() * profiles?.length!) || 0;
 
   if (authedProfile && !authedProfile.onboarded) {
     redirect('/onboarding');
   }
 
+  if (!profiles) return;
+
   return (
     <Profile
-      profile={profiles!![index]}
+      profile={profiles}
       userId={session.user.id}
       authedProfile={authedProfile as authedProfileType}
     />

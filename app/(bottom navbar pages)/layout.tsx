@@ -22,7 +22,6 @@ export default async function DiscoverLayout({
 
   if (!session) redirect('/login');
 
-  console.log('session :', session.user);
   const { data } = await supabase
     .from('profiles')
     .select('photos("src"),onboarded')
@@ -39,7 +38,7 @@ export default async function DiscoverLayout({
     .returns<IConversationReadStatus>()
     .single();
 
-  console.log('session :', session.user.id);
+  // console.log('session :', session.user.id);
   return (
     <section>
       <Navbar photo={data?.photos} status={status!} userId={session.user.id} />

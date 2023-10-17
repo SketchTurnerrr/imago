@@ -83,7 +83,7 @@ export function AddPromptDialog({ user }: { user: User }) {
             width={24}
             height={24}
             alt='plus icon'
-            className='absolute  -top-2 -right-2'
+            className='absolute -top-2 -right-2'
           />
         </div>
       </DialogTrigger>

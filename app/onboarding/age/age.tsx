@@ -33,9 +33,8 @@ import uk from 'date-fns/locale/uk';
 
 const formSchema = z.object({
   dob: z.date({
-    required_error: 'A date of birth is required.',
+    required_error: 'Будь ласка оберіть дату свого народження',
   }),
-  input: z.string(),
 });
 
 export default function Age({ user }: { user: User | undefined }) {
@@ -108,21 +107,23 @@ export default function Age({ user }: { user: User | undefined }) {
                     />
                   </PopoverContent>
                 </Popover>
+                <FormMessage />
                 <FormDescription className='text-center font-bold text-2xl text-black'>
                   Вам{' '}
                   {isNaN(new Date().getFullYear() - field.value?.getFullYear())
                     ? '17'
                     : new Date().getFullYear() - field.value?.getFullYear()}
                 </FormDescription>
-                <FormMessage />
               </FormItem>
             )}
           />
-          <button className='self-end' type='submit'>
-            <Button asChild size='icon' className='rounded-full bg-purple-400'>
-              <ChevronRightIcon className='h-4 w-4' />
-            </Button>
-          </button>
+          <Button
+            type='submit'
+            size='icon'
+            className='rounded-full self-end bg-purple-400'
+          >
+            <ChevronRightIcon className='h-7 w-7' />
+          </Button>
         </form>
       </Form>
     </div>

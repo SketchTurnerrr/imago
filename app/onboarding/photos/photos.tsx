@@ -40,7 +40,7 @@ export default function Photos({ user, photos }: PageProps) {
           <PhotoGrid user={user} photos={photos ?? []} />
         </div>
         <div className='flex flex-col gap-1'>
-          <p className='text-gray-500 font-semibold'>Додайте мінімум 3 фото.</p>
+          <p className='text-gray-400 font-semibold'>Додайте мінімум 3 фото.</p>
           <p className='text-sm'>* Перше фото буде головним</p>
         </div>
       </div>

@@ -12,6 +12,7 @@ import { Prompt } from '@/components/prompt';
 import { LikeDialog } from '@/components/like-dialog';
 import { usePathname } from 'next/navigation';
 import { MatchDialog } from '@/components/match-btn';
+import { cn } from '@/lib/utils';
 
 interface IProfile {
   profile: FullProfile;
@@ -86,10 +87,12 @@ export function Profile({
       return null;
     } else {
       return (
-        <div className='relative w-fit'>
-          <h1 className='text-4xl font-bold mb-4 md:self-start'>
-            {profile?.first_name}
-          </h1>
+        <div className={'relative w-fit'}>
+          {id === photoId0 && (
+            <h1 className='text-4xl font-bold mb-4 md:self-start'>
+              {profile?.first_name}
+            </h1>
+          )}
           <Image
             priority
             src={
@@ -222,6 +225,7 @@ export function Profile({
       */}
 
       {photo(src5, photoId5)}
+      <div className='pb-20'></div>
     </main>
   );
 }

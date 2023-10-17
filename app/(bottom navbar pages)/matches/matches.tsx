@@ -24,7 +24,7 @@ export function Matches({ conversations, userId }: IMatches) {
               alt='Sad Keanu'
             />
             <p className='text-md text-gray-500 font-semibold'>
-              Тут будуть ваші метчі, але поки що нічого
+              Тут будуть ваші знайомства
             </p>
           </div>
         </div>

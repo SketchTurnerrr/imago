@@ -1,16 +1,19 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Toggle } from '@/components/ui/toggle';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
 import Link from 'next/link';
+import { useRouter } from 'next/navigation';
 import { useState } from 'react';
 
 export function Gender({ user }: { user: User | undefined }) {
   const [gender, setGender] = useState('male');
+  const router = useRouter();
 
   const handleSubmit = async () => {
     const supabase = createClientComponentClient<Database>();
@@ -21,6 +24,7 @@ export function Gender({ user }: { user: User | undefined }) {
           gender: gender,
         })
         .eq('id', user.id);
+      router.push('/onboarding/denomination');
     }
   };
 
@@ -28,45 +32,31 @@ export function Gender({ user }: { user: User | undefined }) {
     <div className='px-4 pb-4 pt-20 h-screen flex flex-col justify-between'>
       <div className='flex flex-col gap-8'>
         <h1 className='text-5xl font-bold mb-4'>Ваша стать?</h1>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='male'
-            className='text-lg font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+        <div className='flex gap-2 items-center'>
+          <Toggle
+            className='data-[state=on]:bg-purple-400 data-[state=on]:text-white'
+            pressed={gender === 'male'}
+            onClick={() => setGender('male')}
           >
             Чоловіча
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setGender('male')}
-            checked={gender === 'male' ? true : false}
-            id='male'
-          />
-        </div>
-        <div className='flex items-center justify-between'>
-          <label
-            htmlFor='female'
-            className='text-lg font-semibold leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70'
+          </Toggle>
+          <Toggle
+            className='data-[state=on]:bg-purple-400 data-[state=on]:text-white'
+            pressed={gender === 'female'}
+            onClick={() => setGender('female')}
           >
             Жіноча
-          </label>
-          <Checkbox
-            className='data-[state=checked]:bg-purple-400 border-purple-400'
-            onCheckedChange={() => setGender('female')}
-            checked={gender === 'female' ? true : false}
-            id='female'
-          />
+          </Toggle>
         </div>
       </div>
-      <Link className='self-end' href={'/onboarding/denomination'}>
-        <Button
-          asChild
-          onClick={handleSubmit}
-          size='icon'
-          className='rounded-full bg-purple-400'
-        >
-          <ChevronRightIcon className='h-4 w-4' />
-        </Button>
-      </Link>
+
+      <Button
+        onClick={handleSubmit}
+        size='icon'
+        className='rounded-full self-end bg-purple-400'
+      >
+        <ChevronRightIcon className='h-7 w-7' />
+      </Button>
     </div>
   );
 }

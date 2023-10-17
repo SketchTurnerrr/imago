@@ -1,5 +1,6 @@
 import { createServerClient } from '@/lib/supabase-server';
 import { Conversation } from './conversation';
+import { redirect } from 'next/navigation';
 
 export default async function ConversationPage({
   params,
@@ -7,6 +8,9 @@ export default async function ConversationPage({
   params: { id: string };
 }) {
   const supabase = createServerClient();
+
+  // const cookieStore = cookies();
+  // console.log('cookieStore :', cookieStore.get('userAgent'));
 
   const {
     data: { session },
@@ -22,7 +26,7 @@ export default async function ConversationPage({
   const { data } = await supabase
     .from('conversations')
     .select(
-      'party1_read,party2_read,participant1(id,first_name), participant2(id,first_name)'
+      'id,party1_read,party2_read,participant1(id,first_name), participant2(id,first_name)'
     )
     .eq('id', params.id)
     .returns<IParticipantsNames>()
@@ -30,7 +34,11 @@ export default async function ConversationPage({
   // console.log('participant2 :', data?.participant2);
 
   if (!session) {
-    return;
+    redirect('/login');
+  }
+
+  if (!data) {
+    redirect('/matches');
   }
 
   return (

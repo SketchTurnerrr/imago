@@ -18,6 +18,7 @@ import Image from 'next/image';
 import { ThreeDotsMenu } from '@/components/three-dots-menu';
 import { TooltipTime } from '@/components/msg-time-tooltip';
 import Send from '@/public/send.svg';
+import { RandomVerse } from '@/components/random-verse';
 
 const FormSchema = z.object({
   message: z
@@ -158,6 +159,8 @@ export function Conversation({
       <Separator className='' />
       {
         <div className='flex flex-col overflow-y-scroll p-4 gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'>
+          <RandomVerse />
+
           {rtMessages.map((message, index) => {
             const previous = messages[index - 1];
             const showAvatar = shouldShowAvatar(previous, message);
@@ -242,7 +245,7 @@ export function Conversation({
             size='icon'
             type='submit'
           >
-            <Send />
+            <Send className='rotate-45 -translate-x-[3px]' />
           </Button>
         </form>
       </Form>

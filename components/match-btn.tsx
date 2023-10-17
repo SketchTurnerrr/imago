@@ -110,6 +110,7 @@ export function MatchDialog({
 
     console.log('error match:', error);
     setOpen(false);
+    router.push('/matches');
   };
 
   if (!likeData) {

@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/alert-dialog';
 import { Button } from '@/components/ui/button';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
+import { useRouter } from 'next/navigation';
 
 interface IAlert {
   triggerName: string;
@@ -27,14 +28,12 @@ export function AlertDialogDots({
   participantId,
   conversationId,
 }: IAlert) {
+  const supabase = createClientComponentClient<Database>();
+  const router = useRouter();
   const endConversation = async () => {
-    const supabase = createClientComponentClient<Database>();
-
-    await supabase
-      .from('conversation_participants')
-      .delete()
-      .match({ conversation_id: conversationId, profile_id: participantId });
+    await supabase.from('conversations').delete().match({ id: conversationId });
     // console.log('participantId :', participantId);
+    router.replace('/discover');
     // console.log('conversationId :', conversationId);
   };
   return (

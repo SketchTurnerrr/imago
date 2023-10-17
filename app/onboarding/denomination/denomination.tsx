@@ -24,6 +24,7 @@ export function Denomination({ user }: { user: User | undefined }) {
         })
         .eq('id', user.id);
     }
+    router.push('/onboarding/location');
   };
 
   return (
@@ -115,16 +116,14 @@ export function Denomination({ user }: { user: User | undefined }) {
           />
         </div>
       </div>
-      <Link className='self-end' href={'/onboarding/location'}>
-        <Button
-          asChild
-          onClick={handleSubmit}
-          size='icon'
-          className='rounded-full bg-purple-400'
-        >
-          <ChevronRightIcon className='h-4 w-4' />
-        </Button>
-      </Link>
+      <Button
+        onClick={handleSubmit}
+        size='icon'
+        disabled={denomination === 'nondeno'}
+        className='rounded-full self-end bg-purple-400'
+      >
+        <ChevronRightIcon className='h-7 w-7' />
+      </Button>
     </div>
   );
 }

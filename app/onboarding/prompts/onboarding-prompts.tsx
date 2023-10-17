@@ -26,42 +26,43 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
     <div className='h-screen px-4 pb-4 pt-20 flex flex-col justify-between'>
       <div className='flex flex-col gap-4'>
         <h1 className='text-5xl font-bold mb-4'>Додайте три фрази</h1>
-        {Array.isArray(data?.prompts) &&
-          data?.prompts?.map((prompt) => {
-            return (
+        {data?.prompts?.map((prompt) => {
+          return (
+            <div
+              key={prompt.id}
+              className='flex relative flex-col p-4 rounded-lg font-bold  text-sm shadow-sm border border-slate-100'
+            >
+              <p>{prompt.question}</p>
+              <p className='border-l border-gray-300 mt-2 pl-2 text-gray-500'>
+                {prompt.answer}
+              </p>
               <div
-                key={prompt.id}
-                className='flex relative flex-col p-4 rounded-lg font-bold  text-sm shadow-sm border border-slate-100'
+                onClick={() => handleDelete(prompt.id)}
+                role='button'
+                className='absolute -top-1 -right-1 rounded-full bg-white p-1 shadow-md'
               >
-                <p>{prompt.question}</p>
-                <p className='border-l border-gray-300 mt-2 pl-2 text-gray-500'>
-                  {prompt.answer}
-                </p>
-                <div
-                  onClick={() => handleDelete(prompt.id)}
-                  role='button'
-                  className='absolute -top-1 -right-1 rounded-full bg-white p-1 shadow-md'
-                >
-                  <Image
-                    src='/x.svg'
-                    width={14}
-                    height={14}
-                    alt='close icon'
-                    className=''
-                  />
-                </div>
+                <Image
+                  src='/x.svg'
+                  width={14}
+                  height={14}
+                  alt='close icon'
+                  className=''
+                />
               </div>
-            );
-          })}
-        {Array.isArray(data.prompts) && data.prompts.length < 3 && (
-          <AddPromptDialog user={user} />
-        )}
+            </div>
+          );
+        })}
+        {data.prompts.length < 3 && <AddPromptDialog user={user} />}
+        <p className='text-gray-400 font-semibold'>Додайте мінімум 3 фрази.</p>
       </div>
-      <Link className=' self-end' href={'/onboarding/photos'}>
-        <Button asChild size='icon' className='bg-purple-400 rounded-full'>
-          <ChevronRightIcon />
-        </Button>
-      </Link>
+      <Button
+        size='icon'
+        onClick={() => router.push('/onboarding/photos')}
+        className='bg-purple-400 self-end rounded-full'
+        disabled={data.prompts.length !== 3}
+      >
+        <ChevronRightIcon className='w-7 h-7' />
+      </Button>
     </div>
   );
 }

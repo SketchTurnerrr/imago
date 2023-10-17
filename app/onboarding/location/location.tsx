@@ -81,7 +81,7 @@ export default function Location({ user }: { user: User | undefined }) {
         })
         .eq('id', user.id);
 
-      // router.push('prompts');
+      router.push('prompts');
     }
   }
 
@@ -116,15 +116,14 @@ export default function Location({ user }: { user: User | undefined }) {
     region: 'UA',
   });
 
-  if (!isLoaded) return <div>loading..</div>;
   return (
     <div className='px-4 pt-20 pb-4 h-screen flex flex-col justify-between'>
       <div className='flex flex-col gap-4'>
         <h1 className='text-5xl font-bold mb-4'>Де ви знаходитесь?</h1>
 
-        <Button onClick={handleUserLocation}>Знайти мене</Button>
+        {isLoaded && <Button onClick={handleUserLocation}>Знайти мене</Button>}
 
-        {isLoaded && (
+        {isLoaded ? (
           <Map
             userPos={userPos}
             userPermission={userPermission}
@@ -132,19 +131,18 @@ export default function Location({ user }: { user: User | undefined }) {
             onMapLoad={handleMapLoad}
             onCenterChanged={handleCenterChanged}
           />
+        ) : (
+          <div className='h-[400px] w-full mt-12 rounded-lg animate-pulse bg-gray-300'></div>
         )}
       </div>
 
-      <Link className='self-end' href={'/onboarding/prompts'}>
-        <Button
-          asChild
-          onClick={handleLocation}
-          size='icon'
-          className='rounded-full bg-purple-400'
-        >
-          <ChevronRightIcon className='h-4 w-4' />
-        </Button>
-      </Link>
+      <Button
+        onClick={handleLocation}
+        size='icon'
+        className='rounded-full self-end bg-purple-400'
+      >
+        <ChevronRightIcon className='h-7 w-7' />
+      </Button>
     </div>
   );
 }

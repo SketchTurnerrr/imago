@@ -20,9 +20,12 @@ import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
 
 const formSchema = z.object({
-  first_name: z.string().min(2, {
-    message: 'Мінімум 2 літери.',
-  }),
+  first_name: z
+    .string()
+    .min(2, {
+      message: "Це поле обов'язкове.",
+    })
+    .max(12),
 });
 
 export default function FirstName({ user }: { user: User | undefined }) {
@@ -33,7 +36,9 @@ export default function FirstName({ user }: { user: User | undefined }) {
       await supabase
         .from('profiles')
         .update({
-          first_name: values.first_name,
+          first_name:
+            values.first_name.charAt(0).toUpperCase() +
+            values.first_name.slice(1),
         })
         .eq('id', user.id);
 
@@ -74,11 +79,14 @@ export default function FirstName({ user }: { user: User | undefined }) {
               </FormItem>
             )}
           />
-          <button className='self-end' type='submit'>
-            <Button asChild size='icon' className='rounded-full bg-purple-400'>
-              <ChevronRightIcon className='h-4 w-4' />
-            </Button>
-          </button>
+          <Button
+            size='icon'
+            type='submit'
+            disabled={!form.formState.isValid}
+            className='rounded-full self-end bg-purple-400'
+          >
+            <ChevronRightIcon className='h-7 w-7' />
+          </Button>
         </form>
       </Form>
     </div>
