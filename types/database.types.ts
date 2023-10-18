@@ -241,14 +241,11 @@ export interface Database {
           first_name: string;
           gender: string;
           id: string;
-          location: {
-            lat: number;
-            long: number;
-            toponym: string;
-          };
+          location: unknown | null;
           name: string | null;
           onboarded: boolean;
           skipped_profiles: string[] | null;
+          toponym: string;
         };
         Insert: {
           avatar_url?: string | null;
@@ -256,17 +253,14 @@ export interface Database {
           date_of_birth?: Date;
           denomination?: string;
           email: string;
-          first_name: string;
+          first_name?: string;
           gender?: string;
           id: string;
-          location?: {
-            lat: number;
-            long: number;
-            toponym: string;
-          };
+          location?: unknown | null;
           name?: string | null;
           onboarded?: boolean;
           skipped_profiles?: string[] | null;
+          toponym?: string;
         };
         Update: {
           avatar_url?: string | null;
@@ -277,14 +271,11 @@ export interface Database {
           first_name?: string;
           gender?: string;
           id?: string;
-          location?: {
-            lat: number;
-            long: number;
-            toponym: string;
-          };
+          location?: unknown | null;
           name?: string | null;
           onboarded?: boolean;
           skipped_profiles?: string[] | null;
+          toponym?: string;
         };
         Relationships: [
           {

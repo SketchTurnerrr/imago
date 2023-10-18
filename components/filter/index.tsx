@@ -21,7 +21,7 @@ import { AgeSlider } from './age-slider';
 
 export function Filter() {
   const [maxDist, setMaxDist] = useState<number[]>([50]);
-  const [age, setAge] = useState<number[]>([15, 21]);
+  const [age, setAge] = useState<number[]>([17, 24]);
 
   const onDistChange = (dist: number[]) => {
     setMaxDist([dist[0]]);
@@ -41,20 +41,20 @@ export function Filter() {
       </SheetTrigger>
       <SheetContent>
         <SheetHeader>
-          <SheetTitle>Фільтри</SheetTitle>
+          <SheetTitle className='font-bold'>Фільтри</SheetTitle>
           <SheetDescription>
             Тут ви можете обрати, які саме профілі ви хочете бачити
           </SheetDescription>
         </SheetHeader>
         <div className='grid gap-4 py-4'>
           <div className='flex flex-col gap-4'>
-            <Label htmlFor='deno' className='font-bold'>
+            <Label htmlFor='deno' className='font-semibold'>
               Конфесія
             </Label>
             <DenominationSelect />
           </div>
           <div className='flex flex-col gap-4'>
-            <Label htmlFor='max-distance' className='font-bold'>
+            <Label htmlFor='max-distance' className='font-semibold'>
               Максимальна дистанція{' '}
               <span className='text-lg text-slate-500'>{maxDist} км</span>
             </Label>
@@ -64,23 +64,18 @@ export function Filter() {
             />
           </div>
           <div className='flex flex-col gap-4'>
-            <Label htmlFor='age-distance' className='font-bold'>
+            <Label htmlFor='age-distance' className='font-semibold'>
               Вік{' '}
               <span className='text-lg text-slate-500'>
                 {age[0]}-{age[1]}
               </span>
             </Label>
-            <AgeSlider
-              defaultValue={[17, 25]}
-              min={17}
-              max={50}
-              onValueChange={(e) => onAgeChange(e)}
-            />
+            <AgeSlider onValueChange={(e) => onAgeChange(e)} />
           </div>
         </div>
-        <SheetFooter>
+        <SheetFooter className='mt-4'>
           <SheetClose asChild>
-            <Button type='submit'>Save changes</Button>
+            <Button type='submit'>Зберегти</Button>
           </SheetClose>
         </SheetFooter>
       </SheetContent>

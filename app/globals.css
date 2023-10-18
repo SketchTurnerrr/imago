@@ -109,3 +109,8 @@
 .card {
   background: linear-gradient(to right, rgb(20, 30, 48), rgb(100, 19, 121));
 }
+
+
+.my-gradient {
+  background-image: radial-gradient(circle at 55% 0px, rgba(54, 180, 255, 0.93), rgba(156, 17, 255, 0) 67%), radial-gradient(circle at 50% 0px, rgb(29, 38, 126), rgba(30, 9, 145, 0) 69%), radial-gradient(circle at 81% 11%, rgb(54, 180, 255), rgba(83, 255, 221, 0) 25%), radial-gradient(circle at 18% -7%, rgb(227, 123, 255), rgba(255, 83, 154, 0) 33%), radial-gradient(circle at 50% 44%, rgb(104, 66, 205), rgba(141, 123, 239, 0) 85%, rgba(141, 123, 239, 0) 85%, rgba(141, 123, 239, 0) 85%);
+}

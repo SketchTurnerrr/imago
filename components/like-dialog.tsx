@@ -18,7 +18,7 @@ import {
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
 
-import Heart from '@/public/heart.svg';
+import ThumbsUp from '@/public/thumbs-up.svg';
 
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
@@ -93,11 +93,10 @@ export function LikeDialog({
     <LDialog open={open} onOpenChange={setOpen}>
       <LDialogTrigger asChild>
         <Button
-          variant='outline'
           size='icon'
-          className='rounded-full text-purple-400 hover:text-purple-500 w-12 h-12 bottom-2 absolute right-2 bg-white'
+          className='rounded-full text-primary w-12 h-12 bottom-2 absolute right-2 bg-white'
         >
-          <Heart width={24} height={24} />
+          <ThumbsUp />
         </Button>
       </LDialogTrigger>
       <LDialogContent className='max-w-[350px] bg-transparent border-none shadow-none'>

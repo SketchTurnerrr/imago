@@ -6,7 +6,7 @@ import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter, useSearchParams } from 'next/navigation';
-import Message from '@/public/message.svg';
+import HandIcon from '@/public/hand-waving.svg';
 import {
   LDialog,
   LDialogContent,
@@ -126,39 +126,55 @@ export function MatchDialog({
           className='h-0 z-30 left-4 self-end sticky top-[83%]'
         >
           <Button
-            variant='outline'
             size='icon'
-            className=' h-12 w-12 rounded-full  bg-white'
+            className=' h-12 w-12 rounded-full text-3xl bg-white'
           >
-            <Message />
+            <HandIcon />
           </Button>
         </div>
       </LDialogTrigger>
-      <LDialogContent className='max-w-[350px] bg-transparent border-none shadow-none'>
+      <LDialogContent className='max-w-xs md:min-w-[350px] bg-transparent border-none shadow-none'>
         <LDialogHeader>
           <LDialogTitle className='text-3xl'>
             {firstName ? firstName : ''}
           </LDialogTitle>
         </LDialogHeader>
-        <div className='flex flex-col gap-2'>
+        <div className='flex flex-col gap-8'>
           {'photo' in likeData && (
-            <Image
-              src={likeData?.photo?.src}
-              alt={firstName!}
-              width={300}
-              height={300}
-              className='rounded-lg object-cover w-full aspect-square'
-            />
+            <div className='relative h-80'>
+              <Image
+                src={likeData?.photo?.src}
+                alt={firstName!}
+                layout='fill'
+                className='rounded-lg object-cover aspect-square'
+              />
+              <div className='w-fit absolute -bottom-4 p-2 rounded-bl-none text-sm rounded-lg bg-purple-400 font-semibold text-white'>
+                {likeData.comment
+                  ? likeData.comment
+                  : likeData.liker.gender === 'male'
+                  ? 'Вподобав' + ' ваше фото'
+                  : 'Вподобала' + ' ваше фото'}
+              </div>
+            </div>
           )}
 
           {'prompt' in likeData && (
-            <Prompt
-              likee=''
-              liker=''
-              id={likeData.id}
-              question={likeData.prompt.question}
-              answer={likeData.prompt.answer}
-            />
+            <div className='relative'>
+              <Prompt
+                likee=''
+                liker=''
+                id={likeData.id}
+                question={likeData.prompt.question}
+                answer={likeData.prompt.answer}
+              />
+              <div className='w-fit absolute -bottom-4 p-2 rounded-bl-none text-sm rounded-lg bg-purple-400 font-semibold text-white'>
+                {likeData.comment
+                  ? likeData.comment
+                  : likeData.liker.gender === 'male'
+                  ? 'Вподобав' + ' вашу відповідь'
+                  : 'Вподобала' + ' вашу відповідь'}
+              </div>
+            </div>
           )}
 
           <Form {...form}>
@@ -176,7 +192,7 @@ export function MatchDialog({
                         {...field}
                         className='bg-white'
                         maxLength={140}
-                        placeholder='Залишити коментар'
+                        placeholder='Відправити повідомлення'
                       />
                     </FormControl>
 

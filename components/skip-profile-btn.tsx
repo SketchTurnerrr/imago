@@ -1,11 +1,12 @@
 'use client';
-import { Cross1Icon } from '@radix-ui/react-icons';
+import { ArrowRightIcon, Cross1Icon } from '@radix-ui/react-icons';
 import { Button } from './ui/button';
 import { useEffect, useRef } from 'react';
 import gsap from 'gsap';
 import { ScrollTrigger } from 'gsap/all';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
+import { usePathname } from 'next/navigation';
 
 export function SkipProfileBtn({
   userId,
@@ -18,6 +19,7 @@ export function SkipProfileBtn({
 }) {
   const router = useRouter();
   const btnRef = useRef(null);
+  const pathname = usePathname();
 
   gsap.registerPlugin(ScrollTrigger);
   useEffect(() => {
@@ -45,7 +47,6 @@ export function SkipProfileBtn({
 
   const handleSkip = async () => {
     const supabase = createClientComponentClient<Database>();
-
     // await supabase
     //   .from('profiles')
     //   .update({
@@ -67,7 +68,11 @@ export function SkipProfileBtn({
         size='icon'
         className='rounded-full w-12 h-12 bg-white'
       >
-        <Cross1Icon className='w-6 h-6' />
+        {pathname.match('discover') ? (
+          <ArrowRightIcon className='w-7 h-7' />
+        ) : (
+          <Cross1Icon className='w-7 h-7' />
+        )}
       </Button>
     </div>
   );

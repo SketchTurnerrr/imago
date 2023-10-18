@@ -6,10 +6,11 @@ type SliderProps = React.ComponentProps<typeof TwoThumbSlider>;
 export function AgeSlider({ className, ...props }: SliderProps) {
   return (
     <TwoThumbSlider
-      defaultValue={[18, 24]}
-      max={100}
+      defaultValue={[17, 24]}
+      min={17}
+      max={50}
+      minStepsBetweenThumbs={1}
       step={1}
-      min={0}
       className={cn('w-[100%] ', className)}
       {...props}
     />

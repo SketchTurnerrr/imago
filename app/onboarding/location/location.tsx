@@ -16,16 +16,17 @@ import Link from 'next/link';
 export default function Location({ user }: { user: User | undefined }) {
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral>({
-    lat: 50.45,
-    lng: 30.52,
+    lat: 50.4421673,
+    lng: 30.5368004,
   });
   const [toponym, setToponym] = useState('');
   const [userPermission, setUserPermission] = useState(false);
   const [userPos, setUserPos] = useState<google.maps.LatLngLiteral>({
-    lat: 50.45,
-    lng: 30.52,
+    lat: 50.4421673,
+    lng: 30.5368004,
   });
 
+  console.log('userPos :', userPos);
   useEffect(() => {
     const getLocationDetails = async () => {
       try {
@@ -73,11 +74,8 @@ export default function Location({ user }: { user: User | undefined }) {
       await supabase
         .from('profiles')
         .update({
-          location: {
-            lat: markerPos?.lat,
-            long: markerPos?.lng,
-            toponym: toponym === '' ? 'Kyiv' : toponym,
-          },
+          location: `POINT(${markerPos?.lat} ${markerPos.lng})`,
+          toponym: toponym ? toponym : 'Київ',
         })
         .eq('id', user.id);
 

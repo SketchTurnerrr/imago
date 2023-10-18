@@ -152,11 +152,11 @@ export function Profile({
       ref={profileRef}
       className='flex space-y-4 md:items-center min-h-screen opacity-0 flex-col p-4'
     >
-      <div className='flex items-center justify-between'>
+      <div className='flex items-center md:w-[500px] justify-between'>
         <h1 className='text-4xl font-bold  md:self-start'>
           {profile?.first_name}
         </h1>
-        <Filter />
+        {pathname.split('/')[1] !== 'likes' && <Filter />}
       </div>
       <SkipProfileBtn
         userId={userId}
@@ -198,7 +198,7 @@ export function Profile({
               height={24}
               alt='map pin icon'
             />
-            {profile.location.toponym}
+            {profile.toponym}
           </div>
         </div>
       </div>

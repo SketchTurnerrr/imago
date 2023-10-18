@@ -2,7 +2,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import Compass from '@/public/compass.svg';
-import Heart from '@/public/heart.svg';
+import ThumbsUp from '@/public/thumbs-up.svg';
 import Message from '@/public/message.svg';
 import { useEffect, useRef, useState } from 'react';
 import gsap from 'gsap';
@@ -60,7 +60,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
     },
     {
       url: '/likes',
-      icon: Heart,
+      icon: ThumbsUp,
     },
     {
       url: '/matches',
