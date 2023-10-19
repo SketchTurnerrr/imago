@@ -1,5 +1,4 @@
 'use client';
-
 import { zodResolver } from '@hookform/resolvers/zod';
 import * as z from 'zod';
 import { Button } from '@/components/ui/button';
@@ -18,7 +17,8 @@ import {
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 
 const formSchema = z.object({
   first_name: z
@@ -31,16 +31,7 @@ const formSchema = z.object({
 
 export default function FirstName({ user }: { user: User | undefined }) {
   const [height, setHeight] = useState<number>();
-
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
-
+  const windowHeight = useWindowHeight();
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -67,7 +58,7 @@ export default function FirstName({ user }: { user: User | undefined }) {
 
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='flex flex-col justify-between h-screen p-4'
     >
       <h1 className='text-5xl font-bold mt-20 mb-4'>Як вас звати?</h1>

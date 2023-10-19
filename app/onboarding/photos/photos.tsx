@@ -1,17 +1,13 @@
 'use client';
-
 import { PhotoGrid } from '@/app/(bottom navbar pages)/profile/edit/photo-grid';
 import { Button } from '@/components/ui/button';
-import { Input } from '@/components/ui/input';
-import { ChevronRightIcon, PlusIcon } from '@radix-ui/react-icons';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
+import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
-import Image from 'next/image';
 import Link from 'next/link';
-import { useRouter } from 'next/navigation';
-import { useEffect, useRef, useState } from 'react';
 
 interface PageProps {
   user: User;
@@ -19,9 +15,8 @@ interface PageProps {
 }
 
 export default function Photos({ user, photos }: PageProps) {
-  console.log('photos :', photos);
   const supabase = createClientComponentClient<Database>();
-  const router = useRouter();
+  const windowHeight = useWindowHeight();
 
   const handlePhotos = async () => {
     await supabase
@@ -32,18 +27,9 @@ export default function Photos({ user, photos }: PageProps) {
       .eq('id', user.id);
   };
 
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
-
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='p-4 h-screen flex flex-col justify-between'
     >
       <div className='flex flex-col gap-6'>

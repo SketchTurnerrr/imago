@@ -1,21 +1,14 @@
 'use client';
-
 import { Button } from '@/components/ui/button';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
 
 export default function Onboarding() {
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
+  const windowHeight = useWindowHeight();
+
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='flex flex-col items-center justify-center h-screen p-4'
     >
       <div className='flex flex-col items-center gap-40'>

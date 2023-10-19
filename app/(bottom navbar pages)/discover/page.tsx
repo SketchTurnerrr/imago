@@ -21,33 +21,44 @@ export default async function DiscoverPage() {
 
   const { data: authedProfile } = await supabase
     .from('profiles')
-    .select('gender, skipped_profiles, onboarded')
+    .select('gender,  onboarded')
     .eq('id', session.user.id)
     .single();
 
   const gender = authedProfile?.gender === 'male' ? 'female' : 'male';
 
-  const skippedProfiles = [
-    ...(authedProfile?.skipped_profiles || []),
-    session.user.id,
-  ];
-
-  console.log('authedProfile :', authedProfile);
-  // console.log('skippedProfiles :', skippedProfiles);
+  // .not('id', 'in', `(${skippedProfiles.join(',')})`)
 
   const { data: profiles, error } = await supabase
     .from('random_profiles')
     .select('*, prompts(*), photos(*)')
 
-    .not('id', 'in', `(${skippedProfiles.join(',')})`)
     .eq('gender', gender)
     .returns<FullProfile>()
     .limit(1)
     .single();
 
-  console.log('error :', error);
+  // console.log('profiles :', profiles);
 
-  if (authedProfile && !authedProfile.onboarded) {
+  // const { data: profiles, error } = await supabase
+  //   .from('random_profiles')
+  //   .select('*, prompts(*), photos(*)')
+
+  //   .eq('gender', gender)
+  //   // .eq('toponym', 'Кривий Ріг')
+  //   .eq('age', 31)
+  //   .returns<FullProfile>()
+  //   .single();
+
+  console.log('profiles :', profiles);
+  // const { data, error, status, count } = await supabase
+  //   .rpc('nearby_profiles', {
+  //     long: 47.901406,
+  //     lat: 33.385515,
+  //   })
+  //   .select('*');
+
+  if (!authedProfile?.onboarded) {
     redirect('/onboarding');
   }
 

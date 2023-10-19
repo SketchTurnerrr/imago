@@ -1,5 +1,4 @@
 'use client';
-
 import { Button } from '@/components/ui/button';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
@@ -11,9 +10,10 @@ import { useLoadScript } from '@react-google-maps/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Map } from './map';
 import { debounce } from '@/lib/utils';
-import Link from 'next/link';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 
 export default function Location({ user }: { user: User | undefined }) {
+  const windowHeight = useWindowHeight();
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral>({
     lat: 50.4421673,
@@ -114,19 +114,9 @@ export default function Location({ user }: { user: User | undefined }) {
     region: 'UA',
   });
 
-  // style hack :(
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
-
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='p-4  h-screen flex flex-col justify-between'
     >
       <div className='flex flex-col gap-4'>

@@ -76,9 +76,21 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'conversations_participant1_fkey';
+            columns: ['participant1'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'conversations_participant2_fkey';
             columns: ['participant2'];
             referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'conversations_participant2_fkey';
+            columns: ['participant2'];
+            referencedRelation: 'random_profiles';
             referencedColumns: ['id'];
           }
         ];
@@ -113,9 +125,21 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'matches_profile_id_1_fkey';
+            columns: ['profile_id_1'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'matches_profile_id_2_fkey';
             columns: ['profile_id_2'];
             referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'matches_profile_id_2_fkey';
+            columns: ['profile_id_2'];
+            referencedRelation: 'random_profiles';
             referencedColumns: ['id'];
           }
         ];
@@ -154,6 +178,12 @@ export interface Database {
             columns: ['sender_id'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'messages_sender_id_fkey';
+            columns: ['sender_id'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
           }
         ];
       };
@@ -190,9 +220,21 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'photo_likes_likee_fkey';
+            columns: ['likee'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'photo_likes_liker_fkey';
             columns: ['liker'];
             referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'photo_likes_liker_fkey';
+            columns: ['liker'];
+            referencedRelation: 'random_profiles';
             referencedColumns: ['id'];
           },
           {
@@ -228,53 +270,56 @@ export interface Database {
             columns: ['profile_id'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'photos_profile_id_fkey';
+            columns: ['profile_id'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
           }
         ];
       };
       profiles: {
         Row: {
-          avatar_url: string | null;
+          age: number;
+          coordinates: Json;
           created_at: string;
           date_of_birth: Date;
           denomination: string;
-          email: string;
+          email: string | null;
           first_name: string;
           gender: string;
           id: string;
           location: unknown | null;
-          name: string | null;
           onboarded: boolean;
-          skipped_profiles: string[] | null;
           toponym: string;
         };
         Insert: {
-          avatar_url?: string | null;
+          age?: number;
+          coordinates?: Json;
           created_at?: string;
           date_of_birth?: Date;
           denomination?: string;
-          email: string;
+          email?: string | null;
           first_name?: string;
           gender?: string;
           id: string;
           location?: unknown | null;
-          name?: string | null;
           onboarded?: boolean;
-          skipped_profiles?: string[] | null;
           toponym?: string;
         };
         Update: {
-          avatar_url?: string | null;
+          age?: number;
+          coordinates?: Json;
           created_at?: string;
           date_of_birth?: Date;
           denomination?: string;
-          email?: string;
+          email?: string | null;
           first_name?: string;
           gender?: string;
           id?: string;
           location?: unknown | null;
-          name?: string | null;
           onboarded?: boolean;
-          skipped_profiles?: string[] | null;
           toponym?: string;
         };
         Relationships: [
@@ -319,9 +364,21 @@ export interface Database {
             referencedColumns: ['id'];
           },
           {
+            foreignKeyName: 'prompt_likes_likee_fkey';
+            columns: ['likee'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
+          },
+          {
             foreignKeyName: 'prompt_likes_liker_fkey';
             columns: ['liker'];
             referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'prompt_likes_liker_fkey';
+            columns: ['liker'];
+            referencedRelation: 'random_profiles';
             referencedColumns: ['id'];
           },
           {
@@ -357,12 +414,66 @@ export interface Database {
             columns: ['profile_id'];
             referencedRelation: 'profiles';
             referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'prompts_profile_id_fkey';
+            columns: ['profile_id'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
           }
         ];
       };
     };
     Views: {
-      [_ in never]: never;
+      random_profiles: {
+        Row: {
+          coordinates: Json | null;
+          created_at: string | null;
+          date_of_birth: string | null;
+          denomination: string | null;
+          email: string | null;
+          first_name: string | null;
+          gender: string | null;
+          id: string | null;
+          location: unknown | null;
+          onboarded: boolean | null;
+          toponym: string | null;
+        };
+        Insert: {
+          coordinates?: Json | null;
+          created_at?: string | null;
+          date_of_birth?: string | null;
+          denomination?: string | null;
+          email?: string | null;
+          first_name?: string | null;
+          gender?: string | null;
+          id?: string | null;
+          location?: unknown | null;
+          onboarded?: boolean | null;
+          toponym?: string | null;
+        };
+        Update: {
+          coordinates?: Json | null;
+          created_at?: string | null;
+          date_of_birth?: string | null;
+          denomination?: string | null;
+          email?: string | null;
+          first_name?: string | null;
+          gender?: string | null;
+          id?: string | null;
+          location?: unknown | null;
+          onboarded?: boolean | null;
+          toponym?: string | null;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'profiles_id_fkey';
+            columns: ['id'];
+            referencedRelation: 'users';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
     };
     Functions: {
       is_conversation_participant: {
@@ -371,6 +482,19 @@ export interface Database {
           profile_id: string;
         };
         Returns: boolean;
+      };
+      nearby_profiles: {
+        Args: {
+          lat: number;
+          long: number;
+        };
+        Returns: {
+          id: string;
+          toponym: string;
+          lat: number;
+          long: number;
+          dist_meters: number;
+        }[];
       };
     };
     Enums: {

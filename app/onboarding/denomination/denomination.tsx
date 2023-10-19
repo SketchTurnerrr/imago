@@ -1,17 +1,18 @@
 'use client';
 import { Button } from '@/components/ui/button';
 import { Toggle } from '@/components/ui/toggle';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
+import { useState } from 'react';
 
 export function Denomination({ user }: { user: User | undefined }) {
   const [denomination, setDenomination] = useState('');
+  const windowHeight = useWindowHeight();
 
   const router = useRouter();
   const handleSubmit = async () => {
@@ -27,18 +28,9 @@ export function Denomination({ user }: { user: User | undefined }) {
     router.push('/onboarding/location');
   };
 
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
-
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='p-4  h-screen flex flex-col justify-between'
     >
       <div className='flex flex-col gap-8'>

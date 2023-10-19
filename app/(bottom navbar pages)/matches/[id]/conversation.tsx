@@ -4,13 +4,7 @@ import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useEffect, useRef, useState } from 'react';
-import {
-  Form,
-  FormControl,
-  FormField,
-  FormItem,
-  FormMessage,
-} from '@/components/ui/form';
+import { Form, FormControl, FormField, FormItem } from '@/components/ui/form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import * as z from 'zod';
@@ -19,6 +13,7 @@ import { ThreeDotsMenu } from '@/components/three-dots-menu';
 import { TooltipTime } from '@/components/msg-time-tooltip';
 import Send from '@/public/send.svg';
 import { RandomVerse } from '@/components/random-verse';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 
 const FormSchema = z.object({
   message: z
@@ -44,6 +39,7 @@ export function Conversation({
 }: IConversations) {
   const supabase = createClientComponentClient<Database>();
   const [rtMessages, setRTMessages] = useState(messages);
+  const windowHeight = useWindowHeight();
   const scrollToLastMsgRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -146,15 +142,6 @@ export function Conversation({
     form.resetField('message');
   }
 
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window.innerHeight;
-      const h = windowSize - 190;
-      setHeight(h);
-    }
-  }, []);
-
   return (
     <div className='flex flex-col '>
       <div className='flex p-4 items-center justify-between '>
@@ -168,7 +155,7 @@ export function Conversation({
       <Separator className='' />
       {
         <div
-          style={{ height: height }}
+          style={{ height: windowHeight }}
           className='flex flex-col overflow-y-scroll p-4 gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'
         >
           <RandomVerse />

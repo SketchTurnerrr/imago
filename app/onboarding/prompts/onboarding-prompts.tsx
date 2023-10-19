@@ -1,15 +1,14 @@
 'use client';
 import { AddPromptDialog } from '@/app/(bottom navbar pages)/profile/edit/add-prompt-dialog';
 import { Button } from '@/components/ui/button';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
 import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
-import Link from 'next/link';
 import { useRouter } from 'next/navigation';
-import { useEffect, useState } from 'react';
 
 type PageProps = {
   user: User;
@@ -18,23 +17,16 @@ type PageProps = {
 
 export default function OnboardingPrompts({ user, data }: PageProps) {
   const router = useRouter();
+  const windowHeight = useWindowHeight();
   const supabase = createClientComponentClient<Database>();
   const handleDelete = async (id: string) => {
     await supabase.from('prompts').delete().eq('id', id);
     router.refresh();
   };
 
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='h-screen p-4 flex flex-col justify-between'
     >
       <div className='flex flex-col gap-4'>

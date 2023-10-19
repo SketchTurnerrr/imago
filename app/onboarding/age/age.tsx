@@ -1,5 +1,5 @@
 'use client';
-import { format, isValid, parse } from 'date-fns';
+import { format } from 'date-fns';
 // import { CalendarIcon } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Calendar } from '@/components/ui/calendar';
@@ -22,14 +22,12 @@ import {
   FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from '@/components/ui/form';
 import { useForm } from 'react-hook-form';
 import { useRouter } from 'next/navigation';
-import { ChangeEventHandler, useEffect, useState } from 'react';
-import { DayPicker, SelectSingleEventHandler } from 'react-day-picker';
 import uk from 'date-fns/locale/uk';
+import { useWindowHeight } from '@/hooks/useWindowHeight';
 
 const formSchema = z.object({
   dob: z.date({
@@ -40,39 +38,31 @@ const formSchema = z.object({
 export default function Age({ user }: { user: User | undefined }) {
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
+  const windowHeight = useWindowHeight();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
+    const age = new Date()?.getFullYear() - values.dob?.getFullYear();
+
     if (user) {
       await supabase
         .from('profiles')
         .update({
           date_of_birth: values.dob,
+          age: age,
         })
         .eq('id', user.id);
 
       router.push('gender');
     }
-
-    console.log(' :', values.dob);
   }
 
   const form = useForm<z.infer<typeof formSchema>>({
     resolver: zodResolver(formSchema),
   });
 
-  const [height, setHeight] = useState<number>();
-  useEffect(() => {
-    if (window) {
-      const windowSize = window?.innerHeight;
-
-      const h = windowSize;
-      setHeight(h);
-    }
-  }, []);
-
   return (
     <div
-      style={{ height: height }}
+      style={{ height: windowHeight }}
       className='p-4 h-screen flex flex-col justify-between'
     >
       <h1 className='text-5xl mt-20 font-bold'>Коли ви народились?</h1>
