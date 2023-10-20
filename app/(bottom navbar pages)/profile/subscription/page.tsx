@@ -2,11 +2,7 @@ import { createServerClient } from '@/lib/supabase-server';
 import { Subscription } from './subscription';
 import { redirect } from 'next/navigation';
 
-export default async function SubscriptionPage({
-  profile,
-}: {
-  profile: string;
-}) {
+export default async function SubscriptionPage() {
   const supabase = createServerClient();
 
   const {
