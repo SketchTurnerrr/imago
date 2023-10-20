@@ -50,7 +50,7 @@ export default async function DiscoverPage() {
   //   .returns<FullProfile>()
   //   .single();
 
-  console.log('profiles :', profiles);
+  // console.log('profiles :', profiles);
   // const { data, error, status, count } = await supabase
   //   .rpc('nearby_profiles', {
   //     long: 47.901406,

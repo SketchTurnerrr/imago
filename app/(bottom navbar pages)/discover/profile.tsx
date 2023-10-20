@@ -125,8 +125,8 @@ export function Profile({
     }
   };
 
-  console.log('userId :', userId);
-  console.log('profile.id :', profile.id);
+  // console.log('userId :', userId);
+  // console.log('profile.id :', profile.id);
   const prompt = (question: string, answer: string, id: string) => {
     if (!question) {
       return null;

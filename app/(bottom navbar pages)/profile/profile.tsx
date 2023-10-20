@@ -5,6 +5,7 @@ import {
   GearIcon,
   MixerHorizontalIcon,
   Pencil2Icon,
+  SymbolIcon,
 } from '@radix-ui/react-icons';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import Image from 'next/image';
@@ -49,6 +50,13 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
         <div className='flex items-center justify-between'>
           Налаштування
           <GearIcon className='w-7 h-7' />
+        </div>
+      </Link>
+      <Separator className='my-4' />
+      <Link className='font-bold text-xl' href={'/profile/subscription'}>
+        <div className='flex items-center justify-between'>
+          Підписка
+          <SymbolIcon className='w-7 h-7' />
         </div>
       </Link>
       <Button

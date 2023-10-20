@@ -5,7 +5,7 @@ import {
   createClientComponentClient,
   User,
 } from '@supabase/auth-helpers-nextjs';
-import { useRouter } from 'next/navigation';
+import { usePathname, useRouter } from 'next/navigation';
 import { useLoadScript } from '@react-google-maps/api';
 import { useCallback, useEffect, useState } from 'react';
 import { Map } from './map';
@@ -13,6 +13,7 @@ import { debounce } from '@/lib/utils';
 import { useWindowHeight } from '@/hooks/useWindowHeight';
 
 export default function Location({ user }: { user: User | undefined }) {
+  const pathname = usePathname();
   const windowHeight = useWindowHeight();
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral>({
@@ -113,6 +114,8 @@ export default function Location({ user }: { user: User | undefined }) {
     language: 'uk',
     region: 'UA',
   });
+
+  if (pathname !== '/onboarding/location') return;
 
   return (
     <div

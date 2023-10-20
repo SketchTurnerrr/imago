@@ -20,7 +20,7 @@ export default async function Page() {
     .returns<ProfileWithPhotos>()
     .single();
 
-  console.log('data :', data);
+  // console.log('data :', data);
   if (!data) {
     redirect('/');
   }
