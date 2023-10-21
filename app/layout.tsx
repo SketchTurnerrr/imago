@@ -8,10 +8,6 @@ const ysabeau = Ysabeau({ subsets: ['cyrillic'] });
 export const metadata: Metadata = {
   title: 'covenantly',
   description: 'Місце зустрічі для християн України',
-
-  other: {
-    'interkassa-verification': 'ecb62f6df3e34dc04a11fefa1c4c9bbc',
-  },
 };
 
 export default function RootLayout({

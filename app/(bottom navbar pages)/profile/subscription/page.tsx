@@ -13,7 +13,5 @@ export default async function SubscriptionPage() {
     redirect('/login');
   }
 
-  console.log('session :', session);
-
   return <Subscription userId={session.user.id} />;
 }
