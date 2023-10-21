@@ -423,10 +423,57 @@ export interface Database {
           }
         ];
       };
+      subscriptions: {
+        Row: {
+          amount: number;
+          created_at: string;
+          description: string | null;
+          end_date: string;
+          id: string;
+          liqpay_order_id: string;
+          profile_id: string;
+          transaction_id: string;
+        };
+        Insert: {
+          amount: number;
+          created_at?: string;
+          description?: string | null;
+          end_date: string;
+          id?: string;
+          liqpay_order_id: string;
+          profile_id: string;
+          transaction_id: string;
+        };
+        Update: {
+          amount?: number;
+          created_at?: string;
+          description?: string | null;
+          end_date?: string;
+          id?: string;
+          liqpay_order_id?: string;
+          profile_id?: string;
+          transaction_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: 'subscriptions_profile_id_fkey';
+            columns: ['profile_id'];
+            referencedRelation: 'profiles';
+            referencedColumns: ['id'];
+          },
+          {
+            foreignKeyName: 'subscriptions_profile_id_fkey';
+            columns: ['profile_id'];
+            referencedRelation: 'random_profiles';
+            referencedColumns: ['id'];
+          }
+        ];
+      };
     };
     Views: {
       random_profiles: {
         Row: {
+          age: number | null;
           coordinates: Json | null;
           created_at: string | null;
           date_of_birth: string | null;
@@ -440,6 +487,7 @@ export interface Database {
           toponym: string | null;
         };
         Insert: {
+          age?: number | null;
           coordinates?: Json | null;
           created_at?: string | null;
           date_of_birth?: string | null;
@@ -453,6 +501,7 @@ export interface Database {
           toponym?: string | null;
         };
         Update: {
+          age?: number | null;
           coordinates?: Json | null;
           created_at?: string | null;
           date_of_birth?: string | null;
