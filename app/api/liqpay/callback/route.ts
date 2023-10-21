@@ -1,6 +1,5 @@
-import Server, { NextRequest, NextResponse } from 'next/server';
+import { NextRequest, NextResponse } from 'next/server';
 import crypto from 'crypto';
-import { createServerClient } from '@/lib/supabase-server';
 import format from 'date-fns/format';
 import { createRouteHandlerClient } from '@supabase/auth-helpers-nextjs';
 import { cookies } from 'next/headers';
@@ -45,9 +44,7 @@ export async function POST(req: NextRequest): Promise<any> {
         const supabase = createRouteHandlerClient<Database>({
           cookies: () => cookieStore,
         });
-        console.log('supabase :', supabase);
 
-        console.log('ord id :', decodedData.order_id);
         const { error } = await supabase.from('subscriptions').insert({
           profile_id: decodedData.order_id,
           transaction_id: decodedData.transaction_id,

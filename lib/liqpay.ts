@@ -19,8 +19,8 @@ export const liqpaySignature = async ({
 
   const serverUrl =
     process.env.NODE_ENV === 'development'
-      ? 'http://localhost:3000/api/liqpay/callback'
-      : `${BASE_URL}`;
+      ? 'https://9a63-77-122-148-140.ngrok-free.app/api/liqpay/callback'
+      : `https://covenantly-web.vercel.app/api/liqpay/callback`;
 
   console.log('serverUrl :', serverUrl);
   const data = {
@@ -35,8 +35,7 @@ export const liqpaySignature = async ({
     language: 'uk',
     order_id: orderId,
     result_url: clientUrl,
-    server_url:
-      'https://0f78-77-122-148-140.ngrok-free.app/api/liqpay/callback',
+    server_url: serverUrl,
   };
   const privateKey = process.env.LIQPAY_PRIVATE_KEY;
   console.log('privateKey :', privateKey);

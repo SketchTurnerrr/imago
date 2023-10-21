@@ -61,7 +61,7 @@ export default function FirstName({ user }: { user: User | undefined }) {
       style={{ height: windowHeight }}
       className='flex flex-col justify-between h-screen p-4'
     >
-      <h1 className='text-5xl font-bold mt-20 mb-4'>Як вас звати?</h1>
+      <h1 className='text-5xl font-bold mt-20 mb-10'>Як вас звати?</h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -74,7 +74,7 @@ export default function FirstName({ user }: { user: User | undefined }) {
               <FormItem>
                 <FormControl>
                   <Input
-                    className='border-t-0 border-x-0 rounded-none border-b-[3px] shadow-none border-b-purple-400 focus:border-b-purple-500 focus-visible:ring-0 duration-300 transition-colors ease-linear'
+                    className='border-t-0 border-x-0 h-16 rounded-none border-b-[3px] shadow-none border-b-purple-400 focus:border-b-purple-500 focus-visible:ring-0 duration-300 text-3xl transition-colors ease-linear'
                     type='text'
                     placeholder='Ваше ім`я'
                     {...field}

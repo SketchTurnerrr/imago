@@ -2,7 +2,8 @@
 import { liqpaySignature } from '@/lib/liqpay';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
-
+//@ts-ignore
+import confetti from 'canvas-confetti';
 import { Button } from '@/components/ui/button';
 import {
   Card,
@@ -15,9 +16,10 @@ import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
+import { differenceInHours, differenceInMinutes, parseISO } from 'date-fns';
 
 export function Subscription({ userId, sub }: { userId: string; sub: any }) {
-  console.log('sub :', sub);
+  // console.log('sub :', sub);
   const [amount, setAmount] = useState(0);
   const [periodicity, setPeriodicity] = useState('month');
   const [dataBase64, setDataBase64] = useState('');
@@ -37,7 +39,7 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
     };
 
     fu();
-  }, [amount, periodicity]);
+  }, [amount, periodicity, userId]);
 
   const benefits = [
     {
@@ -104,8 +106,20 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
     }
   };
 
+  const diff =
+    differenceInMinutes(new Date(), new Date(sub?.created_at)) || null;
+  useEffect(() => {
+    if (diff && diff < 30) {
+      confetti({
+        particleCount: 100,
+        spread: 70,
+        origin: { y: 0.6 },
+      });
+    }
+  }, [sub?.created_at]);
+
   return (
-    <div className=''>
+    <>
       <h1 className='text-4xl pl-4 pt-4 font-bold'>Підписка</h1>
 
       <blockquote></blockquote>
@@ -215,6 +229,6 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
           )}
         </CardFooter>
       </Card>
-    </div>
+    </>
   );
 }

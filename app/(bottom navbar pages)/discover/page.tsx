@@ -1,6 +1,8 @@
 import { redirect } from 'next/navigation';
 import { Profile } from './profile';
 import { createServerClient } from '@/lib/supabase-server';
+import { Suspense } from 'react';
+import Loading from './loading';
 
 type authedProfileType = {
   gender: string;
@@ -18,6 +20,8 @@ export default async function DiscoverPage() {
   if (!session) {
     redirect('/login');
   }
+
+  // await new Promise((resolve) => setTimeout(resolve, 4000));
 
   const { data: authedProfile } = await supabase
     .from('profiles')
@@ -65,10 +69,12 @@ export default async function DiscoverPage() {
   if (!profiles) return;
 
   return (
-    <Profile
-      profile={profiles}
-      userId={session.user.id}
-      authedProfile={authedProfile as authedProfileType}
-    />
+    <Suspense fallback={<Loading />}>
+      <Profile
+        profile={profiles}
+        userId={session.user.id}
+        authedProfile={authedProfile as authedProfileType}
+      />
+    </Suspense>
   );
 }

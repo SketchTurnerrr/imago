@@ -77,6 +77,9 @@ dependencies:
   autoprefixer:
     specifier: 10.4.16
     version: 10.4.16(postcss@8.4.30)
+  canvas-confetti:
+    specifier: ^1.9.0
+    version: 1.9.0
   class-variance-authority:
     specifier: ^0.7.0
     version: 0.7.0
@@ -3342,6 +3345,10 @@ packages:
 
   /caniuse-lite@1.0.30001547:
     resolution: {integrity: sha512-W7CrtIModMAxobGhz8iXmDfuJiiKg1WADMO/9x7/CLNin5cpSbuBjooyoIUVB5eyCc36QuTVlkVa1iB2S5+/eA==}
+    dev: false
+
+  /canvas-confetti@1.9.0:
+    resolution: {integrity: sha512-0UGU/T5Un/Cd4Aj4fu/p/oVQm8Il+brK5xcmY+y77u7PXuyNJD4ODUWe01A5o3GUI9Bb8lOBlQ10VdaDsY1FBA==}
     dev: false
 
   /chalk@2.4.2:

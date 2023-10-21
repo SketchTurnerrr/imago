@@ -35,8 +35,10 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
   };
 
   const handlePlaceholderClick = (placeholderId: number) => {
-    inputRef.current?.click();
-    setSelectedPlaceholder(placeholderId);
+    if (!loading) {
+      inputRef.current?.click();
+      setSelectedPlaceholder(placeholderId);
+    }
   };
 
   const uploadPhoto: React.ChangeEventHandler<HTMLInputElement> = async (e) => {
