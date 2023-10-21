@@ -23,7 +23,7 @@ function decodeBase64Data(encodedData: string) {
   return JSON.parse(decodedData);
 }
 
-export async function POST(req: NextRequest) {
+export async function POST(req: NextRequest): Promise<any> {
   const formData = await req.formData();
   const data = formData.get('data');
   const signature = formData.get('signature');
