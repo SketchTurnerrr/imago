@@ -30,7 +30,7 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
       const { dataBase64, signatureBase64 } = await liqpaySignature({
         periodicity,
         amount,
-        orderId: '12345',
+        orderId: userId,
       });
       setDataBase64(dataBase64);
       setSignatureBase64(signatureBase64);
@@ -66,8 +66,7 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
     try {
       const response = await fetch('/api/liqpay/cancel-subscription', {
         method: 'POST',
-
-        body: JSON.stringify({ order_id: '12345' }),
+        body: JSON.stringify({ order_id: userId }),
       });
 
       if (response.ok) {

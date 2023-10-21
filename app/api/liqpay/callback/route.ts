@@ -48,17 +48,15 @@ export async function POST(req: NextRequest): Promise<any> {
         console.log('supabase :', supabase);
 
         console.log('ord id :', decodedData.order_id);
-        // const { data: sub, error } = await supabase
-        //   .from('subscriptions')
-        //   .insert({
-        //     profile_id: decodedData.order_id,
-        //     transaction_id: decodedData.transaction_id,
-        //     liqpay_order_id: decodedData.liqpay_order_id,
-        //     amount: decodedData.amount,
-        //     description: decodedData.description,
-        //     end_date: format(decodedData.end_date, 'yyyy-MM-dd'),
-        //   });
-        // console.log('error :', error);
+        const { error } = await supabase.from('subscriptions').insert({
+          profile_id: decodedData.order_id,
+          transaction_id: decodedData.transaction_id,
+          liqpay_order_id: decodedData.liqpay_order_id,
+          amount: decodedData.amount,
+          description: decodedData.description,
+          end_date: format(decodedData.end_date, 'yyyy-MM-dd'),
+        });
+        console.log('error :', error);
         return NextResponse.json({ msg: 'done' });
       }
     } else {
