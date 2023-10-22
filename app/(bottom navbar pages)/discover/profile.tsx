@@ -1,11 +1,9 @@
 'use client';
 import { differenceInYears, parse, format, parseISO } from 'date-fns';
 import Image from 'next/image';
-import Link from 'next/link';
-import { SignOut } from '@/components/signout-btn';
-import { HomeIcon } from '@radix-ui/react-icons';
 import Cross from '@/public/cross.svg';
-import { useLayoutEffect, useRef } from 'react';
+import Undo from '@/public/undo.svg';
+import { useLayoutEffect, useRef, useState } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
 import { Prompt } from '@/components/prompt';
@@ -14,9 +12,10 @@ import { usePathname } from 'next/navigation';
 import { MatchDialog } from '@/components/match-btn';
 import { cn } from '@/lib/utils';
 import { Filter } from '@/components/filter';
+import { Button } from '@/components/ui/button';
 
 interface IProfile {
-  profile: FullProfile;
+  serverProfiles: FullProfile[];
   authedProfile?: {
     gender: string;
     skipped_profiles: string[];
@@ -27,13 +26,19 @@ interface IProfile {
 }
 
 export function Profile({
-  profile,
+  serverProfiles,
   userId,
   authedProfile,
   likeData,
 }: IProfile) {
   const profileRef = useRef(null);
+  const [profiles, setProfiles] = useState<FullProfile[]>(serverProfiles);
+  const [skippedProfile, setSkippedProfile] = useState<FullProfile | null>(
+    null
+  );
+  // console.log('skippedProfile :', skippedProfile);
 
+  // console.log('profile :', profiles);
   // const currentSearchParams = useMemo<{ [key: string]: string }>(() => {
   //   const params: { [key: string]: string } = {};
   //   searchParams.forEach((value, key) => {
@@ -62,9 +67,32 @@ export function Profile({
     }, profileRef);
 
     return () => ctx.revert();
-  }, []);
+  }, [profiles]);
+  // console.log('serverProfiles :', profiles);
 
-  const dob = format(parseISO(String(profile?.date_of_birth)), 'yyyy/MM/dd');
+  // Function to skip a profile
+  function skipProfile() {
+    // Remove the last profile from the profiles array.
+    const profilesCp = [...profiles];
+    const profileToSkip = profilesCp.pop();
+    setProfiles(profilesCp);
+    if (profileToSkip) {
+      setSkippedProfile(profileToSkip);
+    }
+  }
+
+  function undoSkip() {
+    if (skippedProfile) {
+      setProfiles((prev) => [...prev, skippedProfile]);
+      setSkippedProfile(null);
+    }
+  }
+  const profile = profiles.at(-1)!;
+  if (!profiles || !profile) {
+    window.location.reload();
+    return null;
+  }
+  const dob = format(parseISO(String(profile.date_of_birth)), 'yyyy/MM/dd');
   const date = parse(dob, 'yyyy/MM/dd', new Date());
   const age = differenceInYears(new Date(), date);
 
@@ -72,25 +100,24 @@ export function Profile({
     question: question0,
     answer: answer0,
     id: promptId0,
-  } = profile?.prompts[0] || '';
+  } = profile.prompts[0] || '';
   const {
     question: question1,
     answer: answer1,
     id: promptId1,
-  } = profile?.prompts[1] || '';
+  } = profile.prompts[1] || '';
   const {
     question: question2,
     answer: answer2,
     id: promptId2,
-  } = profile?.prompts[2] || '';
+  } = profile.prompts[2] || '';
 
-  const { src: src0, id: photoId0 } = profile?.photos[0] || '';
-  const { src: src1, id: photoId1 } = profile?.photos[1] || '';
-  const { src: src2, id: photoId2 } = profile?.photos[2] || '';
-  const { src: src3, id: photoId3 } = profile?.photos[3] || '';
-  const { src: src4, id: photoId4 } = profile?.photos[4] || '';
-  const { src: src5, id: photoId5 } = profile?.photos[5] || '';
-
+  const { src: src0, id: photoId0 } = profile.photos[0] || '';
+  const { src: src1, id: photoId1 } = profile.photos[1] || '';
+  const { src: src2, id: photoId2 } = profile.photos[2] || '';
+  const { src: src3, id: photoId3 } = profile.photos[3] || '';
+  const { src: src4, id: photoId4 } = profile.photos[4] || '';
+  const { src: src5, id: photoId5 } = profile.photos[5] || '';
   const photo = (src: string | null, id: string) => {
     if (!src) {
       return null;
@@ -126,7 +153,7 @@ export function Profile({
   };
 
   // console.log('userId :', userId);
-  // console.log('profile.id :', profile.id);
+  // console.log('profile.id :', profile?.id);
   const prompt = (question: string, answer: string, id: string) => {
     if (!question) {
       return null;
@@ -143,10 +170,6 @@ export function Profile({
     }
   };
 
-  if (!profile) {
-    return <div>no profiles left</div>;
-  }
-
   return (
     <main
       ref={profileRef}
@@ -154,14 +177,21 @@ export function Profile({
     >
       <div className='flex items-center md:w-[500px] justify-between'>
         <h1 className='text-4xl font-bold  md:self-start'>
-          {profile?.first_name}
+          {profile.first_name}
         </h1>
-        {pathname.split('/')[1] !== 'likes' && <Filter />}
+        {pathname.split('/')[1] !== 'likes' && (
+          <div className='flex items-center gap-2'>
+            <Button variant='ghost' size='icon' onClick={() => undoSkip()}>
+              <Undo />
+            </Button>
+            <Filter />
+          </div>
+        )}
       </div>
       <SkipProfileBtn
         userId={userId}
-        profileID={profile.id}
-        skippedProfiles={authedProfile?.skipped_profiles || []}
+        profileId={profile.id}
+        skipProfile={skipProfile}
       />
       {pathname.split('/')[1] === 'likes' && (
         <MatchDialog

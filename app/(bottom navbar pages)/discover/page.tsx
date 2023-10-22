@@ -38,10 +38,11 @@ export default async function DiscoverPage() {
     .select('*, prompts(*), photos(*)')
 
     .eq('gender', gender)
-    .returns<FullProfile>()
-    .limit(1)
-    .single();
+    .returns<FullProfile[]>()
+    .limit(10);
+  // .single();
 
+  console.log('error :', error);
   // console.log('profiles :', profiles);
 
   // const { data: profiles, error } = await supabase
@@ -71,7 +72,7 @@ export default async function DiscoverPage() {
   return (
     <Suspense fallback={<Loading />}>
       <Profile
-        profile={profiles}
+        serverProfiles={profiles}
         userId={session.user.id}
         authedProfile={authedProfile as authedProfileType}
       />

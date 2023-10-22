@@ -10,12 +10,12 @@ import { usePathname } from 'next/navigation';
 
 export function SkipProfileBtn({
   userId,
-  profileID,
-  skippedProfiles,
+  profileId,
+  skipProfile,
 }: {
   userId: string;
-  profileID: string;
-  skippedProfiles: string[];
+  profileId: string;
+  skipProfile: () => void;
 }) {
   const router = useRouter();
   const btnRef = useRef(null);
@@ -53,6 +53,7 @@ export function SkipProfileBtn({
     //     skipped_profiles: [...skippedProfiles, profileID],
     //   })
     //   .eq('id', userId);
+    skipProfile();
 
     router.refresh();
   };

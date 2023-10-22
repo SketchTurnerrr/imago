@@ -155,7 +155,7 @@ export function Conversation({
       <Separator className='' />
       {
         <div
-          style={{ height: windowHeight }}
+          style={{ height: windowHeight && windowHeight - 190 }}
           className='flex flex-col overflow-y-scroll p-4 gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'
         >
           <RandomVerse />

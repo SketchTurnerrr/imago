@@ -31,11 +31,10 @@ export function Filter() {
     setAge([age[0], age[1]]);
   };
 
-  console.log('maxDist :', maxDist);
   return (
     <Sheet>
       <SheetTrigger asChild>
-        <Button variant='ghost'>
+        <Button variant='ghost' className='px-1'>
           <FilterIcon />
         </Button>
       </SheetTrigger>
