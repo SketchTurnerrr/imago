@@ -78,7 +78,13 @@ export function Conversation({
     }
 
     markAsRead();
-  }, [participants?.party1_read, participants?.party2_read]);
+  }, [
+    participants?.party1_read,
+    participants?.participant1.id,
+    userId,
+    supabase,
+    participants?.party2_read,
+  ]);
 
   useEffect(() => {
     const channel = supabase

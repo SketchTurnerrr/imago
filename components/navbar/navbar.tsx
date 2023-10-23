@@ -92,7 +92,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
     return () => {
       supabase.removeChannel(channel);
     };
-  }, []);
+  }, [supabase]);
 
   const party =
     rtStatus?.participant1.id !== userId

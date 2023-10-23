@@ -1,5 +1,4 @@
 'use client';
-import { liqpaySignature } from '@/lib/liqpay';
 import { useEffect, useState } from 'react';
 import * as React from 'react';
 //@ts-ignore
@@ -16,30 +15,42 @@ import { cn } from '@/lib/utils';
 import { toast } from '@/components/ui/use-toast';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
-import { differenceInHours, differenceInMinutes, parseISO } from 'date-fns';
+import { differenceInMinutes } from 'date-fns';
 
 export function Subscription({ userId, sub }: { userId: string; sub: any }) {
   // console.log('sub :', sub);
   const [amount, setAmount] = useState(0);
   const [periodicity, setPeriodicity] = useState('month');
   const [dataBase64, setDataBase64] = useState('');
+
   const [signatureBase64, setSignatureBase64] = useState('');
+
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
 
   useEffect(() => {
-    const fu = async () => {
-      const { dataBase64, signatureBase64 } = await liqpaySignature({
-        periodicity,
-        amount,
-        orderId: userId,
-      });
-      setDataBase64(dataBase64);
-      setSignatureBase64(signatureBase64);
+    const liqpay = async () => {
+      await fetch('/api/liqpay', {
+        method: 'POST',
+        headers: {
+          'Content-type': 'application/json',
+        },
+        body: JSON.stringify({ orderId: userId, amount, periodicity }),
+        cache: 'no-store',
+      })
+        .then((response) => response.json())
+        .then((data) => {
+          console.log(data);
+          setDataBase64(data.dataBase64);
+          setSignatureBase64(data.signature);
+        })
+        .catch((error) => {
+          console.error(error);
+        });
     };
 
-    fu();
-  }, [amount, periodicity, userId]);
+    liqpay();
+  }, [amount, periodicity, userId, supabase]);
 
   const benefits = [
     {
@@ -116,7 +127,7 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
         origin: { y: 0.6 },
       });
     }
-  }, [sub?.created_at]);
+  }, [sub?.created_at, diff]);
 
   return (
     <>

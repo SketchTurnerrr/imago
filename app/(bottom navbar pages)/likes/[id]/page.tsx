@@ -23,8 +23,7 @@ export default async function Page({
     .from('profiles')
     .select('*, prompts(*), photos(*)')
     .eq('id', params.id)
-    .returns<FullProfile>()
-    .single();
+    .returns<FullProfile[]>();
 
   // ph photoId
   // p promptId
@@ -104,7 +103,11 @@ export default async function Page({
     <>
       {renderLike}
 
-      <Profile userId={session.user.id} profile={profile} likeData={like} />
+      <Profile
+        userId={session.user.id}
+        serverProfiles={profile}
+        likeData={like}
+      />
     </>
   );
 }
