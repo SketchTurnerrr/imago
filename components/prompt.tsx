@@ -1,6 +1,6 @@
-'use client';
-import { usePathname } from 'next/navigation';
-import { LikeDialog } from './like-dialog';
+"use client";
+import { usePathname } from "next/navigation";
+import { LikeDialog } from "./like-dialog";
 
 interface IPrompt {
   question: string | null;
@@ -12,15 +12,15 @@ interface IPrompt {
 
 export function Prompt({ question, answer, id, liker, likee }: IPrompt) {
   const pathname = usePathname();
-  console.log('pathname :', pathname);
+  console.log("pathname :", pathname);
   return (
-    <div className='px-4 py-10 bg-secondary/75  md:w-[500px] relative rounded-lg space-y-4'>
-      <p className='text-md font-semibold'>{question}</p>
-      <h2 className='text-3xl font-bold'>{answer}</h2>
-      {pathname === '/discover' && (
+    <div className="relative space-y-4 rounded-lg bg-secondary/75 px-4 py-10 md:w-[500px]">
+      <p className="text-md font-semibold">{question}</p>
+      <h2 className="text-3xl font-bold">{answer}</h2>
+      {pathname === "/discover" && (
         <LikeDialog
           itemId={id}
-          type='prompt'
+          type="prompt"
           liker={liker}
           likee={likee}
           firstName={null}

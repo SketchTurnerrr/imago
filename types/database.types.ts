@@ -64,35 +64,35 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'conversations_last_message_fkey';
-            columns: ['last_message'];
-            referencedRelation: 'messages';
-            referencedColumns: ['id'];
+            foreignKeyName: "conversations_last_message_fkey";
+            columns: ["last_message"];
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'conversations_participant1_fkey';
-            columns: ['participant1'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "conversations_participant1_fkey";
+            columns: ["participant1"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'conversations_participant1_fkey';
-            columns: ['participant1'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "conversations_participant1_fkey";
+            columns: ["participant1"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'conversations_participant2_fkey';
-            columns: ['participant2'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "conversations_participant2_fkey";
+            columns: ["participant2"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'conversations_participant2_fkey';
-            columns: ['participant2'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "conversations_participant2_fkey";
+            columns: ["participant2"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       matches: {
@@ -119,29 +119,29 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'matches_profile_id_1_fkey';
-            columns: ['profile_id_1'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "matches_profile_id_1_fkey";
+            columns: ["profile_id_1"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'matches_profile_id_1_fkey';
-            columns: ['profile_id_1'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "matches_profile_id_1_fkey";
+            columns: ["profile_id_1"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'matches_profile_id_2_fkey';
-            columns: ['profile_id_2'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "matches_profile_id_2_fkey";
+            columns: ["profile_id_2"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'matches_profile_id_2_fkey';
-            columns: ['profile_id_2'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "matches_profile_id_2_fkey";
+            columns: ["profile_id_2"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       messages: {
@@ -168,23 +168,23 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'messages_conversation_id_fkey';
-            columns: ['conversation_id'];
-            referencedRelation: 'conversations';
-            referencedColumns: ['id'];
+            foreignKeyName: "messages_conversation_id_fkey";
+            columns: ["conversation_id"];
+            referencedRelation: "conversations";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'messages_sender_id_fkey';
-            columns: ['sender_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "messages_sender_id_fkey";
+            columns: ["sender_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'messages_sender_id_fkey';
-            columns: ['sender_id'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "messages_sender_id_fkey";
+            columns: ["sender_id"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       photo_likes: {
@@ -214,35 +214,35 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'photo_likes_likee_fkey';
-            columns: ['likee'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "photo_likes_likee_fkey";
+            columns: ["likee"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'photo_likes_likee_fkey';
-            columns: ['likee'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "photo_likes_likee_fkey";
+            columns: ["likee"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'photo_likes_liker_fkey';
-            columns: ['liker'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "photo_likes_liker_fkey";
+            columns: ["liker"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'photo_likes_liker_fkey';
-            columns: ['liker'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "photo_likes_liker_fkey";
+            columns: ["liker"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'photo_likes_photo_fkey';
-            columns: ['photo'];
-            referencedRelation: 'photos';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "photo_likes_photo_fkey";
+            columns: ["photo"];
+            referencedRelation: "photos";
+            referencedColumns: ["id"];
+          },
         ];
       };
       photos: {
@@ -269,17 +269,17 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'photos_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "photos_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'photos_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "photos_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       profiles: {
@@ -296,6 +296,7 @@ export interface Database {
           location: unknown | null;
           onboarded: boolean;
           toponym: string;
+          verified: boolean;
         };
         Insert: {
           age?: number;
@@ -310,6 +311,7 @@ export interface Database {
           location?: unknown | null;
           onboarded?: boolean;
           toponym?: string;
+          verified?: boolean;
         };
         Update: {
           age?: number;
@@ -324,14 +326,15 @@ export interface Database {
           location?: unknown | null;
           onboarded?: boolean;
           toponym?: string;
+          verified?: boolean;
         };
         Relationships: [
           {
-            foreignKeyName: 'profiles_id_fkey';
-            columns: ['id'];
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
         ];
       };
       prompt_likes: {
@@ -361,35 +364,35 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'prompt_likes_likee_fkey';
-            columns: ['likee'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "prompt_likes_likee_fkey";
+            columns: ["likee"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'prompt_likes_likee_fkey';
-            columns: ['likee'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "prompt_likes_likee_fkey";
+            columns: ["likee"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'prompt_likes_liker_fkey';
-            columns: ['liker'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "prompt_likes_liker_fkey";
+            columns: ["liker"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'prompt_likes_liker_fkey';
-            columns: ['liker'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "prompt_likes_liker_fkey";
+            columns: ["liker"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'prompt_likes_prompt_fkey';
-            columns: ['prompt'];
-            referencedRelation: 'prompts';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "prompt_likes_prompt_fkey";
+            columns: ["prompt"];
+            referencedRelation: "prompts";
+            referencedColumns: ["id"];
+          },
         ];
       };
       prompts: {
@@ -413,17 +416,17 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'prompts_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "prompts_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'prompts_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "prompts_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
       subscriptions: {
@@ -459,17 +462,48 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'subscriptions_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'profiles';
-            referencedColumns: ['id'];
+            foreignKeyName: "subscriptions_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'subscriptions_profile_id_fkey';
-            columns: ['profile_id'];
-            referencedRelation: 'random_profiles';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "subscriptions_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      verification_selfies: {
+        Row: {
+          created_at: string;
+          id: number;
+          profile_id: string;
+        };
+        Insert: {
+          created_at?: string;
+          id?: number;
+          profile_id: string;
+        };
+        Update: {
+          created_at?: string;
+          id?: number;
+          profile_id?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "verification_selfies_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "verification_selfies_profile_id_fkey";
+            columns: ["profile_id"];
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
         ];
       };
     };
@@ -488,6 +522,7 @@ export interface Database {
           location: unknown | null;
           onboarded: boolean | null;
           toponym: string | null;
+          verified: boolean | null;
         };
         Insert: {
           age?: number | null;
@@ -502,6 +537,7 @@ export interface Database {
           location?: unknown | null;
           onboarded?: boolean | null;
           toponym?: string | null;
+          verified?: boolean | null;
         };
         Update: {
           age?: number | null;
@@ -516,14 +552,15 @@ export interface Database {
           location?: unknown | null;
           onboarded?: boolean | null;
           toponym?: string | null;
+          verified?: boolean | null;
         };
         Relationships: [
           {
-            foreignKeyName: 'profiles_id_fkey';
-            columns: ['id'];
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "profiles_id_fkey";
+            columns: ["id"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
         ];
       };
     };
@@ -594,11 +631,11 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'buckets_owner_fkey';
-            columns: ['owner'];
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "buckets_owner_fkey";
+            columns: ["owner"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
         ];
       };
       migrations: {
@@ -661,17 +698,17 @@ export interface Database {
         };
         Relationships: [
           {
-            foreignKeyName: 'objects_bucketId_fkey';
-            columns: ['bucket_id'];
-            referencedRelation: 'buckets';
-            referencedColumns: ['id'];
+            foreignKeyName: "objects_bucketId_fkey";
+            columns: ["bucket_id"];
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
           },
           {
-            foreignKeyName: 'objects_owner_fkey';
-            columns: ['owner'];
-            referencedRelation: 'users';
-            referencedColumns: ['id'];
-          }
+            foreignKeyName: "objects_owner_fkey";
+            columns: ["owner"];
+            referencedRelation: "users";
+            referencedColumns: ["id"];
+          },
         ];
       };
     };

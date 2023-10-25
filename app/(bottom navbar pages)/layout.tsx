@@ -1,12 +1,12 @@
-import { Navbar } from '@/components/navbar/navbar';
-import { createServerClient } from '@/lib/supabase-server';
-import type { Metadata } from 'next';
-import { redirect } from 'next/navigation';
-import { IConversationReadStatus } from '../global';
+import { Navbar } from "@/components/navbar/navbar";
+import { createServerClient } from "@/lib/supabase-server";
+import type { Metadata } from "next";
+import { redirect } from "next/navigation";
+import { IConversationReadStatus } from "../global";
 
 export const metadata: Metadata = {
-  title: 'Discover',
-  description: 'Profiles',
+  title: "Discover",
+  description: "Profiles",
 };
 
 export default async function DiscoverLayout({
@@ -20,29 +20,40 @@ export default async function DiscoverLayout({
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session) redirect('/login');
+  if (!session) redirect("/login");
 
   const { data } = await supabase
-    .from('profiles')
+    .from("profiles")
     .select('photos("src"),onboarded')
-    .order('updated_at', { foreignTable: 'photos', ascending: false })
-    .eq('id', session?.user.id)
+    .order("updated_at", { foreignTable: "photos", ascending: false })
+    .eq("id", session?.user.id)
     .single();
 
   if (data?.onboarded === false) {
-    redirect('/onboarding');
+    redirect("/onboarding");
   }
 
   const { data: status, error } = await supabase
-    .from('conversations')
-    .select('party1_read, party2_read, participant1(id), participant2(id)')
+    .from("conversations")
+    .select("party1_read, party2_read, participant1(id), participant2(id)")
     .returns<IConversationReadStatus>()
     .single();
 
   // console.log('session :', session.user.id);
+
+  // const segment = children?.props.childProp.segment;
+  // console.log("segment :", segment);
+
+  // console.log(" :", children.props.childProp.segment);
   return (
     <section>
-      <Navbar photo={data?.photos} status={status!} userId={session.user.id} />
+      {
+        <Navbar
+          photo={data?.photos}
+          status={status!}
+          userId={session.user.id}
+        />
+      }
       {children}
     </section>
   );

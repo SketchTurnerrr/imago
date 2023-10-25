@@ -1,35 +1,35 @@
-'use client';
+"use client";
 
-import { Button } from './ui/button';
-import { useEffect, useRef } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { useRouter, useSearchParams } from 'next/navigation';
-import HandIcon from '@/public/hand-waving.svg';
+import { Button } from "./ui/button";
+import { useEffect, useRef } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { useRouter, useSearchParams } from "next/navigation";
+import HandIcon from "@/public/hand-waving.svg";
 import {
   LDialog,
   LDialogContent,
   LDialogHeader,
   LDialogTitle,
   LDialogTrigger,
-} from '@/components/ui/custom-like-dialog';
+} from "@/components/ui/custom-like-dialog";
 import {
   Form,
   FormControl,
   FormField,
   FormItem,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import Image from 'next/image';
-import { useState } from 'react';
+import Image from "next/image";
+import { useState } from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Prompt } from './prompt';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Prompt } from "./prompt";
 
 interface IMatchDialog {
   liker: string;
@@ -58,39 +58,15 @@ export function MatchDialog({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      comment: '',
+      comment: "",
     },
   });
-
-  gsap.registerPlugin(ScrollTrigger);
-  useEffect(() => {
-    const showBtn = gsap
-      .fromTo(
-        btnRef.current,
-        {
-          top: '92%',
-        },
-        {
-          top: '83%',
-          duration: 0.3,
-        }
-      )
-      .progress(1);
-
-    ScrollTrigger.create({
-      start: 'top top',
-      end: 'max',
-      onUpdate: (self) => {
-        self.direction === -1 ? showBtn.play() : showBtn.reverse();
-      },
-    });
-  }, []);
 
   const handleMatch = async (data: z.infer<typeof FormSchema>) => {
     const { comment } = data;
 
     const { data: conversation, error } = await supabase
-      .from('conversations')
+      .from("conversations")
       .insert({
         participant1: liker,
         participant2: likee,
@@ -100,17 +76,17 @@ export function MatchDialog({
       .single();
 
     if (comment && conversation) {
-      const { error: mError } = await supabase.from('messages').insert({
+      const { error: mError } = await supabase.from("messages").insert({
         content: comment,
         conversation_id: conversation.id,
         sender_id: liker,
       });
-      console.log('mError :', mError);
+      console.log("mError :", mError);
     }
 
-    console.log('error match:', error);
+    console.log("error match:", error);
     setOpen(false);
-    router.push('/matches');
+    router.push("/matches");
   };
 
   if (!likeData) {
@@ -119,60 +95,56 @@ export function MatchDialog({
 
   return (
     <LDialog open={open} onOpenChange={setOpen}>
-      <LDialogTrigger className='h-0' asChild>
-        <div
-          ref={btnRef}
-          style={{ margin: 0 }}
-          className='h-0 z-30 left-4 self-end sticky top-[83%]'
-        >
+      <LDialogTrigger className="" asChild>
+        <div className="sticky left-4 top-[86%] z-30 h-0 self-end">
           <Button
-            size='icon'
-            className=' h-12 w-12 rounded-full text-3xl bg-white'
+            size="icon"
+            className=" h-12 w-12 rounded-full bg-white text-3xl"
           >
             <HandIcon />
           </Button>
         </div>
       </LDialogTrigger>
-      <LDialogContent className='max-w-xs md:min-w-[350px] bg-transparent border-none shadow-none'>
+      <LDialogContent className="max-w-xs border-none bg-transparent shadow-none md:min-w-[350px]">
         <LDialogHeader>
-          <LDialogTitle className='text-3xl'>
-            {firstName ? firstName : ''}
+          <LDialogTitle className="text-3xl">
+            {firstName ? firstName : ""}
           </LDialogTitle>
         </LDialogHeader>
-        <div className='flex flex-col gap-8'>
-          {'photo' in likeData && (
-            <div className='relative h-80'>
+        <div className="flex flex-col gap-8">
+          {"photo" in likeData && (
+            <div className="relative h-80">
               <Image
                 src={likeData?.photo?.src}
                 alt={firstName!}
-                layout='fill'
-                className='rounded-lg object-cover aspect-square'
+                layout="fill"
+                className="aspect-square rounded-lg object-cover"
               />
-              <div className='w-fit absolute -bottom-4 p-2 rounded-bl-none text-sm rounded-lg bg-purple-400 font-semibold text-white'>
+              <div className="absolute -bottom-4 w-fit rounded-lg rounded-bl-none bg-purple-400 p-2 text-sm font-semibold text-white">
                 {likeData.comment
                   ? likeData.comment
-                  : likeData.liker.gender === 'male'
-                  ? 'Вподобав' + ' ваше фото'
-                  : 'Вподобала' + ' ваше фото'}
+                  : likeData.liker.gender === "male"
+                  ? "Вподобав" + " ваше фото"
+                  : "Вподобала" + " ваше фото"}
               </div>
             </div>
           )}
 
-          {'prompt' in likeData && (
-            <div className='relative'>
+          {"prompt" in likeData && (
+            <div className="relative">
               <Prompt
-                likee=''
-                liker=''
+                likee=""
+                liker=""
                 id={likeData.id}
                 question={likeData.prompt.question}
                 answer={likeData.prompt.answer}
               />
-              <div className='w-fit absolute -bottom-4 p-2 rounded-bl-none text-sm rounded-lg bg-purple-400 font-semibold text-white'>
+              <div className="absolute -bottom-4 w-fit rounded-lg rounded-bl-none bg-purple-400 p-2 text-sm font-semibold text-white">
                 {likeData.comment
                   ? likeData.comment
-                  : likeData.liker.gender === 'male'
-                  ? 'Вподобав' + ' вашу відповідь'
-                  : 'Вподобала' + ' вашу відповідь'}
+                  : likeData.liker.gender === "male"
+                  ? "Вподобав" + " вашу відповідь"
+                  : "Вподобала" + " вашу відповідь"}
               </div>
             </div>
           )}
@@ -180,19 +152,19 @@ export function MatchDialog({
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleMatch)}
-              className='flex flex-col gap-2'
+              className="flex flex-col gap-2"
             >
               <FormField
                 control={form.control}
-                name='comment'
+                name="comment"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className='bg-white'
+                        className="bg-white"
                         maxLength={140}
-                        placeholder='Відправити повідомлення'
+                        placeholder="Відправити повідомлення"
                       />
                     </FormControl>
 
@@ -201,8 +173,8 @@ export function MatchDialog({
                 )}
               />
               <Button
-                className='font-bold text-base'
-                type='submit'
+                className="text-base font-bold"
+                type="submit"
                 // onClick={handleLike}
               >
                 Познайомитись

@@ -1,16 +1,16 @@
-'use client';
-import { Button } from '@/components/ui/button';
-import { ChevronRightIcon } from '@radix-ui/react-icons';
+"use client";
+import { Button } from "@/components/ui/button";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   createClientComponentClient,
   User,
-} from '@supabase/auth-helpers-nextjs';
-import { usePathname, useRouter } from 'next/navigation';
-import { useLoadScript } from '@react-google-maps/api';
-import { useCallback, useEffect, useState } from 'react';
-import { Map } from './map';
-import { debounce } from '@/lib/utils';
-import { useWindowHeight } from '@/hooks/useWindowHeight';
+} from "@supabase/auth-helpers-nextjs";
+import { usePathname, useRouter } from "next/navigation";
+import { useLoadScript } from "@react-google-maps/api";
+import { useCallback, useEffect, useState } from "react";
+import { Map } from "./map";
+import { debounce } from "@/lib/utils";
+import { useWindowHeight } from "@/hooks/useWindowHeight";
 
 export default function Location({ user }: { user: User | undefined }) {
   const pathname = usePathname();
@@ -20,14 +20,14 @@ export default function Location({ user }: { user: User | undefined }) {
     lat: 50.4421673,
     lng: 30.5368004,
   });
-  const [toponym, setToponym] = useState('');
+  const [toponym, setToponym] = useState("");
   const [userPermission, setUserPermission] = useState(false);
   const [userPos, setUserPos] = useState<google.maps.LatLngLiteral>({
     lat: 50.4421673,
     lng: 30.5368004,
   });
 
-  console.log('userPos :', userPos);
+  console.log("userPos :", userPos);
   useEffect(() => {
     const getLocationDetails = async () => {
       try {
@@ -41,12 +41,12 @@ export default function Location({ user }: { user: User | undefined }) {
             },
           });
           const result = res.results[0].address_components?.find(
-            (component: any) => component.types.includes('locality')
+            (component: any) => component.types.includes("locality"),
           )?.long_name;
           if (result) setToponym(result);
         }
       } catch (error) {
-        console.log(' :', error);
+        console.log(" :", error);
       }
     };
 
@@ -64,23 +64,23 @@ export default function Location({ user }: { user: User | undefined }) {
         setMarkerPos(newCenter!);
       }
     }, 1000),
-    [map]
+    [map],
   );
 
   const supabase = createClientComponentClient<Database>();
   const router = useRouter();
   async function handleLocation() {
     if (user) {
-      console.log('toponym from handleLocation:', toponym);
+      console.log("toponym from handleLocation:", toponym);
       await supabase
-        .from('profiles')
+        .from("profiles")
         .update({
           location: `POINT(${markerPos?.lat} ${markerPos.lng})`,
-          toponym: toponym ? toponym : 'Київ',
+          toponym: toponym ? toponym : "Київ",
         })
-        .eq('id', user.id);
+        .eq("id", user.id);
 
-      router.push('prompts');
+      router.push("prompts");
     }
   }
 
@@ -111,19 +111,19 @@ export default function Location({ user }: { user: User | undefined }) {
 
   const { isLoaded } = useLoadScript({
     googleMapsApiKey: process.env.NEXT_PUBLIC_GOOGLE_MAPS_API_KEY as string,
-    language: 'uk',
-    region: 'UA',
+    language: "uk",
+    region: "UA",
   });
 
-  if (pathname !== '/onboarding/location') return;
+  if (pathname !== "/onboarding/location") return;
 
   return (
     <div
       style={{ height: windowHeight }}
-      className='p-4  h-screen flex flex-col justify-between'
+      className="flex h-screen flex-col justify-between p-4"
     >
-      <div className='flex flex-col gap-4'>
-        <h1 className='text-5xl pt-20 font-bold mb-4'>Де ви знаходитесь?</h1>
+      <div className="flex flex-col gap-4">
+        <h1 className="mb-4 pt-20 text-5xl font-bold">Де ви знаходитесь?</h1>
 
         {isLoaded && <Button onClick={handleUserLocation}>Знайти мене</Button>}
 
@@ -136,16 +136,16 @@ export default function Location({ user }: { user: User | undefined }) {
             onCenterChanged={handleCenterChanged}
           />
         ) : (
-          <div className='h-[400px] w-full mt-12 rounded-lg animate-pulse bg-gray-300'></div>
+          <div className="mt-12 h-[400px] w-full animate-pulse rounded-lg bg-gray-300"></div>
         )}
       </div>
 
       <Button
         onClick={handleLocation}
-        size='icon'
-        className='rounded-full self-end bg-purple-400'
+        size="icon"
+        className="self-end rounded-full bg-purple-400"
       >
-        <ChevronRightIcon className='h-7 w-7' />
+        <ChevronRightIcon className="h-7 w-7" />
       </Button>
     </div>
   );

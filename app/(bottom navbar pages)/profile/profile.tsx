@@ -1,19 +1,21 @@
-'use client';
-import { ModeToggle } from '@/components/theme-changer';
-import { Button } from '@/components/ui/button';
-import { Separator } from '@/components/ui/separator';
+"use client";
+import { ModeToggle } from "@/components/theme-changer";
+import { Button } from "@/components/ui/button";
+import { Separator } from "@/components/ui/separator";
 import {
   GearIcon,
   MixerHorizontalIcon,
   Pencil2Icon,
   SymbolIcon,
-} from '@radix-ui/react-icons';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import Image from 'next/image';
-import Link from 'next/link';
-import { useRouter } from 'next/navigation';
+} from "@radix-ui/react-icons";
+import BadgeIcon from "@/public/badge-check.svg";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
+  console.log("profile :", profile);
   const router = useRouter();
   async function signOut() {
     const supabase = createClientComponentClient();
@@ -22,53 +24,59 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   }
 
   return (
-    <div className='h-screen p-4 flex flex-col mb-20 pt-20'>
+    <div className="mb-20 flex h-screen flex-col p-4 pt-20">
       <Image
         priority
         src={profile.photos[0].src}
-        alt={'photo'}
+        alt={"photo"}
         width={190}
         height={190}
-        className='rounded-full self-center object-cover aspect-square mb-6'
+        className="mb-6 aspect-square self-center rounded-full object-cover"
       />
-      <h1 className='text-4xl font-bold self-center'>{profile.first_name}</h1>
-      <Separator className='my-4' />
-      <Link className='font-bold text-xl' href={'/profile/edit'}>
-        <div className='flex items-center justify-between'>
+      <div className="flex items-center gap-3 self-center">
+        <h1 className="text-4xl font-bold capitalize">{profile.first_name}</h1>
+
+        {profile.verified && (
+          <BadgeIcon className="self-end text-white" width={32} height={32} />
+        )}
+      </div>
+      <Separator className="my-4" />
+      <Link className="text-xl font-bold" href={"/profile/edit"}>
+        <div className="flex items-center justify-between">
           Редагувати профіль
-          <Pencil2Icon className='w-7 h-7' />
+          <Pencil2Icon className="h-7 w-7" />
         </div>
       </Link>
 
-      <Separator className='my-4' />
-      <Link className='font-bold text-xl' href={'/profile/preferences'}>
-        <div className='flex items-center justify-between'>
+      <Separator className="my-4" />
+      <Link className="text-xl font-bold" href={"/profile/preferences"}>
+        <div className="flex items-center justify-between">
           Уподобання
-          <MixerHorizontalIcon className='w-7 h-7' />
+          <MixerHorizontalIcon className="h-7 w-7" />
         </div>
       </Link>
-      <Separator className='my-4' />
-      <Link className='font-bold text-xl' href={'/profile/settings'}>
-        <div className='flex items-center justify-between'>
-          Налаштування
-          <GearIcon className='w-7 h-7' />
+      <Separator className="my-4" />
+      <Link className="text-xl font-bold" href={"/profile/account"}>
+        <div className="flex items-center justify-between">
+          Акаунт
+          <GearIcon className="h-7 w-7" />
         </div>
       </Link>
-      <Separator className='my-4' />
-      <Link className='font-bold text-xl' href={'/profile/subscription'}>
-        <div className='flex items-center justify-between'>
+      <Separator className="my-4" />
+      <Link className="text-xl font-bold" href={"/profile/subscription"}>
+        <div className="flex items-center justify-between">
           Підписка
-          <SymbolIcon className='w-7 h-7' />
+          <SymbolIcon className="h-7 w-7" />
         </div>
       </Link>
-      <Separator className='my-4' />
-      <div className='flex text-xl font-bold items-center justify-between'>
+      <Separator className="my-4" />
+      <div className="flex items-center justify-between text-xl font-bold">
         Тема
         <ModeToggle />
       </div>
-      <Separator className='my-4' />
+      <Separator className="my-4" />
       <Button
-        className='w-fit self-end mt-6 bg-primary font-bold'
+        className="mt-6 w-fit self-end bg-primary font-bold"
         onClick={() => signOut()}
       >
         Вийти

@@ -1,15 +1,16 @@
-import { Database as DB } from '@/types/database.types';
+import { Database as DB } from "@/types/database.types";
 
 declare global {
   type Database = DB;
 
-  type ProfileType = DB['public']['Tables']['profiles']['Row'];
-  type PromptsType = DB['public']['Tables']['prompts']['Row'];
-  type PhotosType = DB['public']['Tables']['photos']['Row'];
-  type PhotoLikesType = DB['public']['Tables']['photo_likes']['Row'];
-  type PromptLikesType = DB['public']['Tables']['prompt_likes']['Row'];
-  type ConversationsType = DB['public']['Tables']['conversations']['Row'];
-  type MessagesType = DB['public']['Tables']['messages']['Row'];
+  type ProfileType = DB["public"]["Tables"]["profiles"]["Row"];
+  type PromptsType = DB["public"]["Tables"]["prompts"]["Row"];
+  type PhotosType = DB["public"]["Tables"]["photos"]["Row"];
+  type PhotoLikesType = DB["public"]["Tables"]["photo_likes"]["Row"];
+  type PromptLikesType = DB["public"]["Tables"]["prompt_likes"]["Row"];
+  type ConversationsType = DB["public"]["Tables"]["conversations"]["Row"];
+  type MessagesType = DB["public"]["Tables"]["messages"]["Row"];
+  type SubscriptionType = DB["public"]["Tables"]["subscriptions"]["Row"];
 
   interface FullProfile extends ProfileType {
     prompts: PromptsType[];

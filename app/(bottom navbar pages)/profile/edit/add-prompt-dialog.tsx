@@ -1,5 +1,5 @@
-'use client';
-import { Button } from '@/components/ui/button';
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   Dialog,
   DialogContent,
@@ -8,7 +8,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from "@/components/ui/dialog";
 
 import {
   Form,
@@ -18,33 +18,33 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
+} from "@/components/ui/form";
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
-import { Textarea } from '@/components/ui/textarea';
-import { Label } from '@/components/ui/label';
-import { Separator } from '@/components/ui/separator';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
+} from "@/components/ui/select";
+import { Textarea } from "@/components/ui/textarea";
+import { Label } from "@/components/ui/label";
+import { Separator } from "@/components/ui/separator";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
 import {
   User,
   createClientComponentClient,
-} from '@supabase/auth-helpers-nextjs';
-import { useState } from 'react';
+} from "@supabase/auth-helpers-nextjs";
+import { useState } from "react";
 
 const FormSchema = z.object({
   question: z.string({
-    required_error: 'Please select an email to display.',
+    required_error: "Please select an email to display.",
   }),
-  answer: z.string().max(179, 'Максимум 180 символів'),
+  answer: z.string().max(179, "Максимум 180 символів"),
 });
 
 export function AddPromptDialog({ user }: { user: User }) {
@@ -59,7 +59,7 @@ export function AddPromptDialog({ user }: { user: User }) {
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (user) {
-      await supabase.from('prompts').insert({
+      await supabase.from("prompts").insert({
         question: data.question,
         answer: data.answer,
         profile_id: user.id,
@@ -75,21 +75,21 @@ export function AddPromptDialog({ user }: { user: User }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className='flex relative flex-col  p-4 rounded-lg bg-slate-50 border-2 border-dashed font-bold text-gray-500 text-sm border-gray-300'>
+        <div className="relative flex flex-col rounded-lg border-2 border-dashed border-gray-300 bg-slate-50 p-4 text-sm font-bold text-gray-500">
           <p>Оберіть фразу</p>
           <p>І дайте на неї відповідь</p>
           <Image
-            src='/plus.svg'
+            src="/plus.svg"
             width={24}
             height={24}
-            alt='plus icon'
-            className='absolute -top-2 -right-2'
+            alt="plus icon"
+            className="absolute -right-2 -top-2"
           />
         </div>
       </DialogTrigger>
-      <DialogContent className='w-[350px]'>
+      <DialogContent className="w-[350px]">
         <DialogHeader>
-          <DialogTitle className='font-bold'>Оберіть фразу</DialogTitle>
+          <DialogTitle className="font-bold">Оберіть фразу</DialogTitle>
           <DialogDescription>
             Ваші відповіді допоможуть почати розмову
           </DialogDescription>
@@ -97,11 +97,11 @@ export function AddPromptDialog({ user }: { user: User }) {
         <Form {...form}>
           <form
             onSubmit={form.handleSubmit(onSubmit)}
-            className='w-2/3 space-y-6'
+            className="w-2/3 space-y-6"
           >
             <FormField
               control={form.control}
-              name='question'
+              name="question"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Фраза</FormLabel>
@@ -111,17 +111,17 @@ export function AddPromptDialog({ user }: { user: User }) {
                   >
                     <FormControl>
                       <SelectTrigger>
-                        <SelectValue placeholder='Оберіть фразу' />
+                        <SelectValue placeholder="Оберіть фразу" />
                       </SelectTrigger>
                     </FormControl>
-                    <SelectContent className='overflow-y-auto max-h-[10rem]'>
-                      <SelectItem value='Моя улюблена книга Біблії'>
+                    <SelectContent className="max-h-[10rem] overflow-y-auto">
+                      <SelectItem value="Моя улюблена книга Біблії">
                         Моя улюблена книга Біблії
                       </SelectItem>
-                      <SelectItem value='Я божеволію від'>
+                      <SelectItem value="Я божеволію від">
                         Я божеволію від
                       </SelectItem>
-                      <SelectItem value='Моя типова неділя'>
+                      <SelectItem value="Моя типова неділя">
                         Моя типова неділя
                       </SelectItem>
                       {/* <SelectItem value=''></SelectItem> */}
@@ -132,13 +132,13 @@ export function AddPromptDialog({ user }: { user: User }) {
                     <Separator className='w-full bg-red-400' />
                     Християнство
                   </SelectItem> */}
-                      <SelectItem value='Люди дивуються, коли я кажу'>
+                      <SelectItem value="Люди дивуються, коли я кажу">
                         Люди дивуються, коли я кажу
                       </SelectItem>
                       <SelectItem value="Цього року, я обов'язково">
                         Цього року, я обов&apos;язково
                       </SelectItem>
-                      <SelectItem value='Хочеш - вір, хочеш - ні'>
+                      <SelectItem value="Хочеш - вір, хочеш - ні">
                         Хочеш - вір, хочеш - ні
                       </SelectItem>
                     </SelectContent>
@@ -150,12 +150,12 @@ export function AddPromptDialog({ user }: { user: User }) {
             />
             <FormField
               control={form.control}
-              name='answer'
+              name="answer"
               render={({ field }) => (
                 <FormItem>
                   <FormLabel>Відповідь</FormLabel>
 
-                  <Textarea maxLength={180} {...field} id='answer' />
+                  <Textarea maxLength={180} {...field} id="answer" />
                   <FormMessage />
                 </FormItem>
               )}
@@ -163,7 +163,7 @@ export function AddPromptDialog({ user }: { user: User }) {
             {/* <Button type='submit'>Зберегти</Button> */}
 
             <DialogFooter>
-              <Button type='submit'>Зберегти</Button>
+              <Button type="submit">Зберегти</Button>
             </DialogFooter>
           </form>
         </Form>

@@ -1,19 +1,26 @@
-'use client';
-import { differenceInYears, parse, format, parseISO } from 'date-fns';
-import Image from 'next/image';
-import Cross from '@/public/cross.svg';
-import Cake from '@/public/cake.svg';
-import Undo from '@/public/undo.svg';
-import MapPin from '@/public/map-pin.svg';
-import { useLayoutEffect, useRef, useState } from 'react';
-import gsap, { Power2 } from 'gsap';
-import { SkipProfileBtn } from '@/components/skip-profile-btn';
-import { Prompt } from '@/components/prompt';
-import { LikeDialog } from '@/components/like-dialog';
-import { usePathname } from 'next/navigation';
-import { MatchDialog } from '@/components/match-btn';
-import { Filter } from '@/components/filter';
-import { Button } from '@/components/ui/button';
+"use client";
+import { differenceInYears, parse, format, parseISO } from "date-fns";
+import Image from "next/image";
+import Cross from "@/public/cross.svg";
+import Cake from "@/public/cake.svg";
+import Undo from "@/public/undo.svg";
+import MapPin from "@/public/map-pin.svg";
+import BadgeIcon from "@/public/badge-check.svg";
+import { useLayoutEffect, useRef, useState } from "react";
+import gsap, { Power2 } from "gsap";
+import { SkipProfileBtn } from "@/components/skip-profile-btn";
+import { Prompt } from "@/components/prompt";
+import { LikeDialog } from "@/components/like-dialog";
+import { usePathname } from "next/navigation";
+import { MatchDialog } from "@/components/match-btn";
+import { Filter } from "@/components/filter";
+import { Button } from "@/components/ui/button";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "@/components/ui/tooltip";
 
 interface IProfile {
   serverProfiles: FullProfile[];
@@ -35,7 +42,7 @@ export function Profile({
   const profileRef = useRef(null);
   const [profiles, setProfiles] = useState<FullProfile[]>(serverProfiles);
   const [skippedProfile, setSkippedProfile] = useState<FullProfile | null>(
-    null
+    null,
   );
   // console.log('skippedProfile :', skippedProfile);
 
@@ -55,7 +62,7 @@ export function Profile({
       gsap.fromTo(
         profileRef.current,
         {
-          y: '20%',
+          y: "20%",
           autoAlpha: 0,
           duration: 1,
           ease: Power2.easeInOut,
@@ -63,7 +70,7 @@ export function Profile({
         {
           autoAlpha: 1,
           y: 0,
-        }
+        },
       );
     }, profileRef);
 
@@ -93,53 +100,53 @@ export function Profile({
     window.location.reload();
     return null;
   }
-  const dob = format(parseISO(String(profile.date_of_birth)), 'yyyy/MM/dd');
-  const date = parse(dob, 'yyyy/MM/dd', new Date());
+  const dob = format(parseISO(String(profile.date_of_birth)), "yyyy/MM/dd");
+  const date = parse(dob, "yyyy/MM/dd", new Date());
   const age = differenceInYears(new Date(), date);
 
   const {
     question: question0,
     answer: answer0,
     id: promptId0,
-  } = profile.prompts[0] || '';
+  } = profile.prompts[0] || "";
   const {
     question: question1,
     answer: answer1,
     id: promptId1,
-  } = profile.prompts[1] || '';
+  } = profile.prompts[1] || "";
   const {
     question: question2,
     answer: answer2,
     id: promptId2,
-  } = profile.prompts[2] || '';
+  } = profile.prompts[2] || "";
 
-  const { src: src0, id: photoId0 } = profile.photos[0] || '';
-  const { src: src1, id: photoId1 } = profile.photos[1] || '';
-  const { src: src2, id: photoId2 } = profile.photos[2] || '';
-  const { src: src3, id: photoId3 } = profile.photos[3] || '';
-  const { src: src4, id: photoId4 } = profile.photos[4] || '';
-  const { src: src5, id: photoId5 } = profile.photos[5] || '';
+  const { src: src0, id: photoId0 } = profile.photos[0] || "";
+  const { src: src1, id: photoId1 } = profile.photos[1] || "";
+  const { src: src2, id: photoId2 } = profile.photos[2] || "";
+  const { src: src3, id: photoId3 } = profile.photos[3] || "";
+  const { src: src4, id: photoId4 } = profile.photos[4] || "";
+  const { src: src5, id: photoId5 } = profile.photos[5] || "";
   const photo = (src: string | null, id: string) => {
     if (!src) {
       return null;
     } else {
       return (
-        <div className={'relative w-fit'}>
+        <div className={"relative w-fit"}>
           <Image
             priority
             src={
               src ||
-              'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
+              "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg"
             }
             height={500}
             width={500}
-            alt='me'
-            className='rounded-lg'
+            alt="me"
+            className="rounded-lg"
           />
-          {pathname === '/discover' && (
+          {pathname === "/discover" && (
             <LikeDialog
               itemId={id}
-              type='photo'
+              type="photo"
               liker={userId}
               likee={profile.id}
               src={src}
@@ -174,18 +181,36 @@ export function Profile({
   return (
     <main
       ref={profileRef}
-      className='flex space-y-4 md:items-center min-h-screen opacity-0 flex-col p-4'
+      className="flex min-h-screen flex-col space-y-4 p-4 opacity-0 md:items-center"
     >
-      <div className='flex items-center md:w-[500px] justify-between'>
-        <h1 className='text-4xl font-bold  md:self-start'>
-          {profile.first_name}
-        </h1>
-        {pathname.split('/')[1] !== 'likes' && (
-          <div className='flex items-center gap-2'>
+      <div className="flex items-center justify-between md:w-[500px]">
+        <div className="flex items-center gap-3">
+          <h1 className="text-4xl font-bold capitalize md:self-start">
+            {profile.first_name}
+          </h1>
+          {!profile.verified && (
+            <TooltipProvider>
+              <Tooltip>
+                <TooltipTrigger>
+                  <BadgeIcon
+                    className="inline-block  text-white"
+                    width={32}
+                    height={32}
+                  />
+                </TooltipTrigger>
+                <TooltipContent className="bg-secondary-foreground">
+                  <p>Верифікований акаунт</p>
+                </TooltipContent>
+              </Tooltip>
+            </TooltipProvider>
+          )}
+        </div>
+        {pathname.split("/")[1] !== "likes" && (
+          <div className="flex items-center gap-2">
             <Button
               disabled={!skippedProfile}
-              variant='ghost'
-              size='icon'
+              variant="ghost"
+              size="icon"
               onClick={() => undoSkip()}
             >
               <Undo />
@@ -199,7 +224,7 @@ export function Profile({
         profileId={profile.id}
         skipProfile={skipProfile}
       />
-      {pathname.split('/')[1] === 'likes' && (
+      {pathname.split("/")[1] === "likes" && (
         <MatchDialog
           likee={profile.id}
           liker={userId}
@@ -217,17 +242,17 @@ export function Profile({
       ----- INFO 
       */}
 
-      <div className='px-4 py-10 bg-secondary/75 font-bold md:w-[500px] relative rounded-lg'>
-        <div className='flex items-center justify-around gap-6 text-secondary-foreground'>
-          <div className='flex items-center gap-3'>
+      <div className="relative rounded-lg bg-secondary/75 px-4 py-10 font-bold md:w-[500px]">
+        <div className="flex items-center justify-around gap-6 text-secondary-foreground">
+          <div className="flex items-center gap-3">
             <Cake />
-            {age || '17'}
+            {age || "17"}
           </div>
-          <div className='flex  items-center gap-3'>
+          <div className="flex items-center gap-3">
             <Cross />
             {profile.denomination}
           </div>
-          <div className='flex items-center gap-3'>
+          <div className="flex items-center gap-3">
             <MapPin />
             {profile.toponym}
           </div>
@@ -266,7 +291,7 @@ export function Profile({
       */}
 
       {photo(src5, photoId5)}
-      <div className='pb-20'></div>
+      <div className="pb-20"></div>
     </main>
   );
 }

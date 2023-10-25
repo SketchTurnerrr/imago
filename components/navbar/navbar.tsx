@@ -1,15 +1,15 @@
-'use client';
-import Image from 'next/image';
-import Link from 'next/link';
-import Compass from '@/public/compass.svg';
-import ThumbsUp from '@/public/thumbs-up.svg';
-import Message from '@/public/message.svg';
-import { useEffect, useRef, useState } from 'react';
-import gsap from 'gsap';
-import { ScrollTrigger } from 'gsap/all';
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import { IConversationReadStatus } from '@/app/global';
-import { useRouter } from 'next/navigation';
+"use client";
+import Image from "next/image";
+import Link from "next/link";
+import Compass from "@/public/compass.svg";
+import ThumbsUp from "@/public/thumbs-up.svg";
+import Message from "@/public/message.svg";
+import { useEffect, useRef, useState } from "react";
+import gsap from "gsap";
+import { ScrollTrigger } from "gsap/all";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { IConversationReadStatus } from "@/app/global";
+import { usePathname, useRouter } from "next/navigation";
 
 interface INavbar {
   photo:
@@ -24,59 +24,33 @@ interface INavbar {
 export function Navbar({ photo, status, userId }: INavbar) {
   const router = useRouter();
   const [rtStatus, setRTStatus] = useState(status);
-  const navbarRef = useRef(null);
   const supabase = createClientComponentClient<Database>();
-
-  gsap.registerPlugin(ScrollTrigger);
-  useEffect(() => {
-    const showNav = gsap
-      .fromTo(
-        navbarRef.current,
-        {
-          height: 0,
-          opacity: 0,
-        },
-        {
-          opacity: 1,
-          height: '4rem',
-          duration: 0.3,
-        }
-      )
-      .progress(1);
-
-    ScrollTrigger.create({
-      start: 'top top',
-      end: 'max',
-      onUpdate: (self) => {
-        self.direction === -1 ? showNav.play() : showNav.reverse();
-      },
-    });
-  }, []);
+  const pathname = usePathname();
 
   const items = [
     {
-      url: '/',
+      url: "/",
       icon: Compass,
     },
     {
-      url: '/likes',
+      url: "/likes",
       icon: ThumbsUp,
     },
     {
-      url: '/matches',
+      url: "/matches",
       icon: Message,
     },
   ];
 
   useEffect(() => {
     const channel = supabase
-      .channel('unread-messages')
+      .channel("unread-messages")
       .on(
-        'postgres_changes',
+        "postgres_changes",
         {
-          event: 'UPDATE',
-          schema: 'public',
-          table: 'conversations',
+          event: "UPDATE",
+          schema: "public",
+          table: "conversations",
         },
         (payload) => {
           const newStatus = {
@@ -86,7 +60,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
             party2_read: payload.new.party2_read as boolean,
           };
           setRTStatus(newStatus);
-        }
+        },
       )
       .subscribe();
     return () => {
@@ -95,39 +69,39 @@ export function Navbar({ photo, status, userId }: INavbar) {
   }, [supabase]);
 
   const party =
-    rtStatus?.participant1.id !== userId
+    rtStatus?.participant1 !== userId
       ? rtStatus?.party2_read
       : rtStatus?.party1_read;
 
   const links = items.map((item) => (
-    <Link className=' text-gray-300 relative' key={item.url} href={item.url}>
-      {rtStatus && !party && item.url === '/matches' && (
-        <div className='unread-count before:content-[attr(data-unread)]'></div>
+    <Link className=" relative text-gray-300" key={item.url} href={item.url}>
+      {rtStatus && !party && item.url === "/matches" && (
+        <div className="unread-count before:content-[attr(data-unread)]"></div>
       )}
       <item.icon />
     </Link>
   ));
 
+  if (pathname.split("/")[1] === "matches" && pathname.split("/").length === 3)
+    return null;
+
   return (
     <>
-      <div
-        ref={navbarRef}
-        className='fixed items-center  left-0 h-16 bg-slate-950 z-10 right-0 bottom-0 w-screen'
-      >
-        <div className='absolute flex w-full h-full justify-around items-center'>
+      <div className="fixed bottom-0 top-auto z-10 h-16 w-full items-center bg-slate-950">
+        <div className="absolute flex h-full w-full items-center justify-around">
           {links}
-          <Link href={'/profile'}>
+          <Link href={"/profile"}>
             <Image
               priority
-              className={'object-cover aspect-square rounded-full'}
+              className={"aspect-square rounded-full object-cover"}
               src={
                 photo
                   ? photo[0]?.src
-                  : 'https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg'
+                  : "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg"
               }
               width={30}
               height={30}
-              alt='icon'
+              alt="icon"
             />
           </Link>
         </div>

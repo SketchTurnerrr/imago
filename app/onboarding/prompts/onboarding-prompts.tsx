@@ -1,14 +1,14 @@
-'use client';
-import { AddPromptDialog } from '@/app/(bottom navbar pages)/profile/edit/add-prompt-dialog';
-import { Button } from '@/components/ui/button';
-import { useWindowHeight } from '@/hooks/useWindowHeight';
-import { ChevronRightIcon } from '@radix-ui/react-icons';
+"use client";
+import { AddPromptDialog } from "@/app/(bottom navbar pages)/profile/edit/add-prompt-dialog";
+import { Button } from "@/components/ui/button";
+import { useWindowHeight } from "@/hooks/useWindowHeight";
+import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   createClientComponentClient,
   User,
-} from '@supabase/auth-helpers-nextjs';
-import Image from 'next/image';
-import { useRouter } from 'next/navigation';
+} from "@supabase/auth-helpers-nextjs";
+import Image from "next/image";
+import { useRouter } from "next/navigation";
 
 type PageProps = {
   user: User;
@@ -20,55 +20,55 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
   const windowHeight = useWindowHeight();
   const supabase = createClientComponentClient<Database>();
   const handleDelete = async (id: string) => {
-    await supabase.from('prompts').delete().eq('id', id);
+    await supabase.from("prompts").delete().eq("id", id);
     router.refresh();
   };
 
   return (
     <div
       style={{ height: windowHeight }}
-      className='h-screen p-4 flex flex-col justify-between'
+      className="flex h-screen flex-col justify-between p-4"
     >
-      <div className='flex flex-col gap-4'>
-        <h1 className='text-5xl mt-20 font-bold mb-4'>Додайте три фрази</h1>
+      <div className="flex flex-col gap-4">
+        <h1 className="mb-4 mt-20 text-5xl font-bold">Додайте три фрази</h1>
         {data?.prompts?.map((prompt) => {
           return (
             <div
               key={prompt.id}
-              className='flex relative flex-col p-4 rounded-lg font-bold  text-sm shadow-sm border border-slate-100'
+              className="relative flex flex-col rounded-lg border border-slate-100 p-4 text-sm font-bold shadow-sm"
             >
               <p>{prompt.question}</p>
-              <p className='border-l border-gray-300 mt-2 pl-2 text-gray-500'>
+              <p className="mt-2 border-l border-gray-300 pl-2 text-gray-500">
                 {prompt.answer}
               </p>
               <div
                 onClick={() => handleDelete(prompt.id)}
-                role='button'
-                className='absolute -top-1 -right-1 rounded-full bg-white p-1 shadow-md'
+                role="button"
+                className="absolute -right-1 -top-1 rounded-full bg-white p-1 shadow-md"
               >
                 <Image
-                  src='/x.svg'
+                  src="/x.svg"
                   width={14}
                   height={14}
-                  alt='close icon'
-                  className=''
+                  alt="close icon"
+                  className=""
                 />
               </div>
             </div>
           );
         })}
         {data.prompts.length < 3 && <AddPromptDialog user={user} />}
-        <p className='text-gray-400 text-sm font-semibold'>
+        <p className="text-sm font-semibold text-gray-400">
           Додайте мінімум 3 фрази.
         </p>
       </div>
       <Button
-        size='icon'
-        onClick={() => router.push('/onboarding/photos')}
-        className='bg-purple-400 self-end rounded-full'
+        size="icon"
+        onClick={() => router.push("/onboarding/photos")}
+        className="self-end rounded-full bg-purple-400"
         disabled={data.prompts.length !== 3}
       >
-        <ChevronRightIcon className='w-7 h-7' />
+        <ChevronRightIcon className="h-7 w-7" />
       </Button>
     </div>
   );
