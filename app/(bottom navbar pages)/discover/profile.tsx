@@ -2,7 +2,9 @@
 import { differenceInYears, parse, format, parseISO } from 'date-fns';
 import Image from 'next/image';
 import Cross from '@/public/cross.svg';
+import Cake from '@/public/cake.svg';
 import Undo from '@/public/undo.svg';
+import MapPin from '@/public/map-pin.svg';
 import { useLayoutEffect, useRef, useState } from 'react';
 import gsap, { Power2 } from 'gsap';
 import { SkipProfileBtn } from '@/components/skip-profile-btn';
@@ -10,7 +12,6 @@ import { Prompt } from '@/components/prompt';
 import { LikeDialog } from '@/components/like-dialog';
 import { usePathname } from 'next/navigation';
 import { MatchDialog } from '@/components/match-btn';
-import { cn } from '@/lib/utils';
 import { Filter } from '@/components/filter';
 import { Button } from '@/components/ui/button';
 
@@ -181,7 +182,12 @@ export function Profile({
         </h1>
         {pathname.split('/')[1] !== 'likes' && (
           <div className='flex items-center gap-2'>
-            <Button variant='ghost' size='icon' onClick={() => undoSkip()}>
+            <Button
+              disabled={!skippedProfile}
+              variant='ghost'
+              size='icon'
+              onClick={() => undoSkip()}
+            >
               <Undo />
             </Button>
             <Filter />
@@ -211,23 +217,18 @@ export function Profile({
       ----- INFO 
       */}
 
-      <div className='px-4 py-10 bg-purple-50 font-bold md:w-[500px] relative rounded-lg'>
-        <div className='flex items-center gap-6 '>
+      <div className='px-4 py-10 bg-secondary/75 font-bold md:w-[500px] relative rounded-lg'>
+        <div className='flex items-center justify-around gap-6 text-secondary-foreground'>
           <div className='flex items-center gap-3'>
-            <Image src='/cake.svg' width={22} height={22} alt='cake icon' />
+            <Cake />
             {age || '17'}
           </div>
-          <div className='flex items-center gap-3'>
+          <div className='flex  items-center gap-3'>
             <Cross />
             {profile.denomination}
           </div>
           <div className='flex items-center gap-3'>
-            <Image
-              src='/map-pin.svg'
-              width={24}
-              height={24}
-              alt='map pin icon'
-            />
+            <MapPin />
             {profile.toponym}
           </div>
         </div>

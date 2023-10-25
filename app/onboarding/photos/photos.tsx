@@ -1,5 +1,5 @@
 'use client';
-import { PhotoGrid } from '@/app/(bottom navbar pages)/profile/edit/photo-grid';
+import { PhotoGrid } from '@/components/photo-grid/photo-grid';
 import { Button } from '@/components/ui/button';
 import { useWindowHeight } from '@/hooks/useWindowHeight';
 import { ChevronRightIcon } from '@radix-ui/react-icons';
@@ -40,7 +40,7 @@ export default function Photos({ user, photos }: PageProps) {
         <div className='flex flex-col gap-1'>
           <p className='text-gray-400 font-semibold'>Додайте мінімум 3 фото.</p>
           <p className='text-sm font-semibold text-gray-400'>
-            * Перше фото буде головним
+            * Натисніть на фото, щоб зробити його головним
           </p>
         </div>
       </div>

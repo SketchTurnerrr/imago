@@ -12,7 +12,7 @@ import Image from 'next/image';
 import { ThreeDotsMenu } from '@/components/three-dots-menu';
 import { TooltipTime } from '@/components/msg-time-tooltip';
 import Send from '@/public/send.svg';
-import { RandomVerse } from '@/components/random-verse';
+import { Verse } from '@/components/verse';
 import { useWindowHeight } from '@/hooks/useWindowHeight';
 
 const FormSchema = z.object({
@@ -84,6 +84,7 @@ export function Conversation({
     userId,
     supabase,
     participants?.party2_read,
+    conversationId,
   ]);
 
   useEffect(() => {
@@ -164,11 +165,12 @@ export function Conversation({
           style={{ height: windowHeight && windowHeight - 190 }}
           className='flex flex-col overflow-y-scroll p-4 gap-1 h-[calc(100vh-12.3rem)] hide-scrollbar'
         >
-          <RandomVerse />
+          <Verse />
 
           {rtMessages.map((message, index) => {
             const previous = messages[index - 1];
             const showAvatar = shouldShowAvatar(previous, message);
+
             return (
               <div
                 key={message.id}
@@ -186,7 +188,7 @@ export function Conversation({
                   >
                     {showAvatar ? (
                       <Image
-                        src={message.sender_id.photos[0].src}
+                        src={message.sender_id.photos[0].src || ''}
                         width={35}
                         height={35}
                         className='object-cover aspect-square rounded-full'

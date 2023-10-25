@@ -5,7 +5,7 @@ import Image from 'next/image';
 import { useRouter } from 'next/navigation';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { AddPromptDialog } from './add-prompt-dialog';
-import { PhotoGrid } from './photo-grid';
+import { PhotoGrid } from '../../../../components/photo-grid/photo-grid';
 interface PageProps {
   user: User;
   data: FullProfile;
@@ -22,7 +22,7 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
   };
 
   return (
-    <div className='px-4 bg-slate-50 h-screen'>
+    <div className='px-4  h-screen'>
       <h2 className='text-2xl max-w-md mx-auto font-bold mb-4'>Фото</h2>
       <PhotoGrid photos={data.photos || []} user={user} />
       <div className='flex flex-col gap-4 max-w-md mx-auto'>
@@ -32,10 +32,10 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
             return (
               <div
                 key={prompt.id}
-                className='flex relative flex-col p-4 rounded-lg font-bold  text-sm shadow-sm border border-slate-100'
+                className='flex relative flex-col p-4 rounded-lg font-bold  text-sm shadow-sm border '
               >
                 <p>{prompt.question}</p>
-                <p className='border-l border-gray-300 mt-2 pl-2 text-gray-500'>
+                <p className='border-l border-muted mt-2 pl-2 text-muted-foreground'>
                   {prompt.answer}
                 </p>
                 <div

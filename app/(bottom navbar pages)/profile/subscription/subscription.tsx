@@ -16,6 +16,7 @@ import { toast } from '@/components/ui/use-toast';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { differenceInMinutes } from 'date-fns';
+import { CheckIcon } from '@radix-ui/react-icons';
 
 export function Subscription({ userId, sub }: { userId: string; sub: any }) {
   // console.log('sub :', sub);
@@ -140,8 +141,9 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
         </CardHeader>
         <CardContent>
           {benefits.map((benefit, index) => (
-            <div key={index} className='mb-4 flex gap-2 pb-4 '>
-              <span className='flex h-2 w-2 translate-y-1 rounded-full bg-purple-600' />
+            <div key={index} className='mb-4 flex items-center gap-2 pb-4 '>
+              {/* <span className='flex h-2 w-2 translate-y-1 rounded-full bg-purple-600' /> */}
+              <CheckIcon className='w-6 h-6 text-purple-600' />
 
               <p className='text-sm font-medium leading-none'>
                 {benefit.title}
@@ -222,7 +224,7 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
                 disabled={amount === 0}
                 type='submit'
                 size='lg'
-                className='w-full bg-gradient-to-r to-purple-500 from-purple-600 text-background'
+                className='w-full text-lg bg-gradient-to-r to-purple-500 from-purple-600 text-background'
               >
                 Підключити
               </Button>
@@ -233,7 +235,7 @@ export function Subscription({ userId, sub }: { userId: string; sub: any }) {
               // disabled={amount === 0}
               size='lg'
               onClick={handleCancelSubscription}
-              className='w-full bg-gradient-to-r to-purple-500 from-purple-600 text-background'
+              className='w-full text-lg bg-gradient-to-r to-purple-500 from-purple-600 text-background'
             >
               Скасувати підписку
             </Button>

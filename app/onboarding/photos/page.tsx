@@ -16,6 +16,7 @@ export default async function Page() {
   const { data, error } = await supabase
     .from('profiles')
     .select('photos(*)')
+    .order('updated_at', { foreignTable: 'photos', ascending: false })
     .eq('id', session.user.id)
     .single();
 

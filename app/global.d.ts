@@ -85,10 +85,8 @@ declare global {
 }
 
 interface IConversationReadStatus {
-  participant1: id;
-
-  participant2: id;
-
+  participant1: string;
+  participant2: string;
   party1_read: boolean;
   party2_read: boolean;
 }

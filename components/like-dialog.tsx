@@ -116,13 +116,10 @@ export function LikeDialog({
             />
           )}
           {type === 'prompt' && (
-            <Prompt
-              question={question}
-              answer={answer}
-              id={itemId}
-              likee={likee}
-              liker={liker}
-            />
+            <div className='px-4 py-10 bg-primary text-primary-foreground md:w-[500px] relative rounded-lg space-y-4'>
+              <p className='text-md font-semibold'>{question}</p>
+              <h2 className='text-3xl font-bold'>{answer}</h2>
+            </div>
           )}
           <Form {...form}>
             <form

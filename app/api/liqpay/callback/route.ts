@@ -30,7 +30,6 @@ export async function POST(req: NextRequest): Promise<any> {
     const data = formData.get('data');
     const signature = formData.get('signature');
 
-    // Replace 'yourPrivateKey' with your actual private key from LiqPay
     const privateKey = process.env.LIQPAY_PRIVATE_KEY;
 
     if (verifySignature(privateKey, data, signature)) {
@@ -42,7 +41,7 @@ export async function POST(req: NextRequest): Promise<any> {
         console.log('cookiesList :', cookieStore.getAll());
 
         const supabase = createRouteHandlerClient<Database>({
-          cookies: () => cookieStore,
+          cookies,
         });
 
         const { error } = await supabase.from('subscriptions').insert({

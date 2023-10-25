@@ -1,12 +1,18 @@
 'use client';
 import Image from 'next/image';
-import { ReloadIcon, UploadIcon } from '@radix-ui/react-icons';
+import { ReloadIcon, StarIcon, UploadIcon } from '@radix-ui/react-icons';
 import { Input } from '@/components/ui/input';
 import { useRef, useState } from 'react';
 import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
 import { useRouter } from 'next/navigation';
 import { toast } from '@/components/ui/use-toast';
 import { cn } from '@/lib/utils';
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from '../ui/tooltip';
 
 interface IPhotoGrid {
   photos: PhotosType[];
@@ -51,6 +57,7 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
       if (!e.target.files || e.target.files.length === 0) {
         throw new Error('Please select a photo');
       }
+
       const file = e.target.files[0];
       setFilename(file.name);
       const fileExt = file.name.split('.').pop();
@@ -89,6 +96,17 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
     }
   };
 
+  async function setPhotoAsMain(photoId: string) {
+    const { error } = await supabase
+      .from('photos')
+      .update({
+        updated_at: new Date(),
+      })
+      .eq('id', photoId);
+    router.refresh();
+    console.log('error :', error);
+  }
+
   return (
     <>
       <Input
@@ -100,12 +118,22 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
         accept='image/*'
         className='pointer-events-none opacity-0 h-0 w-0 leading-[0] overflow-hidden p-0 m-0'
       />
-      <div className='grid grid-cols-3 mx-auto gap-2 max-w-md mb-4'>
+      <div className='first-photo grid grid-cols-3 mx-auto gap-2 max-w-md mb-4'>
         {filledPhotos.map(
           (photo: { src: string; id: string }, index: number) => (
-            <div key={index}>
+            <div
+              key={index}
+              className='group first:col-start-1 first:col-end-3 first:row-start-1 first:row-end-3'
+            >
               {photo?.src ? (
-                <div className='relative '>
+                <div className='relative'>
+                  <div
+                    onClick={() => setPhotoAsMain(photo.id)}
+                    className='text-sm cursor-pointer w-full h-full  group-hover:opacity-100 opacity-0 md:text-base grid place-items-center absolute z-10 text-white '
+                  >
+                    <p>Зробити головним</p>
+                  </div>
+
                   <div className='aspect-square'>
                     <Image
                       layout='fill'

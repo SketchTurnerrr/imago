@@ -36,8 +36,9 @@ export default async function DiscoverPage() {
   const { data: profiles, error } = await supabase
     .from('random_profiles')
     .select('*, prompts(*), photos(*)')
-
+    .order('updated_at', { foreignTable: 'photos', ascending: false })
     .eq('gender', gender)
+    .neq('onboarded', false)
     .returns<FullProfile[]>()
     .limit(10);
   // .single();

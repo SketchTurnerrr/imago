@@ -1,4 +1,5 @@
 'use client';
+import { ModeToggle } from '@/components/theme-changer';
 import { Button } from '@/components/ui/button';
 import { Separator } from '@/components/ui/separator';
 import {
@@ -19,17 +20,18 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
     await supabase.auth.signOut();
     router.refresh();
   }
+
   return (
     <div className='h-screen p-4 flex flex-col mb-20 pt-20'>
       <Image
         priority
-        src={profile?.photos[0].src}
+        src={profile.photos[0].src}
         alt={'photo'}
         width={190}
         height={190}
         className='rounded-full self-center object-cover aspect-square mb-6'
       />
-      <h1 className='text-4xl font-bold self-center'>{profile?.first_name}</h1>
+      <h1 className='text-4xl font-bold self-center'>{profile.first_name}</h1>
       <Separator className='my-4' />
       <Link className='font-bold text-xl' href={'/profile/edit'}>
         <div className='flex items-center justify-between'>
@@ -59,8 +61,14 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
           <SymbolIcon className='w-7 h-7' />
         </div>
       </Link>
+      <Separator className='my-4' />
+      <div className='flex text-xl font-bold items-center justify-between'>
+        Тема
+        <ModeToggle />
+      </div>
+      <Separator className='my-4' />
       <Button
-        className='w-fit self-end mt-6 font-bold'
+        className='w-fit self-end mt-6 bg-primary font-bold'
         onClick={() => signOut()}
       >
         Вийти

@@ -18,6 +18,7 @@ import {
 } from '@supabase/auth-helpers-nextjs';
 import { useToast } from '@/components/ui/use-toast';
 import { redirect } from 'next/navigation';
+import { useState } from 'react';
 
 const formSchema = z.object({
   email: z.string().email({ message: 'Це не схоже на адресу' }).min(2, {
@@ -26,6 +27,8 @@ const formSchema = z.object({
 });
 
 export function SignIn({ session }: { session: Session | null }) {
+  const [disableOtpBtn, setDisableOtpBtn] = useState(false);
+  const [secondsLeft, setSecondsLeft] = useState(5);
   const supabase = createClientComponentClient();
 
   if (session) {
@@ -52,6 +55,7 @@ export function SignIn({ session }: { session: Session | null }) {
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
+      setDisableOtpBtn(true);
       await supabase.auth.signInWithOtp({
         email: values.email,
         options: {
@@ -63,6 +67,18 @@ export function SignIn({ session }: { session: Session | null }) {
           },
         },
       });
+
+      const timeout = setInterval(() => {
+        return setSecondsLeft((prev) => prev - 1);
+      }, 1000);
+
+      setTimeout(() => {
+        setDisableOtpBtn(false);
+        setSecondsLeft(5);
+
+        clearInterval(timeout);
+      }, secondsLeft * 1000);
+      console.log(' :', timeout);
     } catch (error) {
       console.log('error :', error);
     }
@@ -108,10 +124,11 @@ export function SignIn({ session }: { session: Session | null }) {
                 </p>
               </div>
               <Button
+                disabled={disableOtpBtn}
                 className='w-full p-6 hover:bg-purple-500 bg-purple-400 text-lg font-bold'
                 type='submit'
               >
-                Увійти
+                Отримати посилання {secondsLeft < 60 && `(${secondsLeft})`}
               </Button>
               <p className='text-center'>або</p>
             </form>

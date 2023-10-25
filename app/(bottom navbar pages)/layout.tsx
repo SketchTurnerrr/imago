@@ -25,6 +25,7 @@ export default async function DiscoverLayout({
   const { data } = await supabase
     .from('profiles')
     .select('photos("src"),onboarded')
+    .order('updated_at', { foreignTable: 'photos', ascending: false })
     .eq('id', session?.user.id)
     .single();
 

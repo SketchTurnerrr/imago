@@ -65,14 +65,13 @@ export function SkipProfileBtn({
     >
       <Button
         onClick={handleSkip}
-        variant='outline'
         size='icon'
-        className='rounded-full w-12 h-12 bg-white'
+        className='rounded-full w-12 h-12 bg-primary'
       >
         {pathname.match('discover') ? (
-          <ArrowRightIcon className='w-7 h-7' />
+          <ArrowRightIcon className='w-7 h-7 text-white' />
         ) : (
-          <Cross1Icon className='w-7 h-7' />
+          <Cross1Icon className='w-7 h-7 text-white' />
         )}
       </Button>
     </div>

@@ -45,6 +45,7 @@
     "filepond-plugin-image-preview": "^4.6.11",
     "gsap": "^3.12.2",
     "next": "13.5.2",
+    "next-themes": "^0.2.1",
     "postcss": "8.4.30",
     "react": "18.2.0",
     "react-day-picker": "^8.8.2",

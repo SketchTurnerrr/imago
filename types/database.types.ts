@@ -251,18 +251,21 @@ export interface Database {
           id: string;
           profile_id: string;
           src: string;
+          updated_at: Date;
         };
         Insert: {
           created_at?: string;
           id?: string;
           profile_id: string;
           src: string;
+          updated_at?: Date;
         };
         Update: {
           created_at?: string;
           id?: string;
           profile_id?: string;
           src?: string;
+          updated_at?: Date;
         };
         Relationships: [
           {

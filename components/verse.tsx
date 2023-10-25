@@ -1,4 +1,4 @@
-export function RandomVerse() {
+export function Verse() {
   return (
     <div className='flex flex-col gap-2 card text-slate-100 rounded-lg p-4 max-w-[30ch] self-center shadow-2xl '>
       <p>
