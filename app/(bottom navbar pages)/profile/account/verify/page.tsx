@@ -98,7 +98,7 @@ export default function VerifyPage() {
         </p>
         <p className="">
           Як тільки ваш акаунт буде підтверджено, навпроти вашого імені
-          з'явиться бейдж верифікації -{" "}
+          з&apos;явиться бейдж верифікації -{" "}
           <BadgeIcon
             className="inline-block align-text-top text-white"
             width={24}
