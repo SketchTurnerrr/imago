@@ -1,8 +1,8 @@
-import { redirect } from 'next/navigation';
-import { Profile } from './profile';
-import { createServerClient } from '@/lib/supabase-server';
-import { Suspense } from 'react';
-import Loading from './loading';
+import { redirect } from "next/navigation";
+import { Profile } from "./profile";
+import { createServerClient } from "@/lib/supabase-server";
+import { Suspense } from "react";
+import Loading from "./loading";
 
 type authedProfileType = {
   gender: string;
@@ -18,33 +18,33 @@ export default async function DiscoverPage() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
   // await new Promise((resolve) => setTimeout(resolve, 4000));
 
   const { data: authedProfile } = await supabase
-    .from('profiles')
-    .select('gender,  onboarded')
-    .eq('id', session.user.id)
+    .from("profiles")
+    .select("gender, onboarded")
+    .eq("id", session.user.id)
     .single();
 
-  const gender = authedProfile?.gender === 'male' ? 'female' : 'male';
+  const gender = authedProfile?.gender === "male" ? "female" : "male";
 
   // .not('id', 'in', `(${skippedProfiles.join(',')})`)
 
   const { data: profiles, error } = await supabase
-    .from('random_profiles')
-    .select('*, prompts(*), photos(*)')
-    .order('updated_at', { foreignTable: 'photos', ascending: false })
-    .eq('gender', gender)
-    .neq('onboarded', false)
+    .from("random_profiles")
+    .select("*, prompts(*), photos(src,id)")
+    .order("updated_at", { foreignTable: "photos", ascending: false })
+    .eq("gender", gender)
+    .neq("onboarded", false)
     .returns<FullProfile[]>()
     .limit(10);
   // .single();
 
-  console.log('error :', error);
-  // console.log('profiles :', profiles);
+  console.log("error :", error);
+  // console.log("profiles :", profiles);
 
   // const { data: profiles, error } = await supabase
   //   .from('random_profiles')
@@ -65,7 +65,7 @@ export default async function DiscoverPage() {
   //   .select('*');
 
   if (!authedProfile?.onboarded) {
-    redirect('/onboarding');
+    redirect("/onboarding");
   }
 
   if (!profiles) return;

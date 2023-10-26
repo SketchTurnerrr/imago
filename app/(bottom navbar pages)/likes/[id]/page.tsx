@@ -21,7 +21,7 @@ export default async function Page({
 
   const { data: profile } = await supabase
     .from("profiles")
-    .select("*, prompts(*), photos(*)")
+    .select("*, prompts(*), photos(src,id)")
     .eq("id", params.id)
     .returns<FullProfile[]>();
 
@@ -55,17 +55,17 @@ export default async function Page({
 
   const renderLike =
     "photo" in like ? (
-      <div className="mb-8">
-        <div className="relative p-4">
+      <div className="mx-auto p-4 md:w-[500px] md:px-0">
+        <div className="relative">
           <Image
             src={like.photo.src}
-            width={400}
+            width={500}
             height={100}
             alt={"k"}
             className="aspect-[32/9] rounded-lg object-cover"
           />
 
-          <div className="absolute -bottom-2 left-4 rounded-lg bg-indigo-200 p-2">
+          <div className="absolute -bottom-2 rounded-lg bg-indigo-200 p-2">
             {like.comment
               ? like.comment
               : like.liker.gender === "male"
@@ -77,13 +77,13 @@ export default async function Page({
         </div>
       </div>
     ) : (
-      <div className="relative mb-4 p-4">
+      <div className="relative mx-auto my-4 p-4 md:w-[500px] md:px-0">
         <div className="relative space-y-4 rounded-lg bg-purple-50 px-2 py-6">
           <h2 className="truncate text-xl font-semibold">
             {like.prompt.answer}
           </h2>
         </div>
-        <div className="absolute -bottom-2 left-4 rounded-lg bg-indigo-200 p-2">
+        <div className="absolute -bottom-2 rounded-lg bg-indigo-200 p-2">
           {like.comment
             ? like.comment
             : like.liker.gender === "male"

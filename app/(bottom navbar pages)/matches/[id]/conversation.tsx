@@ -17,6 +17,7 @@ import { useWindowHeight } from "@/hooks/useWindowHeight";
 import TextareaAutosize from "react-textarea-autosize";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 
 const FormSchema = z.object({
   message: z
@@ -153,88 +154,115 @@ export function Conversation({
     form.resetField("message");
   }
 
+  if (!participants) return;
+
   return (
-    <div className="flex flex-col">
-      <div className="fixed left-0 right-0 top-0 z-10 flex items-center justify-between bg-background p-4">
-        <div className="flex items-center gap-3">
-          <Button onClick={() => router.back()} variant="ghost" size="icon">
-            <ArrowLeftIcon className="h-7 w-7" />
-          </Button>
-          <h1 className="text-3xl font-bold capitalize">
-            {participants?.participant1.id !== userId
-              ? participants?.participant1.first_name
-              : participants?.participant2.first_name}
-          </h1>
-        </div>
-        <ThreeDotsMenu conversationId={conversationId} participantId={userId} />
-      </div>
-      <Separator className="" />
-      {
-        <div className="hide-scrollbar flex max-h-[calc(100vh-46px)] grow flex-col gap-1 overflow-y-auto p-4">
-          <Verse />
+    <div className="flex h-full flex-col ">
+      <header className="flex w-full items-center justify-between gap-3 self-start bg-background p-3">
+        <Button onClick={() => router.back()} variant="ghost" size="icon">
+          <ArrowLeftIcon className="h-7 w-7" />
+        </Button>
+        <h1 className="mr-auto text-3xl font-bold capitalize">
+          {participants?.participant1.id !== userId
+            ? participants?.participant1.first_name
+            : participants?.participant2.first_name}
+        </h1>
+        <ThreeDotsMenu
+          conversationId={conversationId}
+          viewProfileId={participants.participant2.id}
+        />
+      </header>
 
-          {rtMessages.map((message, index) => {
-            const previous = messages[index - 1];
-            const showAvatar = shouldShowAvatar(previous, message);
+      <div className=" w-full flex-auto overflow-auto">
+        <Tabs defaultValue="chat" className="w-full">
+          <TabsList className="fixed top-[50px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4">
+            <TabsTrigger value="chat" className="text-lg">
+              Чат
+            </TabsTrigger>
+            <TabsTrigger value="profile" className="text-lg">
+              Профіль
+            </TabsTrigger>
+          </TabsList>
+          <TabsContent value="chat" className="mt-0">
+            <div className=" flex flex-col gap-1  p-4">
+              <Verse />
 
-            return (
-              <div
-                key={message.id}
-                className={`${
-                  userId !== message.sender_id.id
-                    ? "justify-start"
-                    : "justify-end"
-                } flex `}
-              >
-                {userId !== message.sender_id?.id ? (
+              {rtMessages.map((message, index) => {
+                const previous = messages[index - 1];
+                const showAvatar = shouldShowAvatar(previous, message);
+
+                return (
                   <div
+                    key={message.id}
                     className={`${
-                      showAvatar ? "mt-6" : "mt-0"
-                    } flex items-center gap-2`}
+                      userId !== message.sender_id.id
+                        ? "justify-start"
+                        : "justify-end"
+                    } flex `}
                   >
-                    {showAvatar ? (
-                      <Image
-                        src={message.sender_id.photos[0].src || ""}
-                        width={35}
-                        height={35}
-                        className="aspect-square rounded-full object-cover"
-                        alt={
-                          message?.conversation_id.participant1.id ===
-                          message?.sender_id.id
-                            ? message.conversation_id.participant1.first_name
-                            : message.conversation_id.participant2.first_name
-                        }
-                      />
+                    {userId !== message.sender_id?.id ? (
+                      <div
+                        className={`${
+                          showAvatar ? "mt-6" : "mt-0"
+                        } flex items-center gap-2`}
+                      >
+                        {showAvatar && (
+                          <Image
+                            src={message.sender_id.photos[0].src || ""}
+                            width={35}
+                            height={35}
+                            className="aspect-square rounded-full object-cover"
+                            alt={
+                              message?.conversation_id.participant1.id ===
+                              message?.sender_id.id
+                                ? message.conversation_id.participant1
+                                    .first_name
+                                : message.conversation_id.participant2
+                                    .first_name
+                            }
+                          />
+                        )}
+
+                        <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-slate-100 p-2">
+                          <p style={{ wordBreak: "break-word" }}>
+                            {message.content}
+                          </p>
+
+                          <TooltipTime created_at={message.created_at} />
+                        </div>
+                      </div>
                     ) : (
-                      <div className="h-[35px] w-[35px]"></div>
+                      <div
+                        className={`${
+                          showAvatar ? "mt-6" : "mt-0"
+                        } flex max-w-[30ch] gap-2 rounded-lg rounded-br-none bg-purple-400 p-2 text-white`}
+                      >
+                        <p style={{ wordBreak: "break-word" }}>
+                          {message.content}
+                        </p>
+                        <TooltipTime
+                          created_at={message.created_at}
+                          side="right"
+                        />
+                      </div>
                     )}
-
-                    <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-slate-100 p-2">
-                      {message.content}
-
-                      <TooltipTime created_at={message.created_at} />
-                    </div>
                   </div>
-                ) : (
-                  <div
-                    className={`${
-                      showAvatar ? "mt-6" : "mt-0"
-                    } flex max-w-[30ch] gap-2 rounded-lg  rounded-br-none bg-purple-400 p-2 text-white`}
-                  >
-                    {message.content}
-                    <TooltipTime created_at={message.created_at} side="right" />
-                  </div>
-                )}
-              </div>
-            );
-          })}
-          <div ref={scrollToLastMsgRef} role="none"></div>
-        </div>
-      }
+                );
+              })}
+              <div ref={scrollToLastMsgRef} role="none"></div>
+            </div>
+          </TabsContent>
+          <TabsContent value="profile" className="mt-20">
+            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis,
+            porro!
+          </TabsContent>
+        </Tabs>
+      </div>
+
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="fixed bottom-0 left-0 right-0 flex items-center gap-3 bg-background p-3"
+          className="flex items-center gap-3 bg-background p-3"
         >
           <FormField
             control={form.control}

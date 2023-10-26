@@ -1,11 +1,9 @@
 "use client";
 
 import { Button } from "./ui/button";
-import { useEffect, useRef } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
+
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { useRouter, useSearchParams } from "next/navigation";
+import { useRouter } from "next/navigation";
 import HandIcon from "@/public/hand-waving.svg";
 import {
   LDialog,
@@ -53,7 +51,6 @@ export function MatchDialog({
   const supabase = createClientComponentClient<Database>();
   const [open, setOpen] = useState(false);
   const router = useRouter();
-  const btnRef = useRef(null);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
@@ -95,11 +92,14 @@ export function MatchDialog({
 
   return (
     <LDialog open={open} onOpenChange={setOpen}>
-      <LDialogTrigger className="" asChild>
-        <div className="sticky left-4 top-[86%] z-30 h-0 self-end">
+      <LDialogTrigger asChild>
+        <div
+          style={{ marginTop: 0 }}
+          className="sticky top-[85%] z-30 h-0 self-end md:right-[9vw] md:top-[90%] lg:right-10"
+        >
           <Button
             size="icon"
-            className=" h-12 w-12 rounded-full bg-white text-3xl"
+            className="h-12 w-12 rounded-full bg-white text-3xl"
           >
             <HandIcon />
           </Button>

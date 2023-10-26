@@ -1,5 +1,5 @@
-'use client';
-import { Button } from '@/components/ui/button';
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   DropdownMenu,
   DropdownMenuContent,
@@ -7,36 +7,39 @@ import {
   DropdownMenuLabel,
   DropdownMenuSeparator,
   DropdownMenuTrigger,
-} from '@/components/ui/dropdown-menu';
+} from "@/components/ui/dropdown-menu";
 
-import { DotsHorizontalIcon } from '@radix-ui/react-icons';
-import { AlertDialogDots } from './alert-dialog';
-import { useState } from 'react';
+import { DotsHorizontalIcon } from "@radix-ui/react-icons";
+import { AlertDialogDots } from "./alert-dialog";
+import { useState } from "react";
+import Link from "next/link";
 
 interface ITDM {
-  participantId: string;
+  viewProfileId: string;
   conversationId: string;
 }
 
-export function ThreeDotsMenu({ participantId, conversationId }: ITDM) {
+export function ThreeDotsMenu({ viewProfileId, conversationId }: ITDM) {
+  console.log("viewProfileId :", viewProfileId);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
-        <DotsHorizontalIcon className='w-6 h-6' />
+        <DotsHorizontalIcon className="h-6 w-6" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>Переглянути профіль</DropdownMenuLabel>
+        <DropdownMenuLabel>
+          <Link href={`profile/${viewProfileId}`}>Переглянути профіль</Link>
+        </DropdownMenuLabel>
         <DropdownMenuSeparator />
 
         <AlertDialogDots
           conversationId={conversationId}
-          participantId={participantId}
-          triggerName='Залишити розмову'
-          alertDescription='Ця дія незворотна'
-          alertTitle='Ви впевнені?'
+          triggerName="Залишити розмову"
+          alertDescription="Ця дія незворотна"
+          alertTitle="Ви впевнені?"
         />
 
-        <DropdownMenuItem className='text-red-600'>
+        <DropdownMenuItem className="text-red-600">
           Заблокувати та повідомити
         </DropdownMenuItem>
       </DropdownMenuContent>

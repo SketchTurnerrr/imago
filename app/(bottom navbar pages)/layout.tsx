@@ -24,7 +24,7 @@ export default async function DiscoverLayout({
 
   const { data } = await supabase
     .from("profiles")
-    .select('photos("src"),onboarded')
+    .select('photos("src"), onboarded')
     .order("updated_at", { foreignTable: "photos", ascending: false })
     .eq("id", session?.user.id)
     .single();
@@ -39,22 +39,11 @@ export default async function DiscoverLayout({
     .returns<IConversationReadStatus>()
     .single();
 
-  // console.log('session :', session.user.id);
-
-  // const segment = children?.props.childProp.segment;
-  // console.log("segment :", segment);
-
-  // console.log(" :", children.props.childProp.segment);
   return (
-    <section>
-      {
-        <Navbar
-          photo={data?.photos}
-          status={status!}
-          userId={session.user.id}
-        />
-      }
+    <>
+      <Navbar photo={data?.photos} status={status!} userId={session.user.id} />
+
       {children}
-    </section>
+    </>
   );
 }
