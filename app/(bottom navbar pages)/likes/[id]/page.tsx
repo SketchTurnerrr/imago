@@ -36,13 +36,13 @@ export default async function Page({
     type === "ph"
       ? supabase
           .from("photo_likes")
-          .select("photo(src), comment, liker(gender)")
+          .select("id,photo(src), comment, liker(gender)")
           .eq("id", likeId)
           .returns<PhotoLike[]>()
           .single()
       : supabase
           .from("prompt_likes")
-          .select("prompt(*), comment, liker(gender)")
+          .select("id,prompt(*), comment, liker(gender)")
           .eq("id", likeId)
           .returns<PromptLike[]>()
           .single();
@@ -106,7 +106,7 @@ export default async function Page({
       <Profile
         userId={session.user.id}
         serverProfiles={profile}
-        likeData={like}
+        likeData={{ like, type }}
       />
     </>
   );

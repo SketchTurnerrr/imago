@@ -73,6 +73,7 @@ export default async function DiscoverPage() {
   return (
     <Suspense fallback={<Loading />}>
       <Profile
+        likeData={null}
         serverProfiles={profiles}
         userId={session.user.id}
         authedProfile={authedProfile as authedProfileType}

@@ -34,7 +34,7 @@ interface IMatchDialog {
   likee: string;
   firstName: string | null;
   src: string;
-  likeData: PhotoLike | PromptLike | undefined;
+  likeData: { like: PhotoLike | PromptLike; type: string } | null;
 }
 
 const FormSchema = z.object({
@@ -87,7 +87,7 @@ export function MatchDialog({
   };
 
   if (!likeData) {
-    return; // TODO
+    return null; // TODO
   }
 
   return (
@@ -112,37 +112,38 @@ export function MatchDialog({
           </LDialogTitle>
         </LDialogHeader>
         <div className="flex flex-col gap-8">
-          {"photo" in likeData && (
+          {"photo" in likeData.like && (
             <div className="relative h-80">
               <Image
-                src={likeData?.photo?.src}
+                priority
+                src={likeData.like.photo.src}
                 alt={firstName!}
                 layout="fill"
                 className="aspect-square rounded-lg object-cover"
               />
               <div className="absolute -bottom-4 w-fit rounded-lg rounded-bl-none bg-purple-400 p-2 text-sm font-semibold text-white">
-                {likeData.comment
-                  ? likeData.comment
-                  : likeData.liker.gender === "male"
+                {likeData.like.comment
+                  ? likeData.like.comment
+                  : likeData.like.liker.gender === "male"
                   ? "Вподобав" + " ваше фото"
                   : "Вподобала" + " ваше фото"}
               </div>
             </div>
           )}
 
-          {"prompt" in likeData && (
+          {"prompt" in likeData.like && (
             <div className="relative">
               <Prompt
                 likee=""
                 liker=""
-                id={likeData.id}
-                question={likeData.prompt.question}
-                answer={likeData.prompt.answer}
+                id={likeData.like.id}
+                question={likeData.like.prompt.question}
+                answer={likeData.like.prompt.answer}
               />
               <div className="absolute -bottom-4 w-fit rounded-lg rounded-bl-none bg-purple-400 p-2 text-sm font-semibold text-white">
-                {likeData.comment
-                  ? likeData.comment
-                  : likeData.liker.gender === "male"
+                {likeData.like.comment
+                  ? likeData.like.comment
+                  : likeData.like.liker.gender === "male"
                   ? "Вподобав" + " вашу відповідь"
                   : "Вподобала" + " вашу відповідь"}
               </div>

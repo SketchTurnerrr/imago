@@ -30,7 +30,7 @@ interface IProfile {
     onboarded: boolean;
   };
   userId: string;
-  likeData?: PhotoLike | PromptLike | undefined;
+  likeData: { like: PhotoLike | PromptLike; type: string } | null;
 }
 
 export function Profile({
@@ -204,7 +204,7 @@ export function Profile({
             </TooltipProvider>
           )}
         </div>
-        {pathname.split("/")[1] !== "likes" && (
+        {pathname.includes("likes") && (
           <div className="flex items-center gap-2">
             <Button
               disabled={!skippedProfile}
@@ -219,11 +219,12 @@ export function Profile({
         )}
       </div>
       <SkipProfileBtn
+        likeData={likeData}
         userId={userId}
         profileId={profile.id}
         skipProfile={skipProfile}
       />
-      {pathname.split("/")[1] === "likes" && (
+      {pathname.includes("likes") && (
         <MatchDialog
           likee={profile.id}
           liker={userId}
