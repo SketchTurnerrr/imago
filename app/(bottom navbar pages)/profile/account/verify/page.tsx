@@ -1,4 +1,5 @@
 "use client";
+import { GoBack } from "@/components/go-back";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import BadgeIcon from "@/public/badge-check.svg";
@@ -69,7 +70,10 @@ export default function VerifyPage() {
   };
   return (
     <section className="p-4 md:mx-auto md:max-w-screen-sm">
-      <h1 className="text-3xl font-bold">Верифікація акаунту</h1>
+      <div className="flex items-center gap-3">
+        <GoBack />
+        <h1 className="text-3xl font-bold">Верифікація акаунту</h1>
+      </div>
 
       <div className="my-6 flex flex-col gap-3">
         <h2 className=" text-xl font-semibold">Що таке верифікація акаунту?</h2>

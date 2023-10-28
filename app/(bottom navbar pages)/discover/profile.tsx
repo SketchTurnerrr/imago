@@ -46,7 +46,6 @@ export function Profile({
   );
   // console.log('skippedProfile :', skippedProfile);
 
-  console.log("profile :", profiles);
   // const currentSearchParams = useMemo<{ [key: string]: string }>(() => {
   //   const params: { [key: string]: string } = {};
   //   searchParams.forEach((value, key) => {

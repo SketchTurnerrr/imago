@@ -1,8 +1,4 @@
-"use client";
-
-import { Prompt } from "@/components/prompt";
 import { Separator } from "@/components/ui/separator";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -12,11 +8,6 @@ interface PageProps {
 }
 
 export function Likes({ photoLikes, promptLikes }: PageProps) {
-  // const supabase = createClientComponentClient<Database>();
-
-  console.log("promptLikes :", promptLikes);
-  console.log("photoLikes :", photoLikes);
-
   return (
     <main className="flex min-h-screen flex-col gap-4 p-4">
       {/* IF EMPTY PAGE */}

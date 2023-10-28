@@ -1,6 +1,8 @@
-import { createServerClient } from '@/lib/supabase-server';
-import { Conversation } from './conversation';
-import { redirect } from 'next/navigation';
+import { createServerClient } from "@/lib/supabase-server";
+import { Conversation } from "./conversation";
+import { redirect } from "next/navigation";
+import { Suspense } from "react";
+import LoadingMessages from "./loading";
 
 export default async function ConversationPage({
   params,
@@ -16,37 +18,40 @@ export default async function ConversationPage({
     data: { session },
   } = await supabase.auth.getSession();
   const { data: messages, error } = await supabase
-    .from('messages')
+    .from("messages")
     .select(
-      '*, conversation_id(participant1(id,first_name), participant2(id,first_name)),sender_id(id, first_name,photos(src))'
+      "*, conversation_id(participant1(id,first_name), participant2(id,first_name)),sender_id(id, first_name,photos(src))",
     )
-    .order('created_at')
+    .eq("conversation_id", params.id)
+    .order("created_at")
     .returns<IMessages[]>();
 
   const { data } = await supabase
-    .from('conversations')
+    .from("conversations")
     .select(
-      'id,party1_read,party2_read,participant1(id,first_name), participant2(id,first_name)'
+      "id,party1_read,party2_read,participant1(id,first_name), participant2(id,first_name)",
     )
-    .eq('id', params.id)
+    .eq("id", params.id)
     .returns<IParticipantsNames>()
     .single();
   // console.log('participant2 :', data?.participant2);
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
   if (!data) {
-    redirect('/matches');
+    redirect("/matches");
   }
 
   return (
-    <Conversation
-      conversationId={params.id}
-      messages={messages ?? []}
-      userId={session.user.id}
-      participants={data}
-    />
+    <Suspense fallback={<LoadingMessages />}>
+      <Conversation
+        conversationId={params.id}
+        messages={messages ?? []}
+        userId={session.user.id}
+        participants={data}
+      />
+    </Suspense>
   );
 }

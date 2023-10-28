@@ -1,19 +1,70 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
+import { useEffect, useState } from "react";
 
 interface IMatches {
   conversations: IConversations[];
   userId: string;
 }
 
-export function Matches({ conversations, userId }: IMatches) {
+export function Matches({ userId, conversations }: IMatches) {
+  const supabase = createClientComponentClient<Database>();
+  const [rtConversations, setRTConversations] =
+    useState<IConversations[]>(conversations);
+
+  useEffect(() => {
+    const channel = supabase
+      .channel("realtime-conversations")
+      .on(
+        "postgres_changes",
+        {
+          event: "*",
+          schema: "public",
+          table: "conversations",
+        },
+
+        async (payload) => {
+          if (payload.eventType === "UPDATE") return;
+
+          if (payload.eventType === "INSERT") {
+            let { data: newConversation, error } = await supabase
+              .from("conversations")
+              .select(
+                "*, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content)",
+              )
+              .returns<IConversations[]>();
+            if (error) {
+              console.log("error :", error);
+            } else {
+              setRTConversations(newConversation as IConversations[]);
+            }
+          }
+          if (payload.eventType === "DELETE") {
+            console.log(" hey delete:");
+            setRTConversations((prev) =>
+              prev.filter((conversation) => {
+                console.log("payload old id :", payload.old.id);
+                return conversation.id !== payload.old.id;
+              }),
+            );
+          }
+        },
+      )
+      .subscribe();
+
+    return () => {
+      supabase.removeChannel(channel);
+    };
+  }, [rtConversations, setRTConversations, conversations, supabase]);
+
   return (
     <>
       <h1 className="self-start p-4 text-4xl font-bold">Знайомства</h1>
       <Separator />
-      {conversations.length === 0 && (
+      {rtConversations?.length === 0 && (
         <div className="flex flex-col items-center gap-3 p-4">
           <div>
             <Image
@@ -29,16 +80,16 @@ export function Matches({ conversations, userId }: IMatches) {
           </div>
         </div>
       )}
-      {conversations.map((conversation) => (
+      {rtConversations?.map((conversation) => (
         <div key={conversation.id} className="flex flex-col p-4 ">
           <Link
-            href={`/matches/${conversation.id}`}
+            href={`/matches/${conversation?.id}`}
             className="flex items-center gap-4"
           >
-            {conversation.participant2.id === userId ? (
+            {conversation?.participant2?.id === userId ? (
               <Image
                 className="aspect-square rounded-full object-cover"
-                src={conversation.participant1.photos[0].src}
+                src={conversation?.participant1.photos[0]?.src}
                 width={75}
                 height={75}
                 alt="me"
@@ -46,7 +97,7 @@ export function Matches({ conversations, userId }: IMatches) {
             ) : (
               <Image
                 className="aspect-square rounded-full object-cover"
-                src={conversation.participant2.photos[0].src}
+                src={conversation?.participant2.photos[0]?.src}
                 width={75}
                 height={75}
                 alt="me"
@@ -60,7 +111,7 @@ export function Matches({ conversations, userId }: IMatches) {
                   : conversation.participant2.first_name}
               </p>
               <p className="truncate text-gray-400">
-                {conversation.last_message?.content ??
+                {conversation?.last_message?.content ??
                   "Почни знайомство першим"}
               </p>
             </div>

@@ -17,6 +17,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { differenceInMinutes } from "date-fns";
 import { CheckIcon } from "@radix-ui/react-icons";
+import { GoBack } from "@/components/go-back";
 
 export function Subscription({
   userId,
@@ -138,7 +139,10 @@ export function Subscription({
 
   return (
     <>
-      <h1 className="pl-4 pt-4 text-4xl font-bold">Підписка</h1>
+      <div className="flex items-center gap-3 p-4">
+        <GoBack />
+        <h1 className="text-4xl font-bold">Підписка</h1>
+      </div>
 
       <blockquote></blockquote>
       <Card className="mx-auto mt-10 w-[350px]">
@@ -163,7 +167,7 @@ export function Subscription({
                 className={cn(
                   "flex cursor-pointer items-center justify-between rounded-lg p-4",
                   amount === 77
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-background"
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-[#f7f7f7]"
                     : "bg-accent",
                 )}
               >
@@ -181,7 +185,7 @@ export function Subscription({
                 className={cn(
                   "flex cursor-pointer items-center justify-between rounded-lg p-4",
                   amount === 40
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-background"
+                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-[#f7f7f7]"
                     : "bg-accent",
                 )}
               >
@@ -197,7 +201,7 @@ export function Subscription({
           )}
 
           {sub && (
-            <div className="flex cursor-pointer items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-purple-500 p-4 text-background">
+            <div className="flex cursor-pointer items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-purple-500 p-4 text-white">
               <div>
                 <h2 className="mb-2 font-bold">
                   {sub.amount === 77 ? "Щомісячна" : "Річна"}
@@ -230,7 +234,7 @@ export function Subscription({
                 disabled={amount === 0}
                 type="submit"
                 size="lg"
-                className="w-full bg-gradient-to-r from-purple-600 to-purple-500 text-lg text-background"
+                className="w-full bg-primary py-6 text-lg text-white"
               >
                 Підключити
               </Button>
@@ -241,7 +245,7 @@ export function Subscription({
               // disabled={amount === 0}
               size="lg"
               onClick={handleCancelSubscription}
-              className="w-full bg-gradient-to-r from-purple-600 to-purple-500 text-lg text-background"
+              className="w-full bg-primary py-6 text-lg text-white"
             >
               Скасувати підписку
             </Button>

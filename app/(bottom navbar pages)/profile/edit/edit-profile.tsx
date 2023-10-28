@@ -5,6 +5,8 @@ import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AddPromptDialog } from "./add-prompt-dialog";
 import { PhotoGrid } from "../../../../components/photo-grid/photo-grid";
+import { GoBack } from "@/components/go-back";
+import { Separator } from "@/components/ui/separator";
 interface PageProps {
   user: User;
   data: FullProfile;
@@ -21,11 +23,19 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
   };
 
   return (
-    <div className="h-screen px-4">
-      <h2 className="mx-auto mb-4 max-w-md text-2xl font-bold">Фото</h2>
+    <div style={{ marginBottom: 80 }} className=" min-h-screen p-4">
+      <div className="mb-4 flex items-center gap-3">
+        <GoBack />
+        <h1 className="text-3xl font-bold">Редагувати</h1>
+      </div>
+      <Separator />
+      <h2 className="mx-auto my-4 max-w-md text-2xl font-bold">Фото</h2>
 
       <PhotoGrid photos={data.photos || []} user={user} />
-      <div className="mx-auto flex max-w-md flex-col gap-4">
+      <div
+        className="mx-auto flex max-w-md flex-col gap-4"
+        style={{ marginBottom: 80 }}
+      >
         <h2 className="mt-10 text-2xl font-bold">Фрази</h2>
         {data.prompts &&
           data.prompts?.map((prompt) => {

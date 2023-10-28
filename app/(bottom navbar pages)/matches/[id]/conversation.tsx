@@ -13,11 +13,12 @@ import { ThreeDotsMenu } from "@/components/three-dots-menu";
 import { TooltipTime } from "@/components/msg-time-tooltip";
 import Send from "@/public/send.svg";
 import { Verse } from "@/components/verse";
-import { useWindowHeight } from "@/hooks/useWindowHeight";
 import TextareaAutosize from "react-textarea-autosize";
 import { ArrowLeftIcon } from "@radix-ui/react-icons";
 import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import { ReadOnlyProfile } from "@/components/read-only-profile";
+import { GoBack } from "@/components/go-back";
 
 const FormSchema = z.object({
   message: z
@@ -43,7 +44,9 @@ export function Conversation({
 }: IConversations) {
   const supabase = createClientComponentClient<Database>();
   const [rtMessages, setRTMessages] = useState(messages);
-  const windowHeight = useWindowHeight();
+  const [readOnlyProfile, setReadOnlyProfile] = useState<FullProfile | null>(
+    null,
+  );
   const scrollToLastMsgRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -127,6 +130,28 @@ export function Conversation({
     };
   }, [rtMessages, setRTMessages, conversationId, supabase]);
 
+  useEffect(() => {
+    async function getProfile() {
+      try {
+        if (participants) {
+          const { data, error } = await supabase
+            .from("profiles")
+            .select(
+              "date_of_birth, denomination, first_name, toponym, verified, prompts(question, answer), photos(src)",
+            )
+            .eq("id", participants.participant2.id)
+            .returns<FullProfile>()
+            .single();
+          setReadOnlyProfile(data);
+        }
+      } catch (error) {
+        console.log("error :", error);
+      }
+    }
+
+    getProfile();
+  }, []);
+
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
@@ -159,9 +184,7 @@ export function Conversation({
   return (
     <div className="flex h-full flex-col ">
       <header className="flex w-full items-center justify-between gap-3 self-start bg-background p-3">
-        <Button onClick={() => router.back()} variant="ghost" size="icon">
-          <ArrowLeftIcon className="h-7 w-7" />
-        </Button>
+        <GoBack />
         <h1 className="mr-auto text-3xl font-bold capitalize">
           {participants?.participant1.id !== userId
             ? participants?.participant1.first_name
@@ -252,9 +275,8 @@ export function Conversation({
               <div ref={scrollToLastMsgRef} role="none"></div>
             </div>
           </TabsContent>
-          <TabsContent value="profile" className="mt-20">
-            Lorem ipsum, dolor sit amet consectetur adipisicing elit. Nobis,
-            porro!
+          <TabsContent value="profile" className="">
+            <ReadOnlyProfile profile={readOnlyProfile} />
           </TabsContent>
         </Tabs>
       </div>
