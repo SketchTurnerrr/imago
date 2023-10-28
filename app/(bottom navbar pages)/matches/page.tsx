@@ -24,7 +24,7 @@ export default async function MatchesPage() {
 
   return (
     <Suspense fallback={<LoadingConversations />}>
-      <Matches conversations={data ?? []} userId={session.user.id} />;
+      <Matches conversations={data ?? []} userId={session.user.id} />
     </Suspense>
   );
 }

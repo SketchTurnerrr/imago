@@ -28,7 +28,7 @@ export function ReadOnlyProfile({ profile }: IProfile) {
   if (!profile) {
     return (
       <div className="mt-20">
-        <Loading />;
+        <Loading />
       </div>
     );
   }

@@ -1,6 +1,6 @@
-import { createServerClient } from '@/lib/supabase-server';
-import { ProfilePage } from './profile';
-import { redirect } from 'next/navigation';
+import { createServerClient } from "@/lib/supabase-server";
+import { ProfilePage } from "./profile";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const supabase = createServerClient();
@@ -10,20 +10,20 @@ export default async function Page() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
   const { data } = await supabase
-    .from('profiles')
-    .select('*, photos(*)')
-    .order('updated_at', { foreignTable: 'photos', ascending: false })
-    .eq('id', session?.user.id)
+    .from("profiles")
+    .select("*, photos(*)")
+    .order("updated_at", { foreignTable: "photos", ascending: false })
+    .eq("id", session?.user.id)
     .returns<ProfileWithPhotos>()
     .single();
 
   // console.log('data :', data);
   if (!data) {
-    redirect('/');
+    redirect("/");
   }
 
   return <ProfilePage profile={data} />;
