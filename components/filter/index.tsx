@@ -15,19 +15,15 @@ import {
 import * as z from "zod";
 
 import { MixerHorizontalIcon } from "@radix-ui/react-icons";
-import { DenominationSelect } from "./denomination-select";
 import { DistanceSlider } from "./distance-slider";
 import { useCallback, useState } from "react";
 import { AgeSlider } from "./age-slider";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MultiSelect } from "../multi-select";
 
-export function Filter() {
+export function Filter({ userId }: { userId: string }) {
   const [maxDist, setMaxDist] = useState<number[]>([50]);
   const [age, setAge] = useState<number[]>([17, 24]);
-  const [selectedDenominations, setSelectedDenominations] = useState<string[]>(
-    [],
-  );
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
@@ -39,31 +35,6 @@ export function Filter() {
   const onAgeChange = (age: number[]) => {
     setAge([age[0], age[1]]);
   };
-
-  const createQueryString = useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(name, value);
-
-      return params.toString();
-    },
-    [searchParams],
-  );
-
-  const FormSchema = z.object({
-    denomination: z.string(),
-  });
-
-  function onSubmit(data: z.infer<typeof FormSchema>) {
-    console.log("data :", data);
-  }
-
-  function onChange(denomination: any) {
-    console.log("e :", denomination);
-    router.push(
-      pathname + "?" + createQueryString("denomination", denomination),
-    );
-  }
 
   const denominationOptions = [
     {
@@ -116,8 +87,7 @@ export function Filter() {
             <Label htmlFor="deno" className="font-semibold">
               Конфесія
             </Label>
-            <DenominationSelect onChange={onChange} FormSchema={FormSchema} />
-            <MultiSelect />
+            <MultiSelect userId={userId} />
           </div>
           <div className="flex flex-col gap-4">
             <Label htmlFor="max-distance" className="font-semibold">

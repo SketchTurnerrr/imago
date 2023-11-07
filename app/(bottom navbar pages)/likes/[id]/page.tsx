@@ -78,7 +78,7 @@ export default async function Page({
       </div>
     ) : (
       <div className="relative mx-auto my-4 p-4 md:w-[500px] md:px-0">
-        <div className="relative space-y-4 rounded-lg bg-purple-50 px-2 py-6">
+        <div className="relative space-y-4 rounded-lg bg-secondary px-2 py-6">
           <h2 className="truncate text-xl font-semibold">
             {like.prompt.answer}
           </h2>

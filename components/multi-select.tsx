@@ -1,72 +1,81 @@
 "use client";
-
-import * as React from "react";
+import { useState, useEffect, useRef, useCallback } from "react";
 import { X } from "lucide-react";
-
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
-import { usePathname, useRouter, useSearchParams } from "next/navigation";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 type Denominations = Record<"value" | "label", string>;
 const denominationOptions = [
   {
-    value: "Католізм;",
+    value: "Католізм",
     label: "Католізм",
   },
   {
-    value: "Православ'я;",
+    value: "Православ'я",
     label: "Православ'я",
   },
   {
-    value: "Євангелізм;",
+    value: "Євангелізм",
     label: "Євангелізм",
   },
   {
-    value: "Баптизм;",
+    value: "Баптизм",
     label: "Баптизм",
   },
   {
-    value: "П'ятидесятництво;",
+    value: "П'ятидесятництво",
     label: "П'ятидесятництво",
   },
   {
-    value: "Неконфесійна;",
+    value: "Неконфесійна",
     label: "Неконфесійна",
   },
   {
-    value: "Інше;",
+    value: "Інше",
     label: "Інше",
   },
 ] satisfies Denominations[];
 
-export function MultiSelect() {
-  const inputRef = React.useRef<HTMLInputElement>(null);
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-  const router = useRouter();
-  const [open, setOpen] = React.useState(false);
-  const [selected, setSelected] = React.useState<Denominations[]>([
-    denominationOptions[4],
-  ]);
-  console.log("selected :", selected);
-  const [inputValue, setInputValue] = React.useState("");
+export function MultiSelect({ userId }: { userId: string }) {
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [open, setOpen] = useState(false);
+  const [selected, setSelected] = useState<Denominations[]>([]);
+  const [inputValue, setInputValue] = useState("");
+  const supabase = createClientComponentClient<Database>();
 
-  const createQueryString = React.useCallback(
-    (name: string, value: string) => {
-      const params = new URLSearchParams(searchParams);
-      params.set(name, value);
+  useEffect(() => {
+    async function setFilters() {
+      const { error: existsError, count } = await supabase
+        .from("filters")
+        .select("", { head: true, count: "exact" });
 
-      return params.toString();
-    },
-    [searchParams],
-  );
+      if (count === 0 && selected.length > 0) {
+        const { error } = await supabase.from("filters").insert({
+          denomination: selected.map((denomination) => denomination.value),
+          profile_id: userId,
+        });
+        console.log("error :", error);
+      } else {
+        const { error } = await supabase
+          .from("filters")
+          .update({
+            denomination: selected.map((denomination) => denomination.value),
+          })
+          .eq("profile_id", userId);
+        console.log("error :", error);
+      }
+    }
 
-  const handleUnselect = React.useCallback((denomination: Denominations) => {
+    setFilters();
+  }, [selected]);
+
+  const handleUnselect = useCallback((denomination: Denominations) => {
     setSelected((prev) => prev.filter((s) => s.value !== denomination.value));
   }, []);
 
-  const handleKeyDown = React.useCallback(
+  const handleKeyDown = useCallback(
     (e: React.KeyboardEvent<HTMLDivElement>) => {
       const input = inputRef.current;
       if (input) {
@@ -92,8 +101,7 @@ export function MultiSelect() {
     (denomination) => !selected.includes(denomination),
   );
 
-  const params = selected.map((i) => i.value);
-  console.log("params :", params);
+  // const params = selected.map((i) => i.value);
 
   return (
     <Command
@@ -151,15 +159,6 @@ export function MultiSelect() {
                     onSelect={(value) => {
                       setInputValue("");
                       setSelected((prev) => {
-                        router.push(
-                          pathname +
-                            "?" +
-                            createQueryString(
-                              "denomination",
-                              denomination.value,
-                            ),
-                        );
-
                         return [...prev, denomination];
                       });
                     }}

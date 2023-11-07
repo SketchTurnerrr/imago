@@ -21,6 +21,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "@/components/ui/tooltip";
+import { cn } from "@/lib/utils";
 
 interface IProfile {
   serverProfiles: FullProfile[];
@@ -40,6 +41,7 @@ export function Profile({
   likeData,
 }: IProfile) {
   const profileRef = useRef(null);
+  const [imgLoading, setImgLoading] = useState(true);
   const [profiles, setProfiles] = useState<FullProfile[]>(serverProfiles);
   const [skippedProfile, setSkippedProfile] = useState<FullProfile | null>(
     null,
@@ -138,9 +140,17 @@ export function Profile({
               "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg"
             }
             height={500}
-            width={500}
+            width={400}
             alt="me"
-            className="rounded-lg"
+            className={cn(
+              "rounded-lg duration-700 ease-in-out",
+              imgLoading
+                ? "scale-90 blur-lg grayscale"
+                : "scale-100 blur-0 grayscale-0",
+            )}
+            onLoad={async () => {
+              setImgLoading(false);
+            }}
           />
           {pathname === "/discover" && (
             <LikeDialog
@@ -214,7 +224,7 @@ export function Profile({
             >
               <Undo />
             </Button>
-            <Filter />
+            <Filter userId={userId} />
           </div>
         )}
       </div>

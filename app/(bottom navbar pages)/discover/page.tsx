@@ -43,6 +43,13 @@ export default async function DiscoverPage({
 
   const gender = authedProfile?.gender === "male" ? "female" : "male";
 
+  const { data: filter, error: filterError } = await supabase
+    .from("filters")
+    .select("*")
+    .eq("profile_id", session.user.id);
+  console.log("filter :", filter);
+  console.log("filterError :", filterError);
+
   // .not('id', 'in', `(${skippedProfiles.join(',')})`)
 
   const { data: profiles, error } = await supabase
