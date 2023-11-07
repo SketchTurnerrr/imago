@@ -10,7 +10,19 @@ type authedProfileType = {
   onboarded: boolean;
 };
 
-export default async function DiscoverPage() {
+type searchParamsProps = {
+  params?: {
+    num?: string;
+  };
+  searchParams?: {
+    denomination?: string[];
+  };
+};
+
+export default async function DiscoverPage({
+  searchParams,
+}: searchParamsProps) {
+  console.log("searchParams :", searchParams);
   const supabase = createServerClient();
 
   const {

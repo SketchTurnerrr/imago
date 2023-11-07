@@ -12,7 +12,7 @@ interface IPrompt {
 
 export function Prompt({ question, answer, id, liker, likee }: IPrompt) {
   const pathname = usePathname();
-  console.log("pathname :", pathname);
+
   return (
     <div className="relative space-y-4 rounded-lg bg-secondary/75 px-4 py-10 md:w-[500px]">
       <p className="text-md font-semibold">{question}</p>

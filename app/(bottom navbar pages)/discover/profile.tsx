@@ -204,7 +204,7 @@ export function Profile({
             </TooltipProvider>
           )}
         </div>
-        {pathname.includes("likes") && (
+        {!pathname.includes("likes") && (
           <div className="flex items-center gap-2">
             <Button
               disabled={!skippedProfile}
