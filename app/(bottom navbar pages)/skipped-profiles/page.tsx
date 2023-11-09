@@ -5,6 +5,7 @@ import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
+import { SkippedProfiles } from "./skipped-profiles";
 
 export default async function SkippedProfilesPage() {
   const supabase = createServerClient();
@@ -23,7 +24,7 @@ export default async function SkippedProfilesPage() {
 
   const { data: skippedProfiles, error } = await supabase
     .from("skipped_profiles")
-    .select("created_at, object(id,first_name, photos(src))")
+    .select("id,created_at, object(id,first_name, photos(src))")
     .eq("subject", session.user.id)
     .returns<ISkippedProfiles[]>();
   console.log("skippedProfiles :", skippedProfiles?.[0].created_at);
@@ -35,37 +36,7 @@ export default async function SkippedProfilesPage() {
         <div className="mt-4 h-[1px] shrink-0 bg-border"></div>
       </h1>
 
-      {skippedProfiles?.map((profile) => {
-        const when = formatDistance(new Date(profile.created_at), new Date(), {
-          addSuffix: true,
-          locale: uk,
-        });
-
-        return (
-          <div className="flex gap-4 md:mx-auto md:min-w-[500px] ">
-            <img
-              className="aspect-square h-14 w-14 rounded-full object-cover"
-              src={profile.object.photos[0].src}
-              alt="a"
-              width={50}
-              height={50}
-            />
-            <div className="self-center">
-              <p className="font-bold dark:font-normal">
-                {profile.object.first_name}
-              </p>
-              <p className="text-muted-foreground">{when}</p>
-            </div>
-
-            <Link
-              className="ml-auto self-center"
-              href={`skipped-profiles/${profile.object.id}`}
-            >
-              <ChevronRight />
-            </Link>
-          </div>
-        );
-      })}
+      <SkippedProfiles profiles={skippedProfiles ?? []} />
     </div>
   );
 }

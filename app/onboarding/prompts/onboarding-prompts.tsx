@@ -1,5 +1,6 @@
 "use client";
-import { AddPromptDialog } from "@/app/(bottom navbar pages)/profile/edit/add-prompt-dialog";
+
+import { AddPromptDialog } from "@/app/(bottom navbar pages)/my-profile/edit/add-prompt-dialog";
 import { Button } from "@/components/ui/button";
 import { useWindowHeight } from "@/hooks/useWindowHeight";
 import { ChevronRightIcon } from "@radix-ui/react-icons";

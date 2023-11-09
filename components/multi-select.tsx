@@ -70,7 +70,7 @@ export function MultiSelect({ userId }: { userId: string }) {
     }
 
     setFilters();
-  }, [selected]);
+  }, [selected, supabase, userId]);
 
   const handleUnselect = useCallback((denomination: Denominations) => {
     setSelected((prev) => prev.filter((s) => s.value !== denomination.value));
