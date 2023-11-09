@@ -1,5 +1,5 @@
 import { createServerClient } from "@/lib/supabase-server";
-import { ProfilePage } from "./profile";
+import { ProfilePage } from "./myProfile";
 import { redirect } from "next/navigation";
 
 export default async function Page() {

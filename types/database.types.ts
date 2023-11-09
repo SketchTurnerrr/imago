@@ -102,24 +102,42 @@ export interface Database {
       };
       filters: {
         Row: {
-          age: number[] | null;
+          age: number[];
           created_at: string;
-          denomination: string[] | null;
+          denomination: string[];
           id: string;
+          profile_id: string;
         };
         Insert: {
-          age?: number[] | null;
+          age?: number[];
           created_at?: string;
-          denomination?: string[] | null;
+          denomination?: string[];
           id?: string;
+          profile_id: string;
         };
         Update: {
-          age?: number[] | null;
+          age?: number[];
           created_at?: string;
-          denomination?: string[] | null;
+          denomination?: string[];
           id?: string;
+          profile_id?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "filters_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: true;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "filters_profile_id_fkey";
+            columns: ["profile_id"];
+            isOneToOne: true;
+            referencedRelation: "random_profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       matches: {
         Row: {

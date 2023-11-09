@@ -11,6 +11,7 @@ declare global {
   type ConversationsType = DB["public"]["Tables"]["conversations"]["Row"];
   type MessagesType = DB["public"]["Tables"]["messages"]["Row"];
   type SubscriptionType = DB["public"]["Tables"]["subscriptions"]["Row"];
+  type SkippedProfilesType = DB["public"]["Tables"]["skipped_profiles"]["Row"];
 
   interface FullProfile extends ProfileType {
     prompts: PromptsType[];

@@ -1,8 +1,8 @@
 import { createServerClient } from "@/lib/supabase-server";
-import { Profile } from "../../discover/profile";
 import Image from "next/image";
 import { Prompt } from "@/components/prompt";
 import { redirect } from "next/navigation";
+import { Profile } from "@/components/profile";
 
 export default async function Page({
   params,
@@ -104,6 +104,7 @@ export default async function Page({
       {renderLike}
 
       <Profile
+        type="single"
         userId={session.user.id}
         serverProfiles={profile}
         likeData={{ like, type }}

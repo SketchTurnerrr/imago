@@ -11,7 +11,7 @@ import gsap, { Power2 } from "gsap";
 import { SkipProfileBtn } from "@/components/skip-profile-btn";
 import { Prompt } from "@/components/prompt";
 import { LikeDialog } from "@/components/like-dialog";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
 import { MatchDialog } from "@/components/match-btn";
 import { Filter } from "@/components/filter";
 import { Button } from "@/components/ui/button";
@@ -22,39 +22,39 @@ import {
   TooltipTrigger,
 } from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
+import { useGetProfiles } from "@/hooks/useGetProfiles";
+import { Clock } from "lucide-react";
 
 interface IProfile {
-  serverProfiles: FullProfile[];
-  authedProfile?: {
-    gender: string;
-    skipped_profiles: string[];
-    onboarded: boolean;
-  };
+  serverProfiles?: FullProfile[];
   userId: string;
+  profileId?: string;
   likeData: { like: PhotoLike | PromptLike; type: string } | null;
+  gender?: "male" | "female";
+  type: "discover" | "single";
 }
 
 export function Profile({
-  serverProfiles,
   userId,
-  authedProfile,
+  profileId,
   likeData,
+  gender,
+  type,
 }: IProfile) {
-  const profileRef = useRef(null);
-  const [imgLoading, setImgLoading] = useState(true);
-  const [profiles, setProfiles] = useState<FullProfile[]>(serverProfiles);
-  const [skippedProfile, setSkippedProfile] = useState<FullProfile | null>(
-    null,
-  );
-  // console.log('skippedProfile :', skippedProfile);
+  const { data, isLoading, refetch } = useGetProfiles({
+    gender,
+    type,
+    profileId,
+  });
 
-  // const currentSearchParams = useMemo<{ [key: string]: string }>(() => {
-  //   const params: { [key: string]: string } = {};
-  //   searchParams.forEach((value, key) => {
-  //     params[key] = value;
-  //   });
-  //   return params;
-  // }, [searchParams]);
+  const profileRef = useRef(null);
+  const profile = data;
+
+  const [imgLoading, setImgLoading] = useState(true);
+
+  const router = useRouter();
+
+  console.log("isLoading :", isLoading);
 
   const pathname = usePathname();
 
@@ -76,29 +76,9 @@ export function Profile({
     }, profileRef);
 
     return () => ctx.revert();
-  }, [profiles]);
-  // console.log('serverProfiles :', profiles);
+  }, [profile]);
 
-  // Function to skip a profile
-  function skipProfile() {
-    // Remove the last profile from the profiles array.
-    const profilesCp = [...profiles];
-    const profileToSkip = profilesCp.pop();
-    setProfiles(profilesCp);
-    if (profileToSkip) {
-      setSkippedProfile(profileToSkip);
-    }
-  }
-
-  function undoSkip() {
-    if (skippedProfile) {
-      setProfiles((prev) => [...prev, skippedProfile]);
-      setSkippedProfile(null);
-    }
-  }
-  const profile = profiles.at(-1)!;
-  if (!profiles || !profile) {
-    window.location.reload();
+  if (!profile) {
     return null;
   }
   const dob = format(parseISO(String(profile.date_of_birth)), "yyyy/MM/dd");
@@ -217,23 +197,24 @@ export function Profile({
         {!pathname.includes("likes") && (
           <div className="flex items-center gap-2">
             <Button
-              disabled={!skippedProfile}
               variant="ghost"
               size="icon"
-              onClick={() => undoSkip()}
+              onClick={() => router.push("/skipped-profiles")}
             >
-              <Undo />
+              <Clock />
             </Button>
-            <Filter userId={userId} />
+            {type === "discover" && <Filter userId={userId} />}
           </div>
         )}
       </div>
-      <SkipProfileBtn
-        likeData={likeData}
-        userId={userId}
-        profileId={profile.id}
-        skipProfile={skipProfile}
-      />
+      {type === "discover" && (
+        <SkipProfileBtn
+          likeData={likeData}
+          userId={userId}
+          profileId={profile.id}
+          refetch={refetch}
+        />
+      )}
       {pathname.includes("likes") && (
         <MatchDialog
           likee={profile.id}

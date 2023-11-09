@@ -22,7 +22,8 @@
       }
     ],
     "paths": {
-      "@/*": ["./*"]
+      "@/*": ["./*"],
+      "tabs/*": ["./app/(bottom navbar pages)/*"]
     }
   },
   "include": ["next-env.d.ts", "**/*.ts", "**/*.tsx", ".next/types/**/*.ts", "lib/liqpay.jsx", "app/(bottom navbar pages)/profile/account/privacy-policy"],

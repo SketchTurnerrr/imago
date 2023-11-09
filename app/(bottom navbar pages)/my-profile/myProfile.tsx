@@ -24,7 +24,7 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   }
 
   return (
-    <div className="mb-20 flex h-screen flex-col p-4 pt-20">
+    <div className="mb-20 flex h-screen flex-col p-4 pt-20 md:mx-auto md:w-1/2">
       <Image
         priority
         src={profile.photos[0].src}
@@ -40,8 +40,8 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
           <BadgeIcon className="self-end text-white" width={32} height={32} />
         )}
       </div>
-      <Separator className="my-4" />
-      <Link className="text-xl font-bold" href={"/profile/edit"}>
+      {/* <Separator className="my-4 md:hidden" /> */}
+      <Link className="mt-8 text-xl font-bold" href={"/profile/edit"}>
         <div className="flex items-center justify-between">
           Редагувати профіль
           <Pencil2Icon className="h-7 w-7" />

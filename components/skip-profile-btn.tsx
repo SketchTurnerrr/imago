@@ -4,20 +4,24 @@ import { Button } from "./ui/button";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
+import { useSkipProfile } from "@/hooks/useSkipProfile";
 
 export function SkipProfileBtn({
   userId,
   profileId,
-  skipProfile,
+  // skipProfile,
   likeData,
+  refetch,
 }: {
   userId: string;
   profileId: string;
-  skipProfile: () => void;
+  // skipProfile: () => void;
   likeData: { like: PhotoLike | PromptLike; type: string } | null;
+  refetch: () => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
+  const { mutate: skipProfile } = useSkipProfile();
 
   const handleAction = async () => {
     // console.log("pathname :");
@@ -43,8 +47,10 @@ export function SkipProfileBtn({
     }
 
     if (pathname.includes("discover")) {
-      skipProfile();
-      router.refresh();
+      // console.log("data :", data);
+      skipProfile({ profileId, currentUserId: userId });
+      // mutate()
+      refetch();
     }
   };
 

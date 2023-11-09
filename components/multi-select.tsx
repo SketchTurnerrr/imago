@@ -58,6 +58,7 @@ export function MultiSelect({ userId }: { userId: string }) {
         });
         console.log("error :", error);
       } else {
+        console.log("else ran");
         const { error } = await supabase
           .from("filters")
           .update({

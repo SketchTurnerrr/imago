@@ -90,7 +90,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
       <div className="fixed bottom-0 top-auto z-10 h-16 w-full items-center bg-slate-950 md:bottom-auto md:top-0 md:h-full md:w-16">
         <div className="absolute flex h-full w-full items-center justify-around md:mt-10 md:flex-col md:justify-start md:gap-10">
           {links}
-          <Link href={"/profile"}>
+          <Link href={"/my-profile"}>
             <Image
               priority
               className={"aspect-square rounded-full object-cover"}

@@ -20,6 +20,8 @@ import { useCallback, useState } from "react";
 import { AgeSlider } from "./age-slider";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MultiSelect } from "../multi-select";
+import { debounce } from "@/lib/utils";
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 
 export function Filter({ userId }: { userId: string }) {
   const [maxDist, setMaxDist] = useState<number[]>([50]);
@@ -27,45 +29,28 @@ export function Filter({ userId }: { userId: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
+  const supabase = createClientComponentClient<Database>();
 
   const onDistChange = (dist: number[]) => {
     setMaxDist([dist[0]]);
   };
 
+  const updateAgeFilterDebounced = debounce(async () => {
+    console.log("called");
+    await supabase
+      .from("filters")
+      .update({
+        age: age,
+      })
+      .eq("profile_id", userId);
+  }, 2000);
+
   const onAgeChange = (age: number[]) => {
     setAge([age[0], age[1]]);
+
+    updateAgeFilterDebounced();
   };
 
-  const denominationOptions = [
-    {
-      value: "Католізм",
-      label: "Католізм",
-    },
-    {
-      value: "Православ'я",
-      label: "Православ'я",
-    },
-    {
-      value: "Євангелізм",
-      label: "Євангелізм",
-    },
-    {
-      value: "Баптизм",
-      label: "Баптизм",
-    },
-    {
-      value: "П'ятидесятництво",
-      label: "П'ятидесятництво",
-    },
-    {
-      value: "Неконфесійна",
-      label: "Неконфесійна",
-    },
-    {
-      value: "Інше",
-      label: "Інше",
-    },
-  ];
   function handleSubmit() {}
 
   return (

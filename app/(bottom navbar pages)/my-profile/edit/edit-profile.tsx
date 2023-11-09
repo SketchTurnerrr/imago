@@ -4,9 +4,9 @@ import Image from "next/image";
 import { useRouter } from "next/navigation";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AddPromptDialog } from "./add-prompt-dialog";
-import { PhotoGrid } from "../../../../components/photo-grid/photo-grid";
 import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
+import { PhotoGrid } from "@/components/photo-grid/photo-grid";
 interface PageProps {
   user: User;
   data: FullProfile;
