@@ -9,13 +9,11 @@ import { useSkipProfile } from "@/hooks/useSkipProfile";
 export function SkipProfileBtn({
   userId,
   profileId,
-  // skipProfile,
   likeData,
   refetch,
 }: {
   userId: string;
   profileId: string;
-  // skipProfile: () => void;
   likeData: { like: PhotoLike | PromptLike; type: string } | null;
   refetch: () => void;
 }) {
@@ -27,12 +25,6 @@ export function SkipProfileBtn({
     // console.log("pathname :");
 
     const supabase = createClientComponentClient<Database>();
-    // await supabase
-    //   .from('profiles')
-    //   .update({
-    //     skipped_profiles: [...skippedProfiles, profileID],
-    //   })
-    //   .eq('id', userId);
 
     const table =
       likeData && likeData.type === "ph" ? "photo_likes" : "prompt_likes";
@@ -47,9 +39,7 @@ export function SkipProfileBtn({
     }
 
     if (pathname.includes("discover")) {
-      // console.log("data :", data);
       skipProfile({ profileId, currentUserId: userId });
-      // mutate()
       refetch();
     }
   };

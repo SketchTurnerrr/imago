@@ -64,7 +64,6 @@ export function AddPromptDialog({ user }: { user: User }) {
       });
     }
 
-    // setPrompts([...prompts, data]);
     router.refresh();
 
     setOpen(false);

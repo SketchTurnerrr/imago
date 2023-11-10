@@ -54,6 +54,12 @@ export default async function DiscoverPage({
     .select("age, denomination")
     .eq("profile_id", session.user.id)
     .single();
+
+  const { data: sub } = await supabase
+    .from("subscriptions")
+    .select("profile_id")
+    .eq("profile_id", session.user.id)
+    .single();
   // console.log("filter :", filter);
   // console.log("filterError :", filterError);
 
@@ -107,6 +113,7 @@ export default async function DiscoverPage({
         userId={session.user.id}
         gender={gender}
         type="discover"
+        sub={sub?.profile_id}
       />
     </Suspense>
   );

@@ -150,7 +150,7 @@ export function Conversation({
     }
 
     getProfile();
-  }, []);
+  }, [participants, supabase]);
 
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

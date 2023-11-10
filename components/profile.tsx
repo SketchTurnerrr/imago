@@ -3,7 +3,6 @@ import { differenceInYears, parse, format, parseISO } from "date-fns";
 import Image from "next/image";
 import Cross from "@/public/cross.svg";
 import Cake from "@/public/cake.svg";
-import Undo from "@/public/undo.svg";
 import MapPin from "@/public/map-pin.svg";
 import BadgeIcon from "@/public/badge-check.svg";
 import { useLayoutEffect, useRef, useState } from "react";
@@ -32,6 +31,7 @@ interface IProfile {
   likeData: { like: PhotoLike | PromptLike; type: string } | null;
   gender?: "male" | "female";
   type: "discover" | "single";
+  sub?: string | null;
 }
 
 export function Profile({
@@ -40,6 +40,7 @@ export function Profile({
   likeData,
   gender,
   type,
+  sub = null,
 }: IProfile) {
   const { data, isLoading, refetch } = useGetProfiles({
     gender,
@@ -114,21 +115,21 @@ export function Profile({
       return (
         <div className={"relative w-fit"}>
           <Image
-            priority
+            priority={true}
             src={
               src ||
               "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg"
             }
             height={500}
             width={400}
-            alt="me"
+            alt={profile.first_name}
             className={cn(
               "rounded-lg duration-700 ease-in-out",
               imgLoading
                 ? "scale-90 blur-lg grayscale"
                 : "scale-100 blur-0 grayscale-0",
             )}
-            onLoad={async () => {
+            onLoad={() => {
               setImgLoading(false);
             }}
           />
@@ -194,7 +195,7 @@ export function Profile({
             </TooltipProvider>
           )}
         </div>
-        {!pathname.includes("likes") && (
+        {!pathname.includes("likes") && userId === sub && (
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"

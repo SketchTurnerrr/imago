@@ -41,7 +41,7 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
         )}
       </div>
       {/* <Separator className="my-4 md:hidden" /> */}
-      <Link className="mt-8 text-xl font-bold" href={"/profile/edit"}>
+      <Link className="mt-8 text-xl font-bold" href={"/my-profile/edit"}>
         <div className="flex items-center justify-between">
           Редагувати профіль
           <Pencil2Icon className="h-7 w-7" />
@@ -49,21 +49,21 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
       </Link>
 
       <Separator className="my-4" />
-      <Link className="text-xl font-bold" href={"/profile/preferences"}>
+      <Link className="text-xl font-bold" href={"/my-profile/preferences"}>
         <div className="flex items-center justify-between">
           Уподобання
           <MixerHorizontalIcon className="h-7 w-7" />
         </div>
       </Link>
       <Separator className="my-4" />
-      <Link className="text-xl font-bold" href={"/profile/account"}>
+      <Link className="text-xl font-bold" href={"/my-profile/account"}>
         <div className="flex items-center justify-between">
           Акаунт
           <GearIcon className="h-7 w-7" />
         </div>
       </Link>
       <Separator className="my-4" />
-      <Link className="text-xl font-bold" href={"/profile/subscription"}>
+      <Link className="text-xl font-bold" href={"/my-profile/subscription"}>
         <div className="flex items-center justify-between">
           Підписка
           <SymbolIcon className="h-7 w-7" />
