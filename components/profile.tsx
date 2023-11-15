@@ -27,7 +27,7 @@ import { Clock } from "lucide-react";
 interface IProfile {
   serverProfiles?: FullProfile[];
   userId: string;
-  profileId: string;
+  profileId?: string;
   likeData: { like: PhotoLike | PromptLike; type: "ph" | "p" } | null;
   gender?: "male" | "female";
   type: "discover" | "single";
