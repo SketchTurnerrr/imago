@@ -10,6 +10,7 @@ import { ScrollTrigger } from "gsap/all";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { IConversationReadStatus } from "@/app/global";
 import { usePathname, useRouter } from "next/navigation";
+import { cn } from "@/lib/utils";
 
 interface INavbar {
   photo:
@@ -29,7 +30,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
 
   const items = [
     {
-      url: "/",
+      url: "/discover",
       icon: Compass,
     },
     {
@@ -73,14 +74,25 @@ export function Navbar({ photo, status, userId }: INavbar) {
       ? rtStatus?.party2_read
       : rtStatus?.party1_read;
 
-  const links = items.map((item) => (
-    <Link className=" relative text-gray-300" key={item.url} href={item.url}>
-      {rtStatus && !party && item.url === "/matches" && (
-        <div className="unread-count before:content-[attr(data-unread)]"></div>
-      )}
-      <item.icon />
-    </Link>
-  ));
+  const links = items.map((item) => {
+    const active = pathname === item.url;
+
+    return (
+      <Link
+        className={cn(
+          active ? "text-purple-500" : "text-gray-300",
+          "relative ",
+        )}
+        key={item.url}
+        href={item.url}
+      >
+        {rtStatus && !party && item.url === "/matches" && (
+          <div className="unread-count before:content-[attr(data-unread)]"></div>
+        )}
+        <item.icon />
+      </Link>
+    );
+  });
 
   if (pathname.split("/")[1] === "matches" && pathname.split("/").length === 3)
     return null;

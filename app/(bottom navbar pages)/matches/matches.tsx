@@ -61,10 +61,12 @@ export function Matches({ userId, conversations }: IMatches) {
 
   return (
     <>
-      <h1 className="self-start p-4 text-4xl font-bold">Знайомства</h1>
-      <Separator />
+      <h1 className="self-start p-4 text-4xl font-bold md:mx-auto md:w-[500px]">
+        Знайомства
+      </h1>
+      <Separator className="md:hidden" />
       {rtConversations?.length === 0 && (
-        <div className="flex flex-col items-center gap-3 p-4">
+        <div className="flex flex-col items-center gap-3 p-4 ">
           <div>
             <Image
               className="mx-auto"
@@ -80,7 +82,10 @@ export function Matches({ userId, conversations }: IMatches) {
         </div>
       )}
       {rtConversations?.map((conversation) => (
-        <div key={conversation.id} className="flex flex-col p-4 ">
+        <div
+          key={conversation.id}
+          className="flex flex-col p-4 md:mx-auto md:w-[500px]"
+        >
           <Link
             href={`/matches/${conversation?.id}`}
             className="flex items-center gap-4"

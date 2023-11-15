@@ -28,7 +28,7 @@ const formSchema = z.object({
 
 export function SignIn({ session }: { session: Session | null }) {
   const [disableOtpBtn, setDisableOtpBtn] = useState(false);
-  const [secondsLeft, setSecondsLeft] = useState(5);
+  const [secondsLeft, setSecondsLeft] = useState(60);
   const supabase = createClientComponentClient();
 
   if (session) {

@@ -1,11 +1,13 @@
 import { GoBack } from "@/components/go-back";
+import { SignOut } from "@/components/signout-btn";
+import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
 export function Account({ userId }: { userId: string }) {
   return (
-    <section className="p-4">
+    <section className="mx-auto w-[500px] p-4">
       <div className="flex items-center gap-3">
         <GoBack />
         <h1 className="text-3xl font-bold">Акаунт</h1>
@@ -25,6 +27,7 @@ export function Account({ userId }: { userId: string }) {
           </div>
         </Link>
         <Separator className="my-4" />
+        <SignOut />
       </div>
     </section>
   );

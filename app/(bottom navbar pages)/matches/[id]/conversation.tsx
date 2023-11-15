@@ -196,9 +196,9 @@ export function Conversation({
         />
       </header>
 
-      <div className=" w-full flex-auto overflow-auto">
-        <Tabs defaultValue="chat" className="w-full">
-          <TabsList className="fixed top-[50px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4">
+      <div className=" w-full flex-auto overflow-auto md:mx-auto md:w-[700px]">
+        <Tabs defaultValue="chat" className=" w-full">
+          <TabsList className="fixed top-[50px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4 md:mx-auto md:w-[700px]">
             <TabsTrigger value="chat" className="text-lg">
               Чат
             </TabsTrigger>
@@ -246,7 +246,7 @@ export function Conversation({
                           />
                         )}
 
-                        <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-slate-100 p-2">
+                        <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-slate-100 p-2 text-black">
                           <p style={{ wordBreak: "break-word" }}>
                             {message.content}
                           </p>
@@ -284,7 +284,7 @@ export function Conversation({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex items-center gap-3 bg-background p-3"
+          className="flex items-center gap-3 bg-background p-3 md:mx-auto md:w-[700px]"
         >
           <FormField
             control={form.control}
@@ -296,7 +296,7 @@ export function Conversation({
                     minRows={1}
                     maxRows={4}
                     className="w-full resize-none rounded-lg border p-2"
-                    placeholder="Написати повідомлення"
+                    placeholder="Повідомлення..."
                     {...field}
                   />
                 </FormControl>

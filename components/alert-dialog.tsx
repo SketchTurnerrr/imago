@@ -37,7 +37,7 @@ export function AlertDialogDots({
   return (
     <AlertDialog>
       <AlertDialogTrigger asChild>
-        <Button className="" variant="ghost">
+        <Button className="px-2" variant="ghost">
           {triggerName}
         </Button>
       </AlertDialogTrigger>
@@ -47,7 +47,7 @@ export function AlertDialogDots({
           <AlertDialogDescription>{alertDescription}</AlertDialogDescription>
         </AlertDialogHeader>
         <AlertDialogFooter className="flex flex-row items-center gap-4">
-          <AlertDialogCancel className="mt-0">Закрити</AlertDialogCancel>
+          <AlertDialogCancel className="mt-0">Скасувати</AlertDialogCancel>
           <AlertDialogAction onClick={endConversation}>
             Підтвердити
           </AlertDialogAction>

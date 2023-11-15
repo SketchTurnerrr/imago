@@ -48,7 +48,16 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
                   : "Вподобала" + " ваше фото"}
               </div>
             </div>
-            <Link href={`/likes/${item.liker.id}?l=${item.id}:ph`}>
+
+            <Link
+              href={{
+                pathname: `/likes/${item.liker.id}`,
+                query: {
+                  likeId: item.id,
+                  t: "ph",
+                },
+              }}
+            >
               <h1 className="mb-4 text-4xl font-bold capitalize">
                 {item.liker.first_name}
               </h1>
@@ -71,7 +80,15 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
                 вашу відповідь
               </div>
             </div>
-            <Link href={`/likes/${item.liker.id}?l=${item.id}:p`}>
+            <Link
+              href={{
+                pathname: `/likes/${item.liker.id}`,
+                query: {
+                  likeId: item.id,
+                  t: "p",
+                },
+              }}
+            >
               <h1 className="mb-4 text-4xl font-bold capitalize">
                 {item.liker.first_name}
               </h1>

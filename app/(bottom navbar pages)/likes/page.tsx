@@ -24,10 +24,10 @@ export default async function LikesPage() {
     .eq("likee", session.user.id)
     .returns<PromptLike[]>();
 
-  console.log("promptLikes :", promptLikes);
-  console.log("photoLikes :", photoLikes);
+  // console.log("promptLikes :", promptLikes);
+  // console.log("photoLikes :", photoLikes);
 
   return (
-    <Likes photoLikes={photoLikes || []} promptLikes={promptLikes || []} />
+    <Likes photoLikes={photoLikes ?? []} promptLikes={promptLikes ?? []} />
   );
 }

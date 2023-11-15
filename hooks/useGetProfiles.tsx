@@ -44,7 +44,6 @@ export function useGetProfiles({
           .from("profiles")
           .select("*, prompts(*), photos(src,id)")
           .order("updated_at", { foreignTable: "photos", ascending: false })
-          .eq("gender", gender)
           .eq("id", profileId)
           .single();
         return data;

@@ -13,6 +13,7 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import { SignOut } from "@/components/signout-btn";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   console.log("profile :", profile);
@@ -75,12 +76,6 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
         <ModeToggle />
       </div>
       <Separator className="my-4" />
-      <Button
-        className="mt-6 w-fit self-end bg-primary font-bold"
-        onClick={() => signOut()}
-      >
-        Вийти
-      </Button>
     </div>
   );
 }

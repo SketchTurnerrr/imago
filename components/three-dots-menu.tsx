@@ -27,10 +27,10 @@ export function ThreeDotsMenu({ viewProfileId, conversationId }: ITDM) {
         <DotsHorizontalIcon className="h-6 w-6" />
       </DropdownMenuTrigger>
       <DropdownMenuContent>
-        <DropdownMenuLabel>
+        {/* <DropdownMenuLabel>
           <Link href={`profile/${viewProfileId}`}>Переглянути профіль</Link>
         </DropdownMenuLabel>
-        <DropdownMenuSeparator />
+        <DropdownMenuSeparator /> */}
 
         <AlertDialogDots
           conversationId={conversationId}

@@ -27,8 +27,8 @@ import { Clock } from "lucide-react";
 interface IProfile {
   serverProfiles?: FullProfile[];
   userId: string;
-  profileId?: string;
-  likeData: { like: PhotoLike | PromptLike; type: string } | null;
+  profileId: string;
+  likeData: { like: PhotoLike | PromptLike; type: "ph" | "p" } | null;
   gender?: "male" | "female";
   type: "discover" | "single";
   sub?: string | null;
@@ -208,14 +208,14 @@ export function Profile({
           </div>
         )}
       </div>
-      {type === "discover" && (
+      {
         <SkipProfileBtn
           likeData={likeData}
           userId={userId}
           profileId={profile.id}
           refetch={refetch}
         />
-      )}
+      }
       {pathname.includes("likes") && (
         <MatchDialog
           likee={profile.id}
@@ -234,7 +234,7 @@ export function Profile({
       ----- INFO 
       */}
 
-      <div className="relative rounded-lg bg-secondary/75 px-4 py-10 font-bold md:w-[500px]">
+      <div className="relative rounded-lg bg-secondary/75 px-4 py-4 font-bold md:w-[500px]">
         <div className="flex items-center justify-around gap-6 text-secondary-foreground">
           <div className="flex items-center gap-3">
             <Cake />

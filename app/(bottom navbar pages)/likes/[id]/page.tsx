@@ -10,11 +10,14 @@ export default async function Page({
 }: {
   params: { id: string };
   searchParams: {
-    l: string;
+    likeId: string;
+    t: "ph" | "p";
   };
 }) {
+  console.log("searchParams :", searchParams);
   const supabase = createServerClient();
 
+  console.log("params :", params);
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -25,30 +28,30 @@ export default async function Page({
     .eq("id", params.id)
     .returns<FullProfile[]>();
 
+  console.log("profile :", profile);
   // ph photoId
   // p promptId
 
-  const { l } = searchParams;
-  const likeId = l.split(":")[0];
-  const type = l.split(":")[1];
+  const type = searchParams.t;
 
   const likesQuery =
     type === "ph"
       ? supabase
           .from("photo_likes")
           .select("id,photo(src), comment, liker(gender)")
-          .eq("id", likeId)
+          .eq("id", searchParams.likeId)
           .returns<PhotoLike[]>()
           .single()
       : supabase
           .from("prompt_likes")
           .select("id,prompt(*), comment, liker(gender)")
-          .eq("id", likeId)
+          .eq("id", searchParams.likeId)
           .returns<PromptLike[]>()
           .single();
 
-  const { data: like, error: likeError } = await likesQuery;
+  const { data: like } = await likesQuery;
 
+  console.log("like :", like);
   if (!like) {
     redirect("/likes");
   }
@@ -107,6 +110,7 @@ export default async function Page({
         type="single"
         userId={session.user.id}
         serverProfiles={profile}
+        profileId={params.id}
         likeData={{ like, type }}
       />
     </>
