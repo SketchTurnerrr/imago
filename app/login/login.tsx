@@ -92,7 +92,7 @@ export function SignIn({ session }: { session: Session | null }) {
   }
 
   return (
-    <div className="grid h-screen w-full place-items-center">
+    <div className="grid h-[100svh] w-full place-items-center">
       <div className="w-full md:max-w-sm">
         <h1 className="mb-4 text-center text-4xl font-bold">Привіт!</h1>
         <div className="rounded-lg   p-5 ">
@@ -130,7 +130,9 @@ export function SignIn({ session }: { session: Session | null }) {
               >
                 Отримати посилання {secondsLeft < 60 && `(${secondsLeft})`}
               </Button>
-              <p className="text-center">або</p>
+              <p style={{ marginBlock: "1rem" }} className="text-center">
+                або
+              </p>
             </form>
           </Form>
           <Button

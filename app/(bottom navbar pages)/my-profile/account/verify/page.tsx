@@ -75,7 +75,7 @@ export default function VerifyPage() {
         <h1 className="text-3xl font-bold">Верифікація акаунту</h1>
       </div>
 
-      <div className="my-6 flex flex-col gap-3">
+      <div className="mb-20 mt-6 flex flex-col gap-3">
         <h2 className=" text-xl font-semibold">Що таке верифікація акаунту?</h2>
         <p className="">
           Це процес підтвердження Кожен профіль повинен мати принаймні три
@@ -117,7 +117,7 @@ export default function VerifyPage() {
           Завантажити селфі
         </label>
         <div className="flex items-center gap-4">
-          <Button onClick={handleClick} className="self-start text-base">
+          <Button onClick={handleClick} className=" self-start text-base">
             Додати
           </Button>
           {loading && (

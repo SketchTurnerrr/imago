@@ -182,7 +182,7 @@ export function Conversation({
   if (!participants) return;
 
   return (
-    <div className="flex h-full flex-col ">
+    <div className="flex h-[100svh] flex-col ">
       <header className="flex w-full items-center justify-between gap-3 self-start bg-background p-3">
         <GoBack />
         <h1 className="mr-auto text-3xl font-bold capitalize">

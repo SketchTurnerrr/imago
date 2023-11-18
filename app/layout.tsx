@@ -18,7 +18,7 @@ export default function RootLayout({
 }) {
   return (
     <html lang="en" suppressHydrationWarning>
-      <body className={cn("h-full", ysabeau.className)}>
+      <body className={cn("h-[100svh]", ysabeau.className)}>
         <Providers>{children}</Providers>
       </body>
     </html>

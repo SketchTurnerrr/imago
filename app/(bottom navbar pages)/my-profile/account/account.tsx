@@ -12,7 +12,7 @@ export function Account({ userId }: { userId: string }) {
         <GoBack />
         <h1 className="text-3xl font-bold">Акаунт</h1>
       </div>
-      <div className="mb-20 flex h-screen flex-col p-4 pt-20">
+      <div className="mb-20 flex h-[100svh] flex-col p-4 pt-20">
         <Link className="text-xl font-bold" href={"account/privacy-policy"}>
           <div className="flex items-center justify-between">
             Політика конфіденціальності

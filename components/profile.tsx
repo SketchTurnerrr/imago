@@ -7,7 +7,7 @@ import MapPin from "@/public/map-pin.svg";
 import BadgeIcon from "@/public/badge-check.svg";
 import { useLayoutEffect, useRef, useState } from "react";
 import gsap, { Power2 } from "gsap";
-import { SkipProfileBtn } from "@/components/skip-profile-btn";
+import { LeftProfileBtn } from "@/components/left-profile-btn";
 import { Prompt } from "@/components/prompt";
 import { LikeDialog } from "@/components/like-dialog";
 import { usePathname, useRouter } from "next/navigation";
@@ -23,6 +23,8 @@ import {
 import { cn } from "@/lib/utils";
 import { useGetProfiles } from "@/hooks/useGetProfiles";
 import { Clock } from "lucide-react";
+import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
+import { GoBack } from "./go-back";
 
 interface IProfile {
   serverProfiles?: FullProfile[];
@@ -113,7 +115,7 @@ export function Profile({
       return null;
     } else {
       return (
-        <div className={"relative w-fit"}>
+        <div className={"relative mx-auto"}>
           <Image
             priority={true}
             src={
@@ -121,7 +123,7 @@ export function Profile({
               "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg"
             }
             height={500}
-            width={400}
+            width={500}
             alt={profile.first_name}
             className={cn(
               "rounded-lg duration-700 ease-in-out",
@@ -179,20 +181,18 @@ export function Profile({
             {profile.first_name}
           </h1>
           {!profile.verified && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <BadgeIcon
-                    className="inline-block  text-white"
-                    width={32}
-                    height={32}
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="bg-secondary-foreground">
-                  <p>Верифікований акаунт</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
+            <Popover>
+              <PopoverTrigger>
+                <BadgeIcon
+                  className="inline-block text-white"
+                  width={32}
+                  height={32}
+                />
+              </PopoverTrigger>
+              <PopoverContent className="w-fit border-none bg-secondary-foreground p-2 text-sm text-white dark:bg-secondary">
+                <p>Верифікований акаунт</p>
+              </PopoverContent>
+            </Popover>
           )}
         </div>
         {!pathname.includes("likes") && userId === sub && (
@@ -209,7 +209,7 @@ export function Profile({
         )}
       </div>
       {
-        <SkipProfileBtn
+        <LeftProfileBtn
           likeData={likeData}
           userId={userId}
           profileId={profile.id}

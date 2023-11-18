@@ -5,8 +5,10 @@ import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useSkipProfile } from "@/hooks/useSkipProfile";
+import { Undo } from "lucide-react";
+import { useRemoveFromSkipped } from "@/hooks/useRemoveFromSkipped";
 
-export function SkipProfileBtn({
+export function LeftProfileBtn({
   userId,
   profileId,
   likeData,
@@ -20,6 +22,7 @@ export function SkipProfileBtn({
   const router = useRouter();
   const pathname = usePathname();
   const { mutate: skipProfile } = useSkipProfile();
+  const { mutate: removeFromSkipped } = useRemoveFromSkipped();
 
   const handleAction = async () => {
     // console.log("pathname :");
@@ -42,6 +45,14 @@ export function SkipProfileBtn({
       skipProfile({ profileId, currentUserId: userId });
       refetch();
     }
+
+    if (pathname.includes("skipped-profiles")) {
+      removeFromSkipped({
+        profileId,
+        currentUserId: userId,
+      });
+      router.push("/skipped-profiles");
+    }
   };
 
   return (
@@ -56,6 +67,8 @@ export function SkipProfileBtn({
       >
         {pathname.match("discover") ? (
           <ArrowRightIcon className="h-7 w-7 text-foreground" />
+        ) : pathname.match("skipped-profiles") ? (
+          <Undo className="h-7 w-7 text-foreground" />
         ) : (
           <Cross1Icon className="h-7 w-7 text-foreground" />
         )}

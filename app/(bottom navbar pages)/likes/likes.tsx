@@ -9,10 +9,10 @@ interface PageProps {
 
 export function Likes({ photoLikes, promptLikes }: PageProps) {
   return (
-    <main className="flex min-h-screen flex-col gap-4 p-4">
+    <main className="flex min-h-screen flex-col gap-4 p-4 md:mx-auto md:w-[700px]">
       {/* IF EMPTY PAGE */}
-      <h1 className="self-start text-4xl font-bold">Вподобали вас</h1>
-      <Separator />
+      <h1 className="self-start text-4xl font-bold md:mb-4">Вподобали вас</h1>
+      <Separator className="md:hidden" />
       {photoLikes.length === 0 && promptLikes.length === 0 && (
         <>
           <a

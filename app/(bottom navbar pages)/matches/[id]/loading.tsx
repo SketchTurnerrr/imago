@@ -3,7 +3,7 @@ import { Skeleton } from "@/components/ui/skeleton";
 
 export default function LoadingMessages() {
   return (
-    <div className="flex h-screen flex-col ">
+    <div className="flex h-[100svh] flex-col md:mx-auto md:w-[700px]">
       <h1 className="w-full self-start p-6"></h1>
       <Separator />
       <div className="flex w-full items-center gap-4 p-4">

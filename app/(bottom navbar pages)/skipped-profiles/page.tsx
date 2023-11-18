@@ -6,6 +6,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SkippedProfiles } from "./skipped-profiles";
+import { GoBack } from "@/components/go-back";
+import { Separator } from "@/components/ui/separator";
 
 export default async function SkippedProfilesPage() {
   const supabase = createServerClient();
@@ -31,11 +33,11 @@ export default async function SkippedProfilesPage() {
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-20 md:mx-auto md:w-fit">
-      <h1 className="mb-4 w-full self-start text-4xl font-bold">
+      <h1 className="mb-0 flex w-full items-center gap-3 self-start text-3xl font-bold md:mb-4">
+        <GoBack />
         Переглянуті профілі
-        <div className="mt-4 h-[1px] shrink-0 bg-border"></div>
       </h1>
-
+      <Separator className="md:hidden" />
       <SkippedProfiles profiles={skippedProfiles ?? []} />
     </div>
   );

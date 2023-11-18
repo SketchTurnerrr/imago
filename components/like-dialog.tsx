@@ -1,12 +1,12 @@
-'use client';
-import { Button } from '@/components/ui/button';
+"use client";
+import { Button } from "@/components/ui/button";
 import {
   LDialog,
   LDialogContent,
   LDialogHeader,
   LDialogTitle,
   LDialogTrigger,
-} from '@/components/ui/custom-like-dialog';
+} from "@/components/ui/custom-like-dialog";
 import {
   Form,
   FormControl,
@@ -15,25 +15,25 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from "@/components/ui/form";
+import { Input } from "@/components/ui/input";
 
-import ThumbsUp from '@/public/thumbs-up.svg';
+import ThumbsUp from "@/public/thumbs-up.svg";
 
-import { createClientComponentClient } from '@supabase/auth-helpers-nextjs';
-import Image from 'next/image';
-import { useState } from 'react';
+import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import Image from "next/image";
+import { useState } from "react";
 
-import { zodResolver } from '@hookform/resolvers/zod';
-import { useForm } from 'react-hook-form';
-import * as z from 'zod';
-import { Prompt } from './prompt';
+import { zodResolver } from "@hookform/resolvers/zod";
+import { useForm } from "react-hook-form";
+import * as z from "zod";
+import { Prompt } from "./prompt";
 
 interface ILikeDialog {
   itemId: string;
   liker: string;
   likee: string;
-  type: 'prompt' | 'photo' | 'match';
+  type: "prompt" | "photo" | "match";
   firstName: string | null;
   src: string | null;
   question: string | null;
@@ -59,31 +59,31 @@ export function LikeDialog({
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
-      comment: '',
+      comment: "",
     },
   });
   const handleLike = async (data: z.infer<typeof FormSchema>) => {
     const { comment } = data;
 
-    if (type === 'photo' && itemId) {
-      const { error } = await supabase.from('photo_likes').insert({
+    if (type === "photo" && itemId) {
+      const { error } = await supabase.from("photo_likes").insert({
         photo: itemId,
         liker: liker,
         likee: likee,
         comment: comment ? comment : null,
       });
 
-      console.log(' like error:', error);
+      console.log(" like error:", error);
     }
 
-    if (type === 'prompt') {
-      const { error } = await supabase.from('prompt_likes').insert({
+    if (type === "prompt") {
+      const { error } = await supabase.from("prompt_likes").insert({
         prompt: itemId,
         liker: liker,
         likee: likee,
         comment: comment ? comment : null,
       });
-      console.log(' like error:', error);
+      console.log(" like error:", error);
     }
 
     setOpen(false);
@@ -93,50 +93,50 @@ export function LikeDialog({
     <LDialog open={open} onOpenChange={setOpen}>
       <LDialogTrigger asChild>
         <Button
-          size='icon'
-          className='rounded-full text-primary w-12 h-12 bottom-2 absolute right-2 bg-white'
+          size="icon"
+          className="absolute bottom-2 right-2 h-12 w-12 rounded-full bg-white text-primary"
         >
           <ThumbsUp />
         </Button>
       </LDialogTrigger>
-      <LDialogContent className='max-w-[350px] bg-transparent border-none shadow-none'>
+      <LDialogContent className="max-w-[350px] border-none bg-transparent shadow-none">
         <LDialogHeader>
-          <LDialogTitle className='text-3xl'>
-            {type === 'photo' ? firstName : ''}
+          <LDialogTitle className="text-3xl">
+            {type === "photo" ? firstName : ""}
           </LDialogTitle>
         </LDialogHeader>
-        <div className='flex flex-col gap-2'>
+        <div className="flex flex-col gap-2">
           {src && (
             <Image
               src={src}
               alt={firstName!}
               width={300}
               height={300}
-              className='rounded-lg w-full object-cover aspect-square'
+              className="aspect-square w-full rounded-lg object-cover"
             />
           )}
-          {type === 'prompt' && (
-            <div className='px-4 py-10 bg-primary text-primary-foreground md:w-[500px] relative rounded-lg space-y-4'>
-              <p className='text-md font-semibold'>{question}</p>
-              <h2 className='text-3xl font-bold'>{answer}</h2>
+          {type === "prompt" && (
+            <div className="relative space-y-4 rounded-lg bg-primary px-4 py-10 text-primary-foreground md:w-[500px]">
+              <p className="text-md font-semibold">{question}</p>
+              <h2 className="text-3xl font-bold">{answer}</h2>
             </div>
           )}
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(handleLike)}
-              className='flex flex-col gap-2'
+              className="flex flex-col gap-2"
             >
               <FormField
                 control={form.control}
-                name='comment'
+                name="comment"
                 render={({ field }) => (
                   <FormItem>
                     <FormControl>
                       <Input
                         {...field}
-                        className='bg-white'
+                        className="bg-white"
                         maxLength={140}
-                        placeholder='Залишити коментар'
+                        placeholder="Залишити коментар"
                       />
                     </FormControl>
 
@@ -145,8 +145,8 @@ export function LikeDialog({
                 )}
               />
               <Button
-                className='font-bold text-base'
-                type='submit'
+                className="text-base font-bold"
+                type="submit"
                 // onClick={handleLike}
               >
                 Вподобати
