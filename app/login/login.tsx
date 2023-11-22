@@ -19,6 +19,9 @@ import {
 import { useToast } from "@/components/ui/use-toast";
 import { redirect } from "next/navigation";
 import { useState } from "react";
+import Logo from "@/public/logo.svg";
+import LogoDark from "@/public/logo-dark.svg";
+import { useTheme } from "next-themes";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Це не схоже на адресу" }).min(2, {
@@ -30,6 +33,7 @@ export function SignIn({ session }: { session: Session | null }) {
   const [disableOtpBtn, setDisableOtpBtn] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const supabase = createClientComponentClient();
+  const { theme } = useTheme();
 
   if (session) {
     redirect("/discover");
@@ -94,8 +98,24 @@ export function SignIn({ session }: { session: Session | null }) {
   return (
     <div className="grid h-[100svh] w-full place-items-center">
       <div className="w-full md:max-w-sm">
+        <Image
+          className="mx-auto mb-16 block dark:hidden"
+          src={"/logo.svg"}
+          width={250}
+          height={150}
+          alt="imago logo"
+        />
+        <Image
+          className="mx-auto mb-16 hidden dark:block"
+          src={"/logo-dark.svg"}
+          width={250}
+          height={150}
+          alt="imago logo"
+        />
+
+        {/* <Logo /> */}
         <h1 className="mb-4 text-center text-4xl font-bold">Привіт!</h1>
-        <div className="rounded-lg   p-5 ">
+        <div className="rounded-lg p-5">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
               <FormField

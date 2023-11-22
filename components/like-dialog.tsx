@@ -136,6 +136,7 @@ export function LikeDialog({
                         {...field}
                         className="bg-white"
                         maxLength={140}
+                        autoComplete="off"
                         placeholder="Залишити коментар"
                       />
                     </FormControl>
