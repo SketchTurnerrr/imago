@@ -23,7 +23,7 @@ export async function POST(req: NextRequest) {
   const serverUrl =
     process.env.NODE_ENV === "development"
       ? "https://dee6-77-122-148-140.ngrok-free.app/api/liqpay/callback"
-      : `https://covenantly-web.vercel.app/api/liqpay/callback`;
+      : `https://imagodate.vercel.app/api/liqpay/callback`;
 
   console.log("serverUrl :", serverUrl);
   const JSONPayload = {

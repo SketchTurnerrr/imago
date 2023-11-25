@@ -7,7 +7,7 @@ import { Providers } from "./providers";
 const ysabeau = Ysabeau({ subsets: ["cyrillic"] });
 
 export const metadata: Metadata = {
-  title: "covenantly",
+  title: "Імаго",
   description: "Місце зустрічі для християн України",
 };
 
