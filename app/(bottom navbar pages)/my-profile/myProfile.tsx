@@ -14,6 +14,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { SignOut } from "@/components/signout-btn";
+import { HeartHandshake } from "lucide-react";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   console.log("profile :", profile);
@@ -63,11 +64,18 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
           <GearIcon className="h-7 w-7" />
         </div>
       </Link>
-      <Separator className="my-4" />
+      {/* <Separator className="my-4" />
       <Link className="text-xl font-bold" href={"/my-profile/subscription"}>
         <div className="flex items-center justify-between">
           Підписка
           <SymbolIcon className="h-7 w-7" />
+        </div>
+      </Link> */}
+      <Separator className="my-4" />
+      <Link className="text-xl font-bold" href={"/donate"}>
+        <div className="flex items-center justify-between">
+          Підтримати
+          <HeartHandshake className="h-7 w-7" />
         </div>
       </Link>
       <Separator className="my-4" />
