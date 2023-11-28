@@ -7,7 +7,7 @@ import Link from "next/link";
 
 export function Account({ userId }: { userId: string }) {
   return (
-    <section className="mx-auto w-[500px] p-4">
+    <section className="mx-auto p-4 md:w-[500px]">
       <div className="flex items-center gap-3">
         <GoBack />
         <h1 className="text-3xl font-bold">Акаунт</h1>

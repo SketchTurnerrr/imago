@@ -1,30 +1,14 @@
 "use client";
 import { ModeToggle } from "@/components/theme-changer";
-import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
-import {
-  GearIcon,
-  MixerHorizontalIcon,
-  Pencil2Icon,
-  SymbolIcon,
-} from "@radix-ui/react-icons";
+import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
 import BadgeIcon from "@/public/badge-check.svg";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import Link from "next/link";
-import { useRouter } from "next/navigation";
-import { SignOut } from "@/components/signout-btn";
+
 import { HeartHandshake } from "lucide-react";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
-  console.log("profile :", profile);
-  const router = useRouter();
-  async function signOut() {
-    const supabase = createClientComponentClient();
-    await supabase.auth.signOut();
-    router.refresh();
-  }
-
   return (
     <div className="mb-20 flex h-[100svh] flex-col p-4 pt-20 md:mx-auto md:w-1/2">
       <Image
@@ -50,13 +34,13 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
         </div>
       </Link>
 
-      <Separator className="my-4" />
+      {/* <Separator className="my-4" />
       <Link className="text-xl font-bold" href={"/my-profile/preferences"}>
         <div className="flex items-center justify-between">
           Уподобання
           <MixerHorizontalIcon className="h-7 w-7" />
         </div>
-      </Link>
+      </Link> */}
       <Separator className="my-4" />
       <Link className="text-xl font-bold" href={"/my-profile/account"}>
         <div className="flex items-center justify-between">

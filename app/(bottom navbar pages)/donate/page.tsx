@@ -10,8 +10,15 @@ export default function DonatePage() {
       </div>
       {/* <Me /> */}
       <Image
-        className="mx-auto mb-4"
+        className="mx-auto mb-4 block dark:hidden"
         src={"/me.svg"}
+        alt="person illustration"
+        width={250}
+        height={100}
+      />
+      <Image
+        className="mx-auto mb-4 hidden dark:block"
+        src={"/me-dark.svg"}
         alt="person illustration"
         width={250}
         height={100}
