@@ -2,34 +2,33 @@
 
 import { AddPromptDialog } from "@/app/(bottom navbar pages)/my-profile/edit/add-prompt-dialog";
 import { Button } from "@/components/ui/button";
-import { useWindowHeight } from "@/hooks/useWindowHeight";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   createClientComponentClient,
   User,
 } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 
 type PageProps = {
   user: User;
-  data: FullProfile;
+  data: FullProfile | null;
 };
 
 export default function OnboardingPrompts({ user, data }: PageProps) {
   const router = useRouter();
-  const windowHeight = useWindowHeight();
   const supabase = createClientComponentClient<Database>();
   const handleDelete = async (id: string) => {
     await supabase.from("prompts").delete().eq("id", id);
     router.refresh();
   };
 
+  if (data?.onboarded) {
+    redirect("/discover");
+  }
+
   return (
-    <div
-      style={{ height: windowHeight }}
-      className="flex h-screen flex-col justify-between p-4"
-    >
+    <div className="flex h-[100svh] flex-col justify-between p-4">
       <div className="flex flex-col gap-4">
         <h1 className="mb-4 mt-20 text-5xl font-bold">Додайте три фрази</h1>
         {data?.prompts?.map((prompt) => {
@@ -58,7 +57,7 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
             </div>
           );
         })}
-        {data.prompts.length < 3 && <AddPromptDialog user={user} />}
+        {data && data.prompts.length < 3 && <AddPromptDialog user={user} />}
         <p className="text-sm font-semibold text-gray-400">
           Додайте мінімум 3 фрази.
         </p>
@@ -67,7 +66,7 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
         size="icon"
         onClick={() => router.push("/onboarding/photos")}
         className="self-end rounded-full bg-purple-400"
-        disabled={data.prompts.length !== 3}
+        disabled={data?.prompts.length !== 3}
       >
         <ChevronRightIcon className="h-7 w-7" />
       </Button>

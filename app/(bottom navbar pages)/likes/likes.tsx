@@ -9,27 +9,19 @@ interface PageProps {
 
 export function Likes({ photoLikes, promptLikes }: PageProps) {
   return (
-    <main className="flex min-h-screen flex-col gap-4 p-4 md:mx-auto md:w-[700px]">
+    <main className="flex min-h-[100svh] flex-col gap-4 p-4 md:mx-auto md:w-[700px]">
       {/* IF EMPTY PAGE */}
       <h1 className="self-start text-4xl font-bold md:mb-4">Вподобали вас</h1>
       <Separator className="md:hidden" />
       {photoLikes.length === 0 && promptLikes.length === 0 && (
         <>
-          <a
-            target="_blank"
-            rel="noopener noreferrer"
-            className="self-center"
-            href={
-              "https://www.behance.net/gallery/176439917/02-Our-little-heart?tracking_source=search_projects|heart+illustration"
-            }
-          >
-            <Image
-              src="/likes_you.png"
-              width={300}
-              height={300}
-              alt="https://www.behance.net/gallery/176439917/02-Our-little-heart?tracking_source=search_projects|heart+illustration"
-            />
-          </a>
+          <Image
+            src="/no-likes.png"
+            width={300}
+            height={300}
+            alt="illustration"
+            className="self-center dark:bg-foreground"
+          />
           <p className="self-center">
             <span className="font-bold">Поки що</span>, немає вподобань
           </p>
@@ -40,7 +32,7 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
         {photoLikes?.map((item) => (
           <div key={item.id} className="mb-8">
             <div className="relative ">
-              <div className="w-fit rounded-lg rounded-bl-none bg-indigo-200 p-2 text-sm">
+              <div className="w-fit rounded-lg rounded-bl-none bg-secondary p-2 text-sm">
                 {item.comment
                   ? item.comment
                   : item.liker.gender === "male"
@@ -75,7 +67,7 @@ export function Likes({ photoLikes, promptLikes }: PageProps) {
         {promptLikes?.map((item) => (
           <div key={item.id} className="mb-8">
             <div className="relative ">
-              <div className="w-fit rounded-lg rounded-bl-none bg-purple-300 p-2 text-[13px] text-white">
+              <div className="w-fit rounded-lg rounded-bl-none bg-secondary p-2 text-[13px] ">
                 {item.liker.gender === "male" ? "Вподобав " : "Вподобала "}
                 вашу відповідь
               </div>

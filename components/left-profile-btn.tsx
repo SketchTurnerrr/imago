@@ -63,7 +63,7 @@ export function LeftProfileBtn({
       <Button
         onClick={handleAction}
         size="icon"
-        className="h-12 w-12 rounded-full bg-background hover:bg-[#f2f2f2]"
+        className="h-12 w-12 rounded-full bg-background shadow-md  hover:bg-inherit dark:bg-slate-900"
       >
         {pathname.match("discover") ? (
           <ArrowRightIcon className="h-7 w-7 text-foreground" />

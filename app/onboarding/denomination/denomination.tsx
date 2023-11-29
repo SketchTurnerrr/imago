@@ -1,18 +1,22 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
-import { useWindowHeight } from "@/hooks/useWindowHeight";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   createClientComponentClient,
   User,
 } from "@supabase/auth-helpers-nextjs";
-import { useRouter } from "next/navigation";
+import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 
-export function Denomination({ user }: { user: User | undefined }) {
+export function Denomination({
+  user,
+  onboarded,
+}: {
+  user: User | undefined;
+  onboarded: boolean | undefined;
+}) {
   const [denomination, setDenomination] = useState("");
-  const windowHeight = useWindowHeight();
 
   const router = useRouter();
   const handleSubmit = async () => {
@@ -28,11 +32,12 @@ export function Denomination({ user }: { user: User | undefined }) {
     router.push("/onboarding/location");
   };
 
+  if (onboarded) {
+    redirect("/discover");
+  }
+
   return (
-    <div
-      style={{ height: windowHeight }}
-      className="flex h-screen flex-col justify-between p-4"
-    >
+    <div className="flex h-[100svh] flex-col justify-between p-4">
       <div className="flex flex-col gap-8">
         <h1 className="mt-20 text-5xl font-bold ">Ваша конфесія?</h1>
         <div className="flex flex-wrap items-center gap-3">

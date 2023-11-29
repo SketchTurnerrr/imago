@@ -78,7 +78,7 @@ export function SignIn({ session }: { session: Session | null }) {
 
       setTimeout(() => {
         setDisableOtpBtn(false);
-        setSecondsLeft(5);
+        setSecondsLeft(60);
 
         clearInterval(timeout);
       }, secondsLeft * 1000);
@@ -91,7 +91,7 @@ export function SignIn({ session }: { session: Session | null }) {
       title: "Перевірте, будь ласка свою пошту",
       description: "У листі ви знайдете посилання для входу",
       duration: 10000,
-      style: { backgroundColor: "#bbf7d0" },
+      style: { backgroundColor: "#3aff7f" },
     });
   }
 
@@ -114,7 +114,6 @@ export function SignIn({ session }: { session: Session | null }) {
         />
 
         {/* <Logo /> */}
-        <h1 className="mb-4 text-center text-4xl font-bold">Привіт!</h1>
         <div className="rounded-lg p-5">
           <Form {...form}>
             <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">

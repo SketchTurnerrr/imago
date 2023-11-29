@@ -66,16 +66,16 @@ export function Matches({ userId, conversations }: IMatches) {
       </h1>
       <Separator className="md:hidden" />
       {rtConversations?.length === 0 && (
-        <div className="flex flex-col items-center gap-3 p-4 ">
+        <div className="mt-16 flex flex-col items-center gap-3 p-4">
           <div>
             <Image
-              className="mx-auto"
-              src="/keanu.jpg"
+              className="mx-auto dark:bg-foreground"
+              src="/no-matches.png"
               width={200}
               height={200}
               alt="Sad Keanu"
             />
-            <p className="text-md font-semibold text-gray-500">
+            <p className="text-md mt-8 font-semibold text-gray-500">
               Тут будуть ваші знайомства
             </p>
           </div>

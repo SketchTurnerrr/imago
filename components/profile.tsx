@@ -173,7 +173,7 @@ export function Profile({
   return (
     <main
       ref={profileRef}
-      className="flex min-h-screen flex-col space-y-4 p-4 opacity-0 md:items-center"
+      className="flex min-h-[100svh] flex-col space-y-4 bg-[hsl(0,0%,95%)] p-4 opacity-0 dark:bg-background md:items-center"
     >
       <div className="flex items-center justify-between md:w-[500px]">
         <div className="flex items-center gap-3">
@@ -204,7 +204,12 @@ export function Profile({
             >
               <Clock />
             </Button>
-            {type === "discover" && <Filter userId={userId} />}
+
+            {/*
+              POSTPONED
+            {type === "discover" && <Filter userId={userId} />} 
+            
+            */}
           </div>
         )}
       </div>
@@ -234,7 +239,7 @@ export function Profile({
       ----- INFO 
       */}
 
-      <div className="relative rounded-lg bg-secondary/75 px-4 py-4 font-bold md:w-[500px]">
+      <div className="relative rounded-lg bg-white px-4 py-4 font-bold dark:bg-secondary md:w-[500px]">
         <div className="flex items-center justify-around gap-6 text-secondary-foreground">
           <div className="flex items-center gap-3">
             <Cake />

@@ -1,37 +1,54 @@
 "use client";
 import { PhotoGrid } from "@/components/photo-grid/photo-grid";
 import { Button } from "@/components/ui/button";
-import { useWindowHeight } from "@/hooks/useWindowHeight";
+import { toast } from "@/components/ui/use-toast";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import {
   createClientComponentClient,
   User,
 } from "@supabase/auth-helpers-nextjs";
 import Link from "next/link";
+import { redirect, useRouter } from "next/navigation";
 
 interface PageProps {
   user: User;
   photos: PhotosType[] | null;
+  onboarded: boolean | undefined;
 }
 
-export default function Photos({ user, photos }: PageProps) {
+export default function Photos({ user, photos, onboarded }: PageProps) {
   const supabase = createClientComponentClient<Database>();
-  const windowHeight = useWindowHeight();
+  const router = useRouter();
 
   const handlePhotos = async () => {
-    await supabase
-      .from("profiles")
-      .update({
-        onboarded: true,
-      })
-      .eq("id", user.id);
+    const { count } = await supabase
+      .from("photos")
+      .select("", { head: true, count: "exact" })
+      .eq("profile_id", user.id);
+
+    if (count && count >= 3) {
+      await supabase
+        .from("profiles")
+        .update({
+          onboarded: true,
+        })
+        .eq("id", user.id);
+
+      router.push("/discover");
+    } else {
+      toast({
+        variant: "destructive",
+        title: "Додайте, будь ласка, хоча б 3 фото",
+      });
+    }
   };
 
+  if (onboarded) {
+    redirect("/discover");
+  }
+
   return (
-    <div
-      style={{ height: windowHeight }}
-      className="flex h-screen flex-col justify-between p-4"
-    >
+    <div className="flex h-[100svh] flex-col justify-between p-4">
       <div className="flex flex-col gap-6">
         <h1 className="mt-20 text-5xl font-bold ">Додайте фото</h1>
         <div>
@@ -45,20 +62,14 @@ export default function Photos({ user, photos }: PageProps) {
         </div>
       </div>
 
-      <Link
-        data-disabled={photos && photos?.length < 3}
-        className="self-end data-[disabled=true]:pointer-events-none"
-        href={"/"}
+      <Button
+        disabled={photos!! && photos?.length < 3}
+        onClick={handlePhotos}
+        size="icon"
+        className="self-end rounded-full bg-primary"
       >
-        <Button
-          disabled={photos!! && photos?.length < 3}
-          onClick={handlePhotos}
-          size="icon"
-          className="rounded-full bg-purple-400"
-        >
-          <ChevronRightIcon className="h-6 w-6" />
-        </Button>
-      </Link>
+        <ChevronRightIcon className="h-6 w-6" />
+      </Button>
     </div>
   );
 }

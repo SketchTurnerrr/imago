@@ -23,14 +23,16 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
   };
 
   return (
-    <div style={{ marginBottom: 80 }} className=" min-h-screen p-4">
+    <div style={{ marginBottom: 80 }} className=" min-h-[100svh] p-4">
       <div className="mb-4 flex items-center gap-3">
         <GoBack />
         <h1 className="text-3xl font-bold">Редагувати</h1>
       </div>
       <Separator />
-      <h2 className="mx-auto my-4 max-w-md text-2xl font-bold">Фото</h2>
-
+      <h2 className="mx-auto mt-4 max-w-md text-2xl font-bold">Фото</h2>
+      <span className="text-sm md:hidden">
+        натисніть на фото, щоб зробити його головним
+      </span>
       <PhotoGrid photos={data.photos || []} user={user} />
       <div
         className="mx-auto flex max-w-md flex-col gap-4"
@@ -42,7 +44,7 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
             return (
               <div
                 key={prompt.id}
-                className="relative flex flex-col rounded-lg border p-4 text-sm font-bold shadow-sm "
+                className="relative flex flex-col rounded-lg border border-gray-100 bg-slate-50 p-4 text-sm font-bold shadow-sm dark:border-none dark:bg-secondary"
               >
                 <p>{prompt.question}</p>
                 <p className="mt-2 border-l border-muted pl-2 text-muted-foreground">

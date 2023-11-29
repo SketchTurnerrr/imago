@@ -23,7 +23,7 @@ export default function DonatePage() {
         width={250}
         height={100}
       />
-      <div className="space-y-4">
+      <div className="space-y-4 text-lg">
         <p className="a">
           Привіт, я розробник Імаго - нової дейтінг-платформи, яка виникла з
           нагальної потреби в якісній та спеціалізованій платформі для християн

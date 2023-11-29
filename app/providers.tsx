@@ -42,7 +42,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         {children}
         <Toaster />
       </ThemeProvider>
-      {<ReactQueryDevtools initialIsOpen={false} />}
+      {/* {<ReactQueryDevtools initialIsOpen={false} />} */}
     </QueryClientProvider>
   );
 }

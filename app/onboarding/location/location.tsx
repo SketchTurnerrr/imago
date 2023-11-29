@@ -5,16 +5,20 @@ import {
   createClientComponentClient,
   User,
 } from "@supabase/auth-helpers-nextjs";
-import { usePathname, useRouter } from "next/navigation";
+import { redirect, usePathname, useRouter } from "next/navigation";
 import { useLoadScript } from "@react-google-maps/api";
 import { useCallback, useEffect, useState } from "react";
 import { Map } from "./map";
 import { debounce } from "@/lib/utils";
-import { useWindowHeight } from "@/hooks/useWindowHeight";
 
-export default function Location({ user }: { user: User | undefined }) {
+export default function Location({
+  user,
+  onboarded,
+}: {
+  user: User | undefined;
+  onboarded: boolean | undefined;
+}) {
   const pathname = usePathname();
-  const windowHeight = useWindowHeight();
   const [map, setMap] = useState<google.maps.Map | null>(null);
   const [markerPos, setMarkerPos] = useState<google.maps.LatLngLiteral>({
     lat: 50.4421673,
@@ -27,7 +31,6 @@ export default function Location({ user }: { user: User | undefined }) {
     lng: 30.5368004,
   });
 
-  console.log("userPos :", userPos);
   useEffect(() => {
     const getLocationDetails = async () => {
       try {
@@ -117,11 +120,12 @@ export default function Location({ user }: { user: User | undefined }) {
 
   if (pathname !== "/onboarding/location") return;
 
+  if (onboarded) {
+    redirect("/discover");
+  }
+
   return (
-    <div
-      style={{ height: windowHeight }}
-      className="flex h-screen flex-col justify-between p-4"
-    >
+    <div className="flex h-[100svh] flex-col justify-between p-4">
       <div className="flex flex-col gap-4">
         <h1 className="mb-4 pt-20 text-5xl font-bold">Де ви знаходитесь?</h1>
 

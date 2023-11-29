@@ -1,16 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
-import { useWindowHeight } from "@/hooks/useWindowHeight";
 import Link from "next/link";
 
 export default function Onboarding() {
-  const windowHeight = useWindowHeight();
-
   return (
-    <div
-      style={{ height: windowHeight }}
-      className="flex h-[100svh] flex-col items-center justify-center p-4"
-    >
+    <div className="flex h-[100svh] flex-col items-center justify-center p-4">
       <div className="flex flex-col items-center gap-40">
         <h1 className="text-5xl font-bold">
           Давайте спершу заповнимо базову інформацію

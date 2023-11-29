@@ -246,7 +246,7 @@ export function Conversation({
                           />
                         )}
 
-                        <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-slate-100 p-2 text-black">
+                        <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-accent p-2 dark:bg-secondary ">
                           <p style={{ wordBreak: "break-word" }}>
                             {message.content}
                           </p>

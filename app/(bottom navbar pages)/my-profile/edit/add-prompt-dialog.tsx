@@ -72,7 +72,7 @@ export function AddPromptDialog({ user }: { user: User }) {
   return (
     <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
-        <div className="relative flex flex-col rounded-lg border-2 border-dashed border-gray-300 bg-slate-50 p-4 text-sm font-bold text-gray-500">
+        <div className="relative flex flex-col rounded-lg border-2 border-dashed border-gray-300 bg-slate-50 p-4 text-sm font-bold text-gray-500 dark:bg-secondary dark:text-gray-300">
           <p>Оберіть фразу</p>
           <p>І дайте на неї відповідь</p>
           <Image

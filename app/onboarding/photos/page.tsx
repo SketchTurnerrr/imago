@@ -1,6 +1,6 @@
-import { createServerClient } from '@/lib/supabase-server';
-import Photos from './photos';
-import { redirect } from 'next/navigation';
+import { createServerClient } from "@/lib/supabase-server";
+import Photos from "./photos";
+import { redirect } from "next/navigation";
 
 export default async function Page() {
   const supabase = createServerClient();
@@ -10,17 +10,23 @@ export default async function Page() {
   } = await supabase.auth.getSession();
 
   if (!session) {
-    redirect('/login');
+    redirect("/login");
   }
 
   const { data, error } = await supabase
-    .from('profiles')
-    .select('photos(*)')
-    .order('updated_at', { foreignTable: 'photos', ascending: false })
-    .eq('id', session.user.id)
+    .from("profiles")
+    .select("onboarded, photos(*)")
+    .order("updated_at", { foreignTable: "photos", ascending: false })
+    .eq("id", session.user.id)
     .single();
 
-  console.log('error :', error);
+  console.log("error :", error);
 
-  return <Photos user={session?.user} photos={data?.photos || []} />;
+  return (
+    <Photos
+      user={session?.user}
+      photos={data?.photos || []}
+      onboarded={data?.onboarded}
+    />
+  );
 }
