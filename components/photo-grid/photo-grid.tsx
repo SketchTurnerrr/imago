@@ -118,7 +118,7 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
         accept="image/*"
         className="pointer-events-none m-0 h-0 w-0 overflow-hidden p-0 leading-[0] opacity-0"
       />
-      <div className="first-photo mx-auto mb-4 grid max-w-md grid-cols-3 gap-2">
+      <div className="first-photo mx-auto mb-4 grid grid-cols-3 gap-2">
         {filledPhotos.map(
           (photo: { src: string; id: string }, index: number) => (
             <div
@@ -129,7 +129,7 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
                 <div className="relative">
                   <div
                     onClick={() => setPhotoAsMain(photo.id)}
-                    className="absolute z-10 grid h-full w-full cursor-pointer place-items-center text-sm text-white opacity-0 group-hover:opacity-100 md:text-base "
+                    className="absolute z-10 grid h-full w-full cursor-pointer place-items-center text-sm text-white opacity-0 group-hover:opacity-100 md:text-base"
                   >
                     <p>Зробити головним</p>
                   </div>
@@ -173,13 +173,13 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
                   ) : (
                     <div className="relative flex items-center justify-center">
                       <Image
-                        className="rounded-lg border-2 border-dashed border-orange-300"
+                        className="cursor-pointer rounded-lg border-2 border-dashed border-orange-300"
                         src="/placeholder.png"
                         width={150}
                         height={150}
                         alt="placeholder"
                       />
-                      <UploadIcon className="absolute h-10 w-10 text-white" />
+                      <UploadIcon className="absolute h-10 w-10 cursor-pointer text-white" />
                     </div>
                   )}
                 </div>

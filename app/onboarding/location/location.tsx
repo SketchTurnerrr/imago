@@ -74,7 +74,6 @@ export default function Location({
   const router = useRouter();
   async function handleLocation() {
     if (user) {
-      console.log("toponym from handleLocation:", toponym);
       await supabase
         .from("profiles")
         .update({
@@ -125,7 +124,7 @@ export default function Location({
   }
 
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4">
+    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
       <div className="flex flex-col gap-4">
         <h1 className="mb-4 pt-20 text-5xl font-bold">Де ви знаходитесь?</h1>
 

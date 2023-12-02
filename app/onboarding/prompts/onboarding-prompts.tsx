@@ -28,7 +28,7 @@ export default function OnboardingPrompts({ user, data }: PageProps) {
   }
 
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4">
+    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
       <div className="flex flex-col gap-4">
         <h1 className="mb-4 mt-20 text-5xl font-bold">Додайте три фрази</h1>
         {data?.prompts?.map((prompt) => {

@@ -10,11 +10,9 @@ import { PhotoGrid } from "@/components/photo-grid/photo-grid";
 interface PageProps {
   user: User;
   data: FullProfile;
-  onboarding: boolean;
 }
 
-export function EditProfilePage({ user, data, onboarding }: PageProps) {
-  console.log("data profile edit:", data);
+export function EditProfilePage({ user, data }: PageProps) {
   const router = useRouter();
   const supabase = createClientComponentClient<Database>();
   const handleDelete = async (id: string) => {
@@ -23,21 +21,18 @@ export function EditProfilePage({ user, data, onboarding }: PageProps) {
   };
 
   return (
-    <div style={{ marginBottom: 80 }} className=" min-h-[100svh] p-4">
+    <div className="h-[100svh] p-4 md:mx-auto md:h-auto md:w-[500px]">
       <div className="mb-4 flex items-center gap-3">
         <GoBack />
         <h1 className="text-3xl font-bold">Редагувати</h1>
       </div>
       <Separator />
-      <h2 className="mx-auto mt-4 max-w-md text-2xl font-bold">Фото</h2>
+      <h2 className="mx-auto mt-4 text-2xl font-bold">Фото</h2>
       <span className="text-sm md:hidden">
         натисніть на фото, щоб зробити його головним
       </span>
       <PhotoGrid photos={data.photos || []} user={user} />
-      <div
-        className="mx-auto flex max-w-md flex-col gap-4"
-        style={{ marginBottom: 80 }}
-      >
+      <div className="mx-auto flex max-w-md flex-col gap-4 pb-20 md:pb-10">
         <h2 className="mt-10 text-2xl font-bold">Фрази</h2>
         {data.prompts &&
           data.prompts?.map((prompt) => {

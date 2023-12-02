@@ -89,7 +89,7 @@ export function ReadOnlyProfile({ profile }: IProfile) {
       return null;
     } else {
       return (
-        <div className="relative space-y-4 rounded-lg bg-secondary/75 px-4 py-10 md:w-[500px]">
+        <div className="relative space-y-4 rounded-lg bg-gray-50 px-4 py-10 dark:bg-secondary md:w-[500px]">
           <p className="text-md font-semibold">{question}</p>
           <h2 className="text-3xl font-bold">{answer}</h2>
         </div>
@@ -131,7 +131,7 @@ export function ReadOnlyProfile({ profile }: IProfile) {
       ----- INFO 
       */}
 
-      <div className="relative rounded-lg bg-secondary/75 px-4 py-10 font-bold md:w-[500px]">
+      <div className="relative rounded-lg bg-gray-50 px-4 py-10 font-bold dark:bg-secondary md:w-[500px]">
         <div className="flex items-center justify-around gap-6 text-secondary-foreground">
           <div className="flex items-center gap-3">
             <Cake />

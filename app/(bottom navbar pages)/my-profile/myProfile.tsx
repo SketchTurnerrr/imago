@@ -10,7 +10,7 @@ import { HeartHandshake } from "lucide-react";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   return (
-    <div className="mb-20 flex h-[100svh] flex-col p-4 pt-20 md:mx-auto md:w-1/2">
+    <div className="mb-20 flex h-[100svh] flex-col p-4 pt-20 md:mx-auto md:w-[500px]">
       <Image
         priority
         src={profile.photos[0].src}

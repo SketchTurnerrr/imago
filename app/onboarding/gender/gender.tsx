@@ -37,7 +37,7 @@ export function Gender({
   }
 
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4">
+    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
       <div className="flex flex-col gap-8">
         <h1 className="mt-20 text-5xl font-bold ">Ваша стать?</h1>
         <div className="flex items-center gap-2">

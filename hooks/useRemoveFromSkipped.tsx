@@ -13,7 +13,6 @@ export function useRemoveFromSkipped() {
       profileId: string;
       currentUserId: string;
     }) => {
-      console.log("rmoveed from skip profiles :");
       await supabase
         .from("skipped_profiles")
         .delete()

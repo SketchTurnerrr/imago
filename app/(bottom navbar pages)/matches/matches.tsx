@@ -45,7 +45,6 @@ export function Matches({ userId, conversations }: IMatches) {
           if (payload.eventType === "DELETE") {
             setRTConversations((prev) =>
               prev.filter((conversation) => {
-                console.log("payload old id :", payload.old.id);
                 return conversation.id !== payload.old.id;
               }),
             );

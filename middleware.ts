@@ -1,5 +1,5 @@
-import { createMiddlewareClient } from '@supabase/auth-helpers-nextjs';
-import { NextRequest, NextResponse } from 'next/server';
+import { createMiddlewareClient } from "@supabase/auth-helpers-nextjs";
+import { NextRequest, NextResponse } from "next/server";
 
 export const config = {
   matcher: [
@@ -10,7 +10,7 @@ export const config = {
      * - _next/image (image optimization files)
      * - favicon.ico (favicon file)
      */
-    '/((?!api|_next/static|_next/image|favicon.ico).*)',
+    "/((?!api|_next/static|_next/image|favicon.ico).*)",
     // '/',
   ],
 };
@@ -18,15 +18,14 @@ export const config = {
 export async function middleware(req: NextRequest) {
   const res = NextResponse.next();
 
-  const origin = req.headers.get('origin');
-  console.log('origin :', origin);
-  res.headers.set('Access-Control-Allow-Origin', '*');
-  res.headers.set('Access-Control-Allow-Methods', 'POST, OPTIONS');
+  const origin = req.headers.get("origin");
+  res.headers.set("Access-Control-Allow-Origin", "*");
+  res.headers.set("Access-Control-Allow-Methods", "POST, OPTIONS");
   // res.headers.set(
   //   'Access-Control-Allow-Headers',
   //   'Content-Type, Authorization'
   // );
-  res.headers.set('Access-Control-Max-Age', '77777');
+  res.headers.set("Access-Control-Max-Age", "77777");
 
   const supabase = createMiddlewareClient<Database>({ req, res });
   await supabase.auth.getSession();

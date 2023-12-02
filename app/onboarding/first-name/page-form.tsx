@@ -64,7 +64,7 @@ export default function FirstName({
   }
 
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4">
+    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
       <h1 className="mb-10 mt-20 text-5xl font-bold">Як вас звати?</h1>
       <Form {...form}>
         <form

@@ -10,7 +10,6 @@ import { ChangeEvent, useEffect, useRef, useState } from "react";
 export default function VerifyPage() {
   const supabase = createClientComponentClient<Database>();
   const [loading, setLoading] = useState(false);
-  console.log("loading :", loading);
   const [userId, setUserId] = useState<string | null>(null);
 
   useEffect(() => {
@@ -33,7 +32,6 @@ export default function VerifyPage() {
     if (event.target && event.target.files && event.target.files.length !== 0) {
       const files = event.target.files;
       const file = event.target.files[0];
-      console.log("file :", file);
 
       try {
         setLoading(true);
@@ -69,7 +67,7 @@ export default function VerifyPage() {
     }
   };
   return (
-    <section className="p-4 md:mx-auto md:max-w-screen-sm">
+    <section className="p-4 md:mx-auto md:w-[500px]">
       <div className="flex items-center gap-3">
         <GoBack />
         <h1 className="text-3xl font-bold">Верифікація акаунту</h1>

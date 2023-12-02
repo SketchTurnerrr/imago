@@ -82,7 +82,6 @@ export function SignIn({ session }: { session: Session | null }) {
 
         clearInterval(timeout);
       }, secondsLeft * 1000);
-      console.log(" :", timeout);
     } catch (error) {
       console.log("error :", error);
     }

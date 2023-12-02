@@ -190,10 +190,7 @@ export function Conversation({
             ? participants?.participant1.first_name
             : participants?.participant2.first_name}
         </h1>
-        <ThreeDotsMenu
-          conversationId={conversationId}
-          viewProfileId={participants.participant2.id}
-        />
+        <ThreeDotsMenu conversationId={conversationId} />
       </header>
 
       <div className=" w-full flex-auto overflow-auto md:mx-auto md:w-[700px]">

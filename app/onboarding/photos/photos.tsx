@@ -48,9 +48,9 @@ export default function Photos({ user, photos, onboarded }: PageProps) {
   }
 
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4">
+    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
       <div className="flex flex-col gap-6">
-        <h1 className="mt-20 text-5xl font-bold ">Додайте фото</h1>
+        <h1 className="mt-20 text-3xl font-bold ">Залишилось додати фото</h1>
         <div>
           <PhotoGrid user={user} photos={photos ?? []} />
         </div>
@@ -65,10 +65,9 @@ export default function Photos({ user, photos, onboarded }: PageProps) {
       <Button
         disabled={photos!! && photos?.length < 3}
         onClick={handlePhotos}
-        size="icon"
-        className="self-end rounded-full bg-primary"
+        className="self-end bg-primary"
       >
-        <ChevronRightIcon className="h-6 w-6" />
+        Завершити
       </Button>
     </div>
   );

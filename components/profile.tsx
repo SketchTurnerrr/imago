@@ -44,7 +44,7 @@ export function Profile({
   type,
   sub = null,
 }: IProfile) {
-  const { data, isLoading, refetch } = useGetProfiles({
+  const { data, refetch } = useGetProfiles({
     gender,
     type,
     profileId,
@@ -56,9 +56,6 @@ export function Profile({
   const [imgLoading, setImgLoading] = useState(true);
 
   const router = useRouter();
-
-  console.log("isLoading :", isLoading);
-
   const pathname = usePathname();
 
   useLayoutEffect(() => {

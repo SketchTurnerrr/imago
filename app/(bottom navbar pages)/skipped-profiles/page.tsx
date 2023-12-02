@@ -29,7 +29,6 @@ export default async function SkippedProfilesPage() {
     .select("id,created_at, object(id,first_name, photos(src))")
     .eq("subject", session.user.id)
     .returns<ISkippedProfiles[]>();
-  console.log("skippedProfiles :", skippedProfiles?.[0].created_at);
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-20 md:mx-auto md:w-fit">

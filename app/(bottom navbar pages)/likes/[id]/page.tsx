@@ -14,10 +14,8 @@ export default async function Page({
     t: "ph" | "p";
   };
 }) {
-  console.log("searchParams :", searchParams);
   const supabase = createServerClient();
 
-  console.log("params :", params);
   const {
     data: { session },
   } = await supabase.auth.getSession();
@@ -28,7 +26,6 @@ export default async function Page({
     .eq("id", params.id)
     .returns<FullProfile[]>();
 
-  console.log("profile :", profile);
   // ph photoId
   // p promptId
 
@@ -51,7 +48,6 @@ export default async function Page({
 
   const { data: like } = await likesQuery;
 
-  console.log("like :", like);
   if (!like) {
     redirect("/likes");
   }

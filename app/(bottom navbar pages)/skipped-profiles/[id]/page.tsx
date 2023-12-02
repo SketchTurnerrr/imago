@@ -6,7 +6,6 @@ export default async function SkippedProfilesPage({
 }: {
   params: { id: string };
 }) {
-  console.log("params.id :", params.id);
   const supabase = createServerClient();
 
   const {

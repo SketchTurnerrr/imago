@@ -2,7 +2,7 @@ import { GoBack } from "@/components/go-back";
 
 export default function PrivacyPolicyPage() {
   return (
-    <div className="mx-auto p-4 md:max-w-xl">
+    <div className="mx-auto p-4 md:w-[500px]">
       <div className="mb-4 flex items-center gap-3">
         <GoBack />
         <h1 className="text-2xl font-bold">Політика конфіденційності</h1>

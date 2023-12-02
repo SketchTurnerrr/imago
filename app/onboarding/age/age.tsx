@@ -69,7 +69,7 @@ export default function Age({
   }
 
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4">
+    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
       <h1 className="mt-20 text-5xl font-bold">Коли ви народились?</h1>
       <Form {...form}>
         <form
