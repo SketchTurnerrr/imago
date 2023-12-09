@@ -37,6 +37,7 @@ import {
   createClientComponentClient,
 } from "@supabase/auth-helpers-nextjs";
 import { useState } from "react";
+import promptQuestions from "./options";
 
 const FormSchema = z.object({
   question: z.string({
@@ -84,7 +85,7 @@ export function AddPromptDialog({ user }: { user: User }) {
           />
         </div>
       </DialogTrigger>
-      <DialogContent className="w-[350px]">
+      <DialogContent className="w-[350px] md:w-[400px]">
         <DialogHeader>
           <DialogTitle className="font-bold">Оберіть фразу</DialogTitle>
           <DialogDescription>
@@ -92,10 +93,7 @@ export function AddPromptDialog({ user }: { user: User }) {
           </DialogDescription>
         </DialogHeader>
         <Form {...form}>
-          <form
-            onSubmit={form.handleSubmit(onSubmit)}
-            className="w-2/3 space-y-6"
-          >
+          <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-6">
             <FormField
               control={form.control}
               name="question"
@@ -112,15 +110,20 @@ export function AddPromptDialog({ user }: { user: User }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem] overflow-y-auto">
-                      <SelectItem value="Моя улюблена книга Біблії">
+                      {/* <SelectItem value="Моя улюблена книга Біблії">
                         Моя улюблена книга Біблії
-                      </SelectItem>
-                      <SelectItem value="Я божеволію від">
+                      </SelectItem> */}
+                      {promptQuestions.map((prompt) => (
+                        <SelectItem key={prompt} value={prompt}>
+                          {prompt}
+                        </SelectItem>
+                      ))}
+                      {/* <SelectItem value="Я божеволію від">
                         Я божеволію від
                       </SelectItem>
                       <SelectItem value="Моя типова неділя">
                         Моя типова неділя
-                      </SelectItem>
+                      </SelectItem> */}
                       {/* <SelectItem value=''></SelectItem> */}
                       {/* <SelectItem value='Люди дивуються, коли я кажу'>
                     Люди дивуються, коли я кажу
@@ -129,7 +132,7 @@ export function AddPromptDialog({ user }: { user: User }) {
                     <Separator className='w-full bg-red-400' />
                     Християнство
                   </SelectItem> */}
-                      <SelectItem value="Люди дивуються, коли я кажу">
+                      {/* <SelectItem value="Люди дивуються, коли я кажу">
                         Люди дивуються, коли я кажу
                       </SelectItem>
                       <SelectItem value="Цього року, я обов'язково">
@@ -137,7 +140,7 @@ export function AddPromptDialog({ user }: { user: User }) {
                       </SelectItem>
                       <SelectItem value="Хочеш - вір, хочеш - ні">
                         Хочеш - вір, хочеш - ні
-                      </SelectItem>
+                      </SelectItem> */}
                     </SelectContent>
                   </Select>
 

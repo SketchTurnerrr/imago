@@ -136,17 +136,16 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
 
                   <div className="aspect-square">
                     <Image
-                      layout="fill"
-                      objectFit="cover"
+                      fill
                       className={cn(
-                        "rounded-lg duration-700 ease-in-out",
+                        "rounded-lg object-cover duration-700 ease-in-out",
                         imgLoading
                           ? "scale-90 blur-lg grayscale"
                           : "scale-100 blur-0 grayscale-0",
                       )}
                       src={photo?.src}
                       alt="person"
-                      onLoadingComplete={() => setImgLoading(false)}
+                      onLoad={() => setImgLoading(false)}
                     />
                   </div>
                   <div

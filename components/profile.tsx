@@ -14,12 +14,6 @@ import { usePathname, useRouter } from "next/navigation";
 import { MatchDialog } from "@/components/match-btn";
 import { Filter } from "@/components/filter";
 import { Button } from "@/components/ui/button";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import { cn } from "@/lib/utils";
 import { useGetProfiles } from "@/hooks/useGetProfiles";
 import { Clock } from "lucide-react";
