@@ -47,6 +47,7 @@ export function Conversation({
   const [readOnlyProfile, setReadOnlyProfile] = useState<FullProfile | null>(
     null,
   );
+  console.log("readOnlyProfile :", readOnlyProfile?.first_name);
   const scrollToLastMsgRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -139,7 +140,12 @@ export function Conversation({
             .select(
               "date_of_birth, denomination, first_name, toponym, verified, prompts(question, answer), photos(src)",
             )
-            .eq("id", participants.participant2.id)
+            .eq(
+              "id",
+              userId === participants.participant1.id
+                ? participants.participant2.id
+                : participants.participant1.id,
+            )
             .returns<FullProfile>()
             .single();
           setReadOnlyProfile(data);
