@@ -1,7 +1,7 @@
 "use client";
 import { ModeToggle } from "@/components/theme-changer";
 import { Separator } from "@/components/ui/separator";
-import { GearIcon, Pencil2Icon } from "@radix-ui/react-icons";
+import { GearIcon, Pencil2Icon, SymbolIcon } from "@radix-ui/react-icons";
 import BadgeIcon from "@/public/badge-check.svg";
 import Image from "next/image";
 import Link from "next/link";
@@ -48,13 +48,13 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
           <GearIcon className="h-7 w-7" />
         </div>
       </Link>
-      {/* <Separator className="my-4" />
+      <Separator className="my-4" />
       <Link className="text-xl font-bold" href={"/my-profile/subscription"}>
         <div className="flex items-center justify-between">
           Підписка
           <SymbolIcon className="h-7 w-7" />
         </div>
-      </Link> */}
+      </Link>
       <Separator className="my-4" />
       <Link className="text-xl font-bold" href={"/donate"}>
         <div className="flex items-center justify-between">

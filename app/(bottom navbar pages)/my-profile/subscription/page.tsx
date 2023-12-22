@@ -9,15 +9,15 @@ export default async function SubscriptionPage() {
     data: { session },
   } = await supabase.auth.getSession();
 
-  if (!session || session) {
+  if (!session) {
     redirect("/my-profile");
   }
 
-  // const { data: sub } = await supabase
-  //   .from("subscriptions")
-  //   .select()
-  //   .eq("profile_id", session.user.id)
-  //   .single();
+  const { data: sub } = await supabase
+    .from("subscriptions")
+    .select()
+    .eq("profile_id", session.user.id)
+    .single();
 
-  // return <Subscription userId={session.user.id} sub={sub} />;
+  return <Subscription userId={session.user.id} sub={sub} />;
 }

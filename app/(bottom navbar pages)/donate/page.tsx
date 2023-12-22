@@ -8,7 +8,6 @@ export default function DonatePage() {
         <GoBack />
         <h1 className="text-3xl font-bold">Підтримати</h1>
       </div>
-      {/* <Me /> */}
       <Image
         className="mx-auto mb-4 block dark:hidden"
         src={"/me.svg"}

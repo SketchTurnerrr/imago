@@ -118,29 +118,6 @@ export function AddPromptDialog({ user }: { user: User }) {
                           {prompt}
                         </SelectItem>
                       ))}
-                      {/* <SelectItem value="Я божеволію від">
-                        Я божеволію від
-                      </SelectItem>
-                      <SelectItem value="Моя типова неділя">
-                        Моя типова неділя
-                      </SelectItem> */}
-                      {/* <SelectItem value=''></SelectItem> */}
-                      {/* <SelectItem value='Люди дивуються, коли я кажу'>
-                    Люди дивуються, коли я кажу
-                </SelectItem> */}
-                      {/* <SelectItem disabled={true} value='Не люблю, коли люди'>
-                    <Separator className='w-full bg-red-400' />
-                    Християнство
-                  </SelectItem> */}
-                      {/* <SelectItem value="Люди дивуються, коли я кажу">
-                        Люди дивуються, коли я кажу
-                      </SelectItem>
-                      <SelectItem value="Цього року, я обов'язково">
-                        Цього року, я обов&apos;язково
-                      </SelectItem>
-                      <SelectItem value="Хочеш - вір, хочеш - ні">
-                        Хочеш - вір, хочеш - ні
-                      </SelectItem> */}
                     </SelectContent>
                   </Select>
 
@@ -160,8 +137,6 @@ export function AddPromptDialog({ user }: { user: User }) {
                 </FormItem>
               )}
             />
-            {/* <Button type='submit'>Зберегти</Button> */}
-
             <DialogFooter>
               <Button type="submit">Зберегти</Button>
             </DialogFooter>

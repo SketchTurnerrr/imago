@@ -196,11 +196,7 @@ export function Profile({
               <Clock />
             </Button>
 
-            {/*
-              POSTPONED
-            {type === "discover" && <Filter userId={userId} />} 
-            
-            */}
+            {type === "discover" && <Filter userId={userId} />}
           </div>
         )}
       </div>
