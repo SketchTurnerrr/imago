@@ -13,7 +13,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
   const router = useRouter();
 
   useEffect(() => {
-    supabase.auth.onAuthStateChange((event, session) => {
+    supabase.auth.onAuthStateChange((event) => {
       if (event == "SIGNED_OUT" || event == "TOKEN_REFRESHED") {
         router.refresh();
       }

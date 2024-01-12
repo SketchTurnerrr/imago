@@ -94,7 +94,7 @@ export function LikeDialog({
       <LDialogTrigger asChild>
         <Button
           size="icon"
-          className="absolute bottom-2 right-2 h-12 w-12 rounded-full bg-white text-primary"
+          className="absolute bottom-2 right-2 h-12 w-12 rounded-full bg-white text-primary hover:bg-white"
         >
           <ThumbsUp />
         </Button>

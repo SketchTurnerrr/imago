@@ -8,9 +8,9 @@ import { useEffect, useRef, useState } from "react";
 import gsap from "gsap";
 import { ScrollTrigger } from "gsap/all";
 import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
-import { IConversationReadStatus } from "@/app/global";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
+import { IConversationReadStatus } from "@/app/global";
 
 interface INavbar {
   photo:
@@ -18,7 +18,11 @@ interface INavbar {
         src: string;
       }[]
     | undefined;
-  status: IConversationReadStatus;
+  status: {
+    has_unread_messages: boolean;
+    last_message: { sender_id: string };
+  }[];
+
   userId: string;
 }
 
@@ -53,30 +57,29 @@ export function Navbar({ photo, status, userId }: INavbar) {
           schema: "public",
           table: "conversations",
         },
-        (payload) => {
-          const newStatus = {
-            participant1: payload.new.participant1 as string,
-            participant2: payload.new.participant2 as string,
-            party1_read: payload.new.party1_read as boolean,
-            party2_read: payload.new.party2_read as boolean,
-          };
-          setRTStatus(newStatus);
+        async (payload: any) => {
+          const { data: newStatus } = await supabase
+            .from("conversations")
+            .select("has_unread_messages, last_message(sender_id, content)")
+            .returns<IConversationReadStatus>();
+
+          console.log("newStatus :", newStatus);
+          setRTStatus([newStatus as IConversationReadStatus]);
         },
       )
       .subscribe();
     return () => {
       supabase.removeChannel(channel);
     };
-  }, [supabase]);
-
-  const party =
-    rtStatus?.participant1 !== userId
-      ? rtStatus?.party2_read
-      : rtStatus?.party1_read;
+  }, [supabase, rtStatus, status, userId]);
 
   const links = items.map((item) => {
     const active = pathname === item.url;
-
+    const isUnread = rtStatus.filter(
+      (status) =>
+        status.last_message?.sender_id !== userId &&
+        status.has_unread_messages === true,
+    );
     return (
       <Link
         className={cn(
@@ -86,7 +89,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
         key={item.url}
         href={item.url}
       >
-        {rtStatus && !party && item.url === "/matches" && (
+        {isUnread.length > 0 && item.url === "/matches" && (
           <div className="unread-count before:content-[attr(data-unread)]"></div>
         )}
         <item.icon />
@@ -96,6 +99,8 @@ export function Navbar({ photo, status, userId }: INavbar) {
 
   if (pathname.split("/")[1] === "matches" && pathname.split("/").length === 3)
     return null;
+
+  if (pathname.split("/")[1] === "donate") return null;
 
   return (
     <>

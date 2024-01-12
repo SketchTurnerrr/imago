@@ -29,7 +29,7 @@ export default async function ConversationPage({
   const { data } = await supabase
     .from("conversations")
     .select(
-      "id,party1_read,party2_read,participant1(id,first_name), participant2(id,first_name)",
+      "id, participant1(id,first_name), participant2(id,first_name), last_read_message_id",
     )
     .eq("id", params.id)
     .returns<IParticipantsNames>()

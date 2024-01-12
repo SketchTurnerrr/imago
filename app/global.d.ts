@@ -1,4 +1,4 @@
-import { Database as DB } from "@/types/database.types";
+import { Database as DB, Tables, Enums } from "@/types/database.types";
 
 declare global {
   type Database = DB;
@@ -86,9 +86,9 @@ declare global {
   }
 }
 
-interface IConversationReadStatus {
-  participant1: string;
-  participant2: string;
-  party1_read: boolean;
-  party2_read: boolean;
+interface IConversationReadStatus extends ConversationsType {
+  has_unread_messages: boolean;
+  last_message: {
+    sender_id: string;
+  };
 }

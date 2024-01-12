@@ -62,33 +62,47 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
       setFilename(file.name);
       const fileExt = file.name.split(".").pop();
       const filePath = `${user?.id}/${file.name}`;
-      await supabase.storage
+      const { data, error: uploadError } = await supabase.storage
         .from("photos")
-        .upload(filePath, file)
-        .then(async () => {
-          const { data } = await supabase.storage
-            .from("photos")
-            .getPublicUrl(`${user?.id}/${file.name}`);
+        .upload(filePath, file);
 
-          const { error } = await supabase.from("photos").insert({
-            profile_id: user.id,
-            src: data.publicUrl,
-          });
-
-          if (
-            error?.message ===
-            'duplicate key value violates unique constraint "photos_src_key"'
-          ) {
-            toast({
-              variant: "destructive",
-              title: "Йой, щось пішло те так",
-              description: "Ви вже завантажили це фото",
-            });
-          }
-          console.log("photo creation error:", error);
+      //@ts-ignore
+      if (uploadError?.statusCode === "409") {
+        toast({
+          variant: "destructive",
+          title: "Йой, щось пішло те так",
+          description: "Ви вже завантажили це фото",
         });
+      }
+
+      //@ts-ignore
+      if (uploadError?.statusCode === "413") {
+        toast({
+          variant: "destructive",
+          title: "Йой, щось пішло те так",
+          description: "Фото має бути не більше ніж 3 мегабайти",
+        });
+      }
+
+      if (data) {
+        const baseUrl =
+          "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/";
+
+        const { error: insertError } = await supabase.from("photos").insert({
+          profile_id: user.id,
+          src: `${baseUrl}/${data.path}`,
+        });
+
+        if (
+          insertError?.message ===
+          'duplicate key value violates unique constraint "photos_src_key"'
+        ) {
+        }
+      }
+
+      console.log("data :", data);
     } catch (error) {
-      console.log(error);
+      console.log(error, "catch error");
     } finally {
       setLoading(false);
       setSelectedPlaceholder(null);
@@ -151,7 +165,7 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
                   <div
                     onClick={() => handleDelete(photo.id)}
                     role="button"
-                    className="absolute -right-1 -top-1 rounded-full bg-white p-1 shadow-md"
+                    className="absolute -right-1 -top-1 z-10 rounded-full bg-white p-1 shadow-md"
                   >
                     <Image
                       src="/x.svg"

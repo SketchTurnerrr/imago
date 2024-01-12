@@ -2,6 +2,8 @@ import { Navbar } from "@/components/navbar/navbar";
 import { createServerClient } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
+import { Tables, Enums } from "@/types/database.types";
+import { QueryData } from "@supabase/supabase-js";
 import { IConversationReadStatus } from "../global";
 
 export const metadata: Metadata = {
@@ -33,11 +35,10 @@ export default async function DiscoverLayout({
     redirect("/onboarding");
   }
 
-  const { data: status, error } = await supabase
+  const { data: status } = await supabase
     .from("conversations")
-    .select("party1_read, party2_read, participant1(id), participant2(id)")
-    .returns<IConversationReadStatus>()
-    .single();
+    .select("has_unread_messages, last_message(sender_id, content)")
+    .returns<IConversationReadStatus[]>();
 
   return (
     <>

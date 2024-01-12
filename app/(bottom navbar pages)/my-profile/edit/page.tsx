@@ -19,7 +19,7 @@ export default async function Page() {
     .returns<FullProfile>()
     .single();
 
-  console.log("error :", error);
+  // console.log("error :", error);
   if (!data) return;
 
   return <EditProfilePage user={session.user} data={data} />;

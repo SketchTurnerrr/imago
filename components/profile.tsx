@@ -5,7 +5,7 @@ import Cross from "@/public/cross.svg";
 import Cake from "@/public/cake.svg";
 import MapPin from "@/public/map-pin.svg";
 import BadgeIcon from "@/public/badge-check.svg";
-import { useLayoutEffect, useRef, useState } from "react";
+import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap, { Power2 } from "gsap";
 import { LeftProfileBtn } from "@/components/left-profile-btn";
 import { Prompt } from "@/components/prompt";
@@ -19,6 +19,7 @@ import { useGetProfiles } from "@/hooks/useGetProfiles";
 import { Clock } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { GoBack } from "./go-back";
+import { toast } from "@/components/ui/use-toast";
 
 interface IProfile {
   serverProfiles?: FullProfile[];
@@ -51,6 +52,21 @@ export function Profile({
 
   const router = useRouter();
   const pathname = usePathname();
+
+  useEffect(() => {
+    const showWelcomeToast = localStorage.getItem("showWelcomeToast");
+
+    if (!showWelcomeToast) {
+      toast({
+        title: "Вітаємо",
+        description:
+          "Наразі, користувачів небагато, тому поділись цією платформою з друзями :)",
+        duration: 5000,
+        style: { backgroundColor: "#030d29", color: "#f3f3f3" },
+      });
+      localStorage.setItem("showWelcomeToast", "true");
+    }
+  }, []);
 
   useLayoutEffect(() => {
     const ctx = gsap.context(() => {
@@ -101,20 +117,17 @@ export function Profile({
   const { src: src3, id: photoId3 } = profile.photos[3] || "";
   const { src: src4, id: photoId4 } = profile.photos[4] || "";
   const { src: src5, id: photoId5 } = profile.photos[5] || "";
-  const photo = (src: string | null, id: string) => {
+
+  const photo = (src: string, id: string) => {
     if (!src) {
       return null;
     } else {
       return (
         <div className={"relative mx-auto"}>
           <Image
-            priority={true}
-            src={
-              src ||
-              "https://beasnruicmydtdgqozev.supabase.co/storage/v1/object/public/photos/5b16fe18-c7dc-46e6-82d1-04c5900504e4/jEudzBHSsYg.jpg"
-            }
-            height={500}
+            src={src}
             width={500}
+            height={700}
             alt={profile.first_name}
             className={cn(
               "rounded-lg duration-700 ease-in-out",
@@ -171,7 +184,7 @@ export function Profile({
           <h1 className="text-4xl font-bold capitalize md:self-start">
             {profile.first_name}
           </h1>
-          {!profile.verified && (
+          {profile.verified && (
             <Popover>
               <PopoverTrigger>
                 <BadgeIcon
@@ -186,7 +199,9 @@ export function Profile({
             </Popover>
           )}
         </div>
-        {!pathname.includes("likes") && userId === sub && (
+        {/* POSTPONOED */}
+
+        {/* {!pathname.includes("likes") && userId === sub && (
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -198,7 +213,7 @@ export function Profile({
 
             {type === "discover" && <Filter userId={userId} />}
           </div>
-        )}
+        )} */}
       </div>
       {
         <LeftProfileBtn
@@ -218,7 +233,38 @@ export function Profile({
         />
       )}
 
-      {photo(src0, photoId0)}
+      {src0 && (
+        <div className={"relative mx-auto"}>
+          <Image
+            src={src0}
+            priority
+            width={500}
+            height={700}
+            alt={profile.first_name}
+            className={cn(
+              "rounded-lg duration-700 ease-in-out",
+              imgLoading
+                ? "scale-90 blur-lg grayscale"
+                : "scale-100 blur-0 grayscale-0",
+            )}
+            onLoad={() => {
+              setImgLoading(false);
+            }}
+          />
+          {pathname === "/discover" && (
+            <LikeDialog
+              itemId={photoId0}
+              type="photo"
+              liker={userId}
+              likee={profile.id}
+              src={src0}
+              firstName={profile.first_name}
+              question={null}
+              answer={null}
+            />
+          )}
+        </div>
+      )}
 
       {prompt(question0, answer0, promptId0)}
 

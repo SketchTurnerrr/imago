@@ -18,7 +18,7 @@ export default async function MatchesPage() {
   const { data, error } = await supabase
     .from("conversations")
     .select(
-      "*, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content)",
+      "*, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content,sender_id)",
     )
     .returns<IConversations[]>();
 

@@ -14,6 +14,7 @@ export function Matches({ userId, conversations }: IMatches) {
   const supabase = createClientComponentClient<Database>();
   const [rtConversations, setRTConversations] =
     useState<IConversations[]>(conversations);
+  // console.log("rtConversations :", rtConversations);
 
   useEffect(() => {
     const channel = supabase
@@ -27,13 +28,25 @@ export function Matches({ userId, conversations }: IMatches) {
         },
 
         async (payload) => {
-          if (payload.eventType === "UPDATE") return;
+          if (payload.eventType === "UPDATE") {
+            let { data: newConversation, error } = await supabase
+              .from("conversations")
+              .select(
+                "*, has_unread_messages, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content,sender_id)",
+              )
+              .returns<IConversations[]>();
+            if (error) {
+              console.log("error :", error);
+            } else {
+              setRTConversations(newConversation as IConversations[]);
+            }
+          }
 
           if (payload.eventType === "INSERT") {
             let { data: newConversation, error } = await supabase
               .from("conversations")
               .select(
-                "*, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content)",
+                "*, has_unread_messages, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content,sender_id)",
               )
               .returns<IConversations[]>();
             if (error) {
@@ -83,7 +96,7 @@ export function Matches({ userId, conversations }: IMatches) {
       {rtConversations?.map((conversation) => (
         <div
           key={conversation.id}
-          className="flex flex-col p-4 md:mx-auto md:w-[500px]"
+          className="relative flex flex-col justify-center p-4 md:mx-auto md:w-[500px]"
         >
           <Link
             href={`/matches/${conversation?.id}`}
@@ -119,6 +132,10 @@ export function Matches({ userId, conversations }: IMatches) {
               </p>
             </div>
           </Link>
+          {conversation.has_unread_messages &&
+            userId !== conversation.last_message.sender_id && (
+              <div className="unread-count absolute right-10  before:content-[attr(data-unread)]"></div>
+            )}
         </div>
       ))}
     </>

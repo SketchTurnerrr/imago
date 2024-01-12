@@ -47,7 +47,6 @@ export function Conversation({
   const [readOnlyProfile, setReadOnlyProfile] = useState<FullProfile | null>(
     null,
   );
-  console.log("readOnlyProfile :", readOnlyProfile?.first_name);
   const scrollToLastMsgRef = useRef<HTMLDivElement>(null);
   const router = useRouter();
 
@@ -71,29 +70,42 @@ export function Conversation({
   useEffect(() => {
     scrollToBottom();
   }, [rtMessages]);
+  // console.log("rtMessages :", rtMessages);
 
   useEffect(() => {
     async function markAsRead() {
-      const party =
-        participants?.participant1.id === userId
-          ? "party1_read"
-          : "party2_read";
-      await supabase
-        .from("conversations")
-        .update({
-          [party]: true,
-        })
-        .eq("id", conversationId);
+      const lastMsg = rtMessages.at(-1)?.id;
+      if (
+        rtMessages.length > 0 &&
+        participants?.last_read_message_id === lastMsg
+      ) {
+        await supabase
+          .from("conversations")
+          .update({
+            last_read_message_id: lastMsg,
+          })
+          .eq("id", conversationId);
+      }
+
+      if (userId !== rtMessages.at(-1)?.sender_id.id) {
+        await supabase
+          .from("conversations")
+          .update({
+            has_unread_messages: false,
+          })
+          .eq("id", conversationId);
+      }
     }
 
     markAsRead();
   }, [
-    participants?.party1_read,
+    rtMessages,
+    participants?.has_unread_messages,
     participants?.participant1.id,
     userId,
     supabase,
-    participants?.party2_read,
     conversationId,
+    participants?.last_read_message_id,
   ]);
 
   useEffect(() => {
@@ -172,13 +184,11 @@ export function Conversation({
       sender_id: userId,
     });
 
-    const party =
-      participants?.participant1.id !== userId ? "party1_read" : "party2_read";
-    // mark conversation as read on open
+    // mark conversation as unread
     await supabase
       .from("conversations")
       .update({
-        [party]: false,
+        has_unread_messages: true,
       })
       .eq("id", conversationId);
 
@@ -201,7 +211,7 @@ export function Conversation({
 
       <div className=" w-full flex-auto overflow-auto md:mx-auto md:w-[700px]">
         <Tabs defaultValue="chat" className=" w-full">
-          <TabsList className="fixed top-[50px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4 md:mx-auto md:w-[700px]">
+          <TabsList className="fixed top-[60px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4 dark:bg-[#121212] md:mx-auto md:w-[700px] ">
             <TabsTrigger value="chat" className="text-lg">
               Чат
             </TabsTrigger>
@@ -210,7 +220,7 @@ export function Conversation({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="chat" className="mt-0">
-            <div className=" flex flex-col gap-1  p-4">
+            <div className=" flex flex-col gap-1 p-4">
               <Verse />
 
               {rtMessages.map((message, index) => {

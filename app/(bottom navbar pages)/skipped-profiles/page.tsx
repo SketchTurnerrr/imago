@@ -10,6 +10,7 @@ import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
 
 export default async function SkippedProfilesPage() {
+  redirect("/discover");
   const supabase = createServerClient();
 
   const {
@@ -24,11 +25,11 @@ export default async function SkippedProfilesPage() {
     object: FullProfile;
   }
 
-  const { data: skippedProfiles, error } = await supabase
-    .from("skipped_profiles")
-    .select("id,created_at, object(id,first_name, photos(src))")
-    .eq("subject", session.user.id)
-    .returns<ISkippedProfiles[]>();
+  // const { data: skippedProfiles, error } = await supabase
+  //   .from("skipped_profiles")
+  //   .select("id,created_at, object(id,first_name, photos(src))")
+  //   .eq("subject", session.user.id)
+  //   .returns<ISkippedProfiles[]>();
 
   return (
     <div className="flex flex-col gap-4 p-4 pb-20 md:mx-auto md:w-fit">
@@ -37,7 +38,7 @@ export default async function SkippedProfilesPage() {
         Переглянуті профілі
       </h1>
       <Separator className="md:hidden" />
-      <SkippedProfiles profiles={skippedProfiles ?? []} />
+      {/* <SkippedProfiles profiles={skippedProfiles ?? []} /> */}
     </div>
   );
 }

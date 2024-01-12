@@ -12,7 +12,7 @@ interface QueryProps {
 export function useGetProfiles({
   gender = "male",
   ageFilter = [17, 50],
-  denominationFilter = [],
+  denominationFilter = ["Баптизм", "Католізм"],
   type = "discover",
   profileId,
 }: QueryProps) {
@@ -30,7 +30,7 @@ export function useGetProfiles({
           .eq("gender", gender)
           .gte("age", ageFilter[0])
           .lte("age", ageFilter[1])
-          // .in("denomination", [])
+          // .match(denominationFilter.map(deno => ({'denomination': deno})))
           .neq("onboarded", false)
           .returns<FullProfile[]>()
           .limit(1)

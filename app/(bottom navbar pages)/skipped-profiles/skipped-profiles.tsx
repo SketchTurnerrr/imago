@@ -29,7 +29,7 @@ export function SkippedProfiles({
           >
             <Image
               className="aspect-square h-14 w-14 rounded-full object-cover"
-              src={profile.object.photos[0].src}
+              src={profile.object.photos[0]?.src || "/placeholder.png"}
               alt="a"
               width={50}
               height={50}

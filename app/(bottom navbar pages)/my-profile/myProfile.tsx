@@ -7,6 +7,11 @@ import Image from "next/image";
 import Link from "next/link";
 
 import { HeartHandshake } from "lucide-react";
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from "@/components/ui/popover";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   return (
@@ -23,7 +28,18 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
         <h1 className="text-4xl font-bold capitalize">{profile.first_name}</h1>
 
         {profile.verified && (
-          <BadgeIcon className="self-end text-white" width={32} height={32} />
+          <Popover>
+            <PopoverTrigger>
+              <BadgeIcon
+                className="self-end text-white"
+                width={32}
+                height={32}
+              />
+            </PopoverTrigger>
+            <PopoverContent className="w-fit border-none bg-secondary-foreground p-2 text-sm text-white dark:bg-secondary">
+              <p>Верифікований акаунт</p>
+            </PopoverContent>
+          </Popover>
         )}
       </div>
       {/* <Separator className="my-4 md:hidden" /> */}
@@ -48,13 +64,14 @@ export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
           <GearIcon className="h-7 w-7" />
         </div>
       </Link>
+      {/*
       <Separator className="my-4" />
-      <Link className="text-xl font-bold" href={"/my-profile/subscription"}>
+       <Link className="text-xl font-bold" href={"/my-profile/subscription"}>
         <div className="flex items-center justify-between">
           Підписка
           <SymbolIcon className="h-7 w-7" />
         </div>
-      </Link>
+      </Link> */}
       <Separator className="my-4" />
       <Link className="text-xl font-bold" href={"/donate"}>
         <div className="flex items-center justify-between">

@@ -7,6 +7,12 @@ import { usePathname } from "next/navigation";
 import { useSkipProfile } from "@/hooks/useSkipProfile";
 import { Undo } from "lucide-react";
 import { useRemoveFromSkipped } from "@/hooks/useRemoveFromSkipped";
+import {
+  Tooltip,
+  TooltipContent,
+  TooltipProvider,
+  TooltipTrigger,
+} from "./ui/tooltip";
 
 export function LeftProfileBtn({
   userId,
@@ -42,7 +48,7 @@ export function LeftProfileBtn({
     }
 
     if (pathname.includes("discover")) {
-      skipProfile({ profileId, currentUserId: userId });
+      // skipProfile({ profileId, currentUserId: userId });
       refetch();
     }
 
@@ -63,12 +69,24 @@ export function LeftProfileBtn({
       <Button
         onClick={handleAction}
         size="icon"
-        className="h-12 w-12 rounded-full bg-background shadow-md  hover:bg-inherit dark:bg-slate-900"
+        className="h-12 w-12 rounded-full bg-background shadow-md  hover:bg-background dark:bg-slate-900"
       >
         {pathname.match("discover") ? (
           <ArrowRightIcon className="h-7 w-7 text-foreground" />
         ) : pathname.match("skipped-profiles") ? (
-          <Undo className="h-7 w-7 text-foreground" />
+          <TooltipProvider>
+            <Tooltip>
+              <TooltipTrigger asChild>
+                <Undo className="h-7 w-7 text-foreground" />
+              </TooltipTrigger>
+              <TooltipContent
+                side="right"
+                className="bg-foreground dark:bg-background"
+              >
+                <p>Прибрати з пропущених</p>
+              </TooltipContent>
+            </Tooltip>
+          </TooltipProvider>
         ) : (
           <Cross1Icon className="h-7 w-7 text-foreground" />
         )}

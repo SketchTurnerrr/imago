@@ -99,7 +99,7 @@ export function MatchDialog({
         >
           <Button
             size="icon"
-            className="h-12 w-12 rounded-full bg-white text-3xl"
+            className="h-12 w-12 rounded-full bg-white text-3xl hover:bg-white"
           >
             <HandIcon />
           </Button>

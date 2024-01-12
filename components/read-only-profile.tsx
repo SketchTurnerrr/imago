@@ -4,14 +4,6 @@ import Image from "next/image";
 import Cross from "@/public/cross.svg";
 import Cake from "@/public/cake.svg";
 import MapPin from "@/public/map-pin.svg";
-import BadgeIcon from "@/public/badge-check.svg";
-
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "@/components/ui/tooltip";
 import Loading from "@/app/(bottom navbar pages)/discover/loading";
 
 interface IProfile {
@@ -82,8 +74,6 @@ export function ReadOnlyProfile({ profile }: IProfile) {
     }
   };
 
-  // console.log('userId :', userId);
-  // console.log('profile.id :', profile?.id);
   const prompt = (question: string, answer: string, id: string) => {
     if (!question) {
       return null;
@@ -99,30 +89,6 @@ export function ReadOnlyProfile({ profile }: IProfile) {
 
   return (
     <main className="mt-12 flex flex-col space-y-4 p-4 md:items-center">
-      <div className="flex items-center justify-between md:w-[500px]">
-        <div className="flex items-center gap-3">
-          <h1 className="text-4xl font-bold capitalize md:self-start">
-            {profile.first_name}
-          </h1>
-          {!profile.verified && (
-            <TooltipProvider>
-              <Tooltip>
-                <TooltipTrigger>
-                  <BadgeIcon
-                    className="inline-block  text-white"
-                    width={32}
-                    height={32}
-                  />
-                </TooltipTrigger>
-                <TooltipContent className="bg-secondary-foreground">
-                  <p>Верифікований акаунт</p>
-                </TooltipContent>
-              </Tooltip>
-            </TooltipProvider>
-          )}
-        </div>
-      </div>
-
       {photo(src0, photoId0)}
 
       {prompt(question0, answer0, promptId0)}
