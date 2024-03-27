@@ -5,7 +5,7 @@ import { Separator } from "@/components/ui/separator";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import Link from "next/link";
 
-export function Account({ userId }: { userId: string }) {
+export function Account() {
   return (
     <section className="mx-auto p-4 md:w-[500px]">
       <div className="flex items-center gap-3">

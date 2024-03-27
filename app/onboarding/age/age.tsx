@@ -26,7 +26,7 @@ import {
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
 import { redirect, useRouter } from "next/navigation";
-import uk from "date-fns/locale/uk";
+import { uk } from "date-fns/locale/uk";
 
 const formSchema = z.object({
   dob: z.date({
@@ -107,7 +107,7 @@ export default function Age({
                       onSelect={field.onChange}
                       fromYear={1977}
                       toYear={2006}
-                      disabled={(date) =>
+                      disabled={(date: Date) =>
                         date > new Date() || date < new Date("1972-01-01")
                       }
                       initialFocus

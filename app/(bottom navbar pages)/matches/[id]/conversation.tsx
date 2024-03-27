@@ -19,6 +19,7 @@ import { useRouter } from "next/navigation";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReadOnlyProfile } from "@/components/read-only-profile";
 import { GoBack } from "@/components/go-back";
+import { cn } from "@/lib/utils";
 
 const FormSchema = z.object({
   message: z
@@ -48,29 +49,14 @@ export function Conversation({
     null,
   );
   const scrollToLastMsgRef = useRef<HTMLDivElement>(null);
-  const router = useRouter();
 
   const scrollToBottom = () => {
     scrollToLastMsgRef.current?.scrollIntoView({ behavior: "smooth" });
   };
 
-  function shouldShowAvatar(previous: IMessages, message: IMessages) {
-    const isFirst = !previous;
-    if (isFirst) return true;
-
-    const differentUser = message.sender_id.id !== previous.sender_id.id;
-
-    if (differentUser) {
-      return true;
-    } else {
-      return false;
-    }
-  }
-
   useEffect(() => {
     scrollToBottom();
   }, [rtMessages]);
-  // console.log("rtMessages :", rtMessages);
 
   useEffect(() => {
     async function markAsRead() {
@@ -211,7 +197,7 @@ export function Conversation({
 
       <div className=" w-full flex-auto overflow-auto md:mx-auto md:w-[700px]">
         <Tabs defaultValue="chat" className=" w-full">
-          <TabsList className="fixed top-[60px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4 dark:bg-[#121212] md:mx-auto md:w-[700px] ">
+          <TabsList className="fixed top-[59px] z-50 h-fit w-full justify-around rounded-none bg-background px-4 pb-0 pt-4 dark:bg-[#121212] md:mx-auto md:w-[700px] ">
             <TabsTrigger value="chat" className="text-lg">
               Чат
             </TabsTrigger>
@@ -220,33 +206,33 @@ export function Conversation({
             </TabsTrigger>
           </TabsList>
           <TabsContent value="chat" className="mt-0">
-            <div className=" flex flex-col gap-1 p-4">
+            <div className="flex flex-col gap-1 p-4">
               <Verse />
 
               {rtMessages.map((message, index) => {
-                const previous = messages[index - 1];
-                const showAvatar = shouldShowAvatar(previous, message);
-
+                const showAvatar =
+                  messages[index - 1]?.sender_id.id ===
+                  messages[index]?.sender_id.id;
+                const isCurrentUser = userId === message.sender_id.id;
                 return (
                   <div
                     key={message.id}
-                    className={`${
-                      userId !== message.sender_id.id
-                        ? "justify-start"
-                        : "justify-end"
-                    } flex `}
+                    className={cn("flex", {
+                      "justify-end": isCurrentUser,
+                    })}
                   >
                     {userId !== message.sender_id?.id ? (
-                      <div
-                        className={`${
-                          showAvatar ? "mt-6" : "mt-0"
-                        } flex items-center gap-2`}
-                      >
-                        {showAvatar && (
+                      <div className={"mt-2 flex items-center gap-2"}>
+                        <div
+                          className={cn("flex items-center gap-2", {
+                            invisible: showAvatar,
+                          })}
+                        >
                           <Image
                             src={message.sender_id.photos[0].src || ""}
                             width={35}
                             height={35}
+                            referrerPolicy="no-referrer"
                             className="aspect-square rounded-full object-cover"
                             alt={
                               message?.conversation_id.participant1.id ===
@@ -257,7 +243,7 @@ export function Conversation({
                                     .first_name
                             }
                           />
-                        )}
+                        </div>
 
                         <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-bl-none bg-accent p-2 dark:bg-secondary ">
                           <p style={{ wordBreak: "break-word" }}>
@@ -268,11 +254,7 @@ export function Conversation({
                         </div>
                       </div>
                     ) : (
-                      <div
-                        className={`${
-                          showAvatar ? "mt-6" : "mt-0"
-                        } flex max-w-[30ch] gap-2 rounded-lg rounded-br-none bg-purple-400 p-2 text-white`}
-                      >
+                      <div className="flex max-w-[30ch] gap-2 rounded-lg rounded-br-none bg-purple-400 p-2 text-white">
                         <p style={{ wordBreak: "break-word" }}>
                           {message.content}
                         </p>
