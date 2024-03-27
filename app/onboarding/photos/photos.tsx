@@ -2,11 +2,10 @@
 import { PhotoGrid } from "@/components/photo-grid/photo-grid";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { createClient } from "@/lib/supabase/client";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  createClientComponentClient,
-  User,
-} from "@supabase/auth-helpers-nextjs";
+import { User } from "@supabase/supabase-js";
+
 import Link from "next/link";
 import { redirect, useRouter } from "next/navigation";
 
@@ -17,7 +16,7 @@ interface PageProps {
 }
 
 export default function Photos({ user, photos, onboarded }: PageProps) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
 
   const handlePhotos = async () => {

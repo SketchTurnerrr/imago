@@ -1,9 +1,9 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
 import { Account } from "./account";
 
 export default async function AccountPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },
@@ -13,5 +13,5 @@ export default async function AccountPage() {
     redirect("/login");
   }
 
-  return <Account userId={session.user.id} />;
+  return <Account />;
 }

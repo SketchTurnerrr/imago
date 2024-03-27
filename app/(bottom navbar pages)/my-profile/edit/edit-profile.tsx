@@ -2,11 +2,11 @@
 import { User } from "@supabase/supabase-js";
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { AddPromptDialog } from "./add-prompt-dialog";
 import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
 import { PhotoGrid } from "@/components/photo-grid/photo-grid";
+import { createClient } from "@/lib/supabase/client";
 interface PageProps {
   user: User;
   data: FullProfile;
@@ -14,7 +14,7 @@ interface PageProps {
 
 export function EditProfilePage({ user, data }: PageProps) {
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const handleDelete = async (id: string) => {
     await supabase.from("prompts").delete().eq("id", id);
     router.refresh();

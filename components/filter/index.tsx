@@ -21,7 +21,7 @@ import { AgeSlider } from "./age-slider";
 import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MultiSelect } from "../multi-select";
 import { debounce } from "@/lib/utils";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 
 export function Filter({ userId }: { userId: string }) {
   const [maxDist, setMaxDist] = useState<number[]>([50]);
@@ -29,7 +29,7 @@ export function Filter({ userId }: { userId: string }) {
   const router = useRouter();
   const pathname = usePathname();
   const searchParams = useSearchParams();
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   const onDistChange = (dist: number[]) => {
     setMaxDist([dist[0]]);

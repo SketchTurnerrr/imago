@@ -1,9 +1,9 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { EditProfilePage } from "./edit-profile";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

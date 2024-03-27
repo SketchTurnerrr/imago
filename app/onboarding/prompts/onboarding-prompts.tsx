@@ -2,11 +2,10 @@
 
 import { AddPromptDialog } from "@/app/(bottom navbar pages)/my-profile/edit/add-prompt-dialog";
 import { Button } from "@/components/ui/button";
+import { createClient } from "@/lib/supabase/client";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  createClientComponentClient,
-  User,
-} from "@supabase/auth-helpers-nextjs";
+import { User } from "@supabase/supabase-js";
+
 import Image from "next/image";
 import { redirect, useRouter } from "next/navigation";
 
@@ -17,7 +16,7 @@ type PageProps = {
 
 export default function OnboardingPrompts({ user, data }: PageProps) {
   const router = useRouter();
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const handleDelete = async (id: string) => {
     await supabase.from("prompts").delete().eq("id", id);
     router.refresh();

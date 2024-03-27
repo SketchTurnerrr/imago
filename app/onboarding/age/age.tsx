@@ -12,10 +12,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  createClientComponentClient,
-  User,
-} from "@supabase/auth-helpers-nextjs";
+
 import {
   Form,
   FormControl,
@@ -27,6 +24,8 @@ import {
 import { useForm } from "react-hook-form";
 import { redirect, useRouter } from "next/navigation";
 import { uk } from "date-fns/locale/uk";
+import { createClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 const formSchema = z.object({
   dob: z.date({
@@ -41,7 +40,7 @@ export default function Age({
   user: User | undefined;
   onboarded: boolean | undefined;
 }) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {

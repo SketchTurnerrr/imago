@@ -2,7 +2,6 @@
 
 import { Button } from "./ui/button";
 
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import HandIcon from "@/public/hand-waving.svg";
 import {
@@ -28,6 +27,7 @@ import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Prompt } from "./prompt";
+import { createClient } from "@/lib/supabase/client";
 
 interface IMatchDialog {
   liker: string;
@@ -48,7 +48,7 @@ export function MatchDialog({
   src,
   likeData,
 }: IMatchDialog) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const [open, setOpen] = useState(false);
   const router = useRouter();
 

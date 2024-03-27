@@ -1,11 +1,11 @@
 import { redirect } from "next/navigation";
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { Matches } from "./matches";
 import LoadingConversations from "./loading";
 import { Suspense } from "react";
 
 export default async function MatchesPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

@@ -1,15 +1,14 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  createClientComponentClient,
-  User,
-} from "@supabase/auth-helpers-nextjs";
+
 import { redirect, usePathname, useRouter } from "next/navigation";
 import { useLoadScript } from "@react-google-maps/api";
 import { useCallback, useEffect, useState } from "react";
 import { Map } from "./map";
 import { debounce } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 export default function Location({
   user,
@@ -70,7 +69,7 @@ export default function Location({
     [map],
   );
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
   async function handleLocation() {
     if (user) {

@@ -314,21 +314,21 @@ export type Database = {
           id: string;
           profile_id: string;
           src: string;
-          updated_at: string;
+          updated_at: Date;
         };
         Insert: {
           created_at?: string;
           id?: string;
           profile_id: string;
           src: string;
-          updated_at?: string;
+          updated_at?: Date;
         };
         Update: {
           created_at?: string;
           id?: string;
           profile_id?: string;
           src?: string;
-          updated_at?: string;
+          updated_at?: Date;
         };
         Relationships: [
           {
@@ -781,7 +781,7 @@ export type Database = {
           owner: string | null;
           owner_id: string | null;
           public: boolean | null;
-          updated_at: string | null;
+          updated_at: Date | null;
         };
         Insert: {
           allowed_mime_types?: string[] | null;
@@ -793,7 +793,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           public?: boolean | null;
-          updated_at?: string | null;
+          updated_at?: Date | null;
         };
         Update: {
           allowed_mime_types?: string[] | null;
@@ -805,7 +805,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           public?: boolean | null;
-          updated_at?: string | null;
+          updated_at?: Date | null;
         };
         Relationships: [];
       };
@@ -841,7 +841,7 @@ export type Database = {
           owner: string | null;
           owner_id: string | null;
           path_tokens: string[] | null;
-          updated_at: string | null;
+          updated_at: Date | null;
           version: string | null;
         };
         Insert: {
@@ -854,7 +854,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           path_tokens?: string[] | null;
-          updated_at?: string | null;
+          updated_at?: Date | null;
           version?: string | null;
         };
         Update: {
@@ -867,7 +867,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           path_tokens?: string[] | null;
-          updated_at?: string | null;
+          updated_at?: Date | null;
           version?: string | null;
         };
         Relationships: [
@@ -933,8 +933,8 @@ export type Database = {
         Returns: {
           name: string;
           id: string;
-          updated_at: string;
-          created_at: string;
+          updated_at: Date;
+          created_at: Date;
           last_accessed_at: string;
           metadata: Json;
         }[];

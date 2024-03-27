@@ -3,16 +3,11 @@ import Image from "next/image";
 import { ReloadIcon, StarIcon, UploadIcon } from "@radix-ui/react-icons";
 import { Input } from "@/components/ui/input";
 import { useRef, useState } from "react";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-import {
-  Tooltip,
-  TooltipContent,
-  TooltipProvider,
-  TooltipTrigger,
-} from "../ui/tooltip";
+
+import { createClient } from "@/lib/supabase/client";
 
 interface IPhotoGrid {
   photos: PhotosType[];
@@ -26,7 +21,7 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
   const [selectedPlaceholder, setSelectedPlaceholder] = useState<number | null>(
     null,
   );
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
   const filledPhotos = photos.concat(
     Array.from({ length: Math.max(6 - photos.length, 0) }),

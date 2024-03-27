@@ -1,10 +1,10 @@
 "use client";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import { Button } from "./ui/button";
 import { LogOutIcon } from "lucide-react";
 
 export function SignOut() {
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const signout = async () => {
     await supabase.auth.signOut();
   };

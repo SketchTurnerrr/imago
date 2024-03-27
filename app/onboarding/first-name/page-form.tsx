@@ -4,10 +4,7 @@ import * as z from "zod";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  createClientComponentClient,
-  User,
-} from "@supabase/auth-helpers-nextjs";
+
 import {
   Form,
   FormControl,
@@ -18,6 +15,8 @@ import {
 import { useForm } from "react-hook-form";
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
+import { createClient } from "@/lib/supabase/client";
+import { User } from "@supabase/supabase-js";
 
 const formSchema = z.object({
   first_name: z
@@ -35,7 +34,7 @@ export default function FirstName({
   user: User | undefined;
   onboarded: boolean | undefined;
 }) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
   async function onSubmit(values: z.infer<typeof formSchema>) {
     if (user) {

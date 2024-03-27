@@ -2,7 +2,6 @@
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Separator } from "@/components/ui/separator";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useEffect, useRef, useState } from "react";
 import { Form, FormControl, FormField, FormItem } from "@/components/ui/form";
 import { zodResolver } from "@hookform/resolvers/zod";
@@ -20,6 +19,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import { ReadOnlyProfile } from "@/components/read-only-profile";
 import { GoBack } from "@/components/go-back";
 import { cn } from "@/lib/utils";
+import { createClient } from "@/lib/supabase/client";
 
 const FormSchema = z.object({
   message: z
@@ -43,7 +43,7 @@ export function Conversation({
   conversationId,
   participants,
 }: IConversations) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const [rtMessages, setRTMessages] = useState(messages);
   const [readOnlyProfile, setReadOnlyProfile] = useState<FullProfile | null>(
     null,

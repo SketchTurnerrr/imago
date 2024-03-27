@@ -4,7 +4,7 @@ import { X } from "lucide-react";
 import { Badge } from "@/components/ui/badge";
 import { Command, CommandGroup, CommandItem } from "@/components/ui/command";
 import { Command as CommandPrimitive } from "cmdk";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 
 type Denominations = Record<"value" | "label", string>;
 const denominationOptions = [
@@ -43,7 +43,7 @@ export function MultiSelect({ userId }: { userId: string }) {
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Denominations[]>([]);
   const [inputValue, setInputValue] = useState("");
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   useEffect(() => {
     async function setFilters() {

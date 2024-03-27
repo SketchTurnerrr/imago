@@ -2,13 +2,13 @@
 import { GoBack } from "@/components/go-back";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
+import { createClient } from "@/lib/supabase/client";
 import BadgeIcon from "@/public/badge-check.svg";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 
 export default function VerifyPage() {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const [loading, setLoading] = useState(false);
   const [userId, setUserId] = useState<string | null>(null);
 

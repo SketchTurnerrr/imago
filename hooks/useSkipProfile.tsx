@@ -1,10 +1,10 @@
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import { useMutation } from "@tanstack/react-query";
 
 export function useSkipProfile() {
   // currentUserId: string,
   // profileId: string,
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   return useMutation({
     mutationFn: async ({
       profileId,

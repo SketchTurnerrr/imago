@@ -12,16 +12,15 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-import {
-  Session,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+
 import { useToast } from "@/components/ui/use-toast";
 import { redirect } from "next/navigation";
 import { useState } from "react";
 import Logo from "@/public/logo.svg";
 import LogoDark from "@/public/logo-dark.svg";
 import { useTheme } from "next-themes";
+import { Session } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
   email: z.string().email({ message: "Це не схоже на адресу" }).min(2, {
@@ -32,7 +31,7 @@ const formSchema = z.object({
 export function SignIn({ session }: { session: Session | null }) {
   const [disableOtpBtn, setDisableOtpBtn] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
-  const supabase = createClientComponentClient();
+  const supabase = createClient();
   const { theme } = useTheme();
 
   if (session) {

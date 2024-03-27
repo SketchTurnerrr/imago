@@ -1,7 +1,6 @@
 "use client";
 import { ArrowRightIcon, Cross1Icon } from "@radix-ui/react-icons";
 import { Button } from "./ui/button";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { usePathname } from "next/navigation";
 import { useSkipProfile } from "@/hooks/useSkipProfile";
@@ -13,6 +12,7 @@ import {
   TooltipProvider,
   TooltipTrigger,
 } from "./ui/tooltip";
+import { createClient } from "@/lib/supabase/client";
 
 export function LeftProfileBtn({
   userId,
@@ -33,7 +33,7 @@ export function LeftProfileBtn({
   const handleAction = async () => {
     // console.log("pathname :");
 
-    const supabase = createClientComponentClient<Database>();
+    const supabase = createClient();
 
     const table =
       likeData && likeData.type === "ph" ? "photo_likes" : "prompt_likes";

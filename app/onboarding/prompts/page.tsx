@@ -1,9 +1,9 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import OnboardingPrompts from "./onboarding-prompts";
 import { redirect } from "next/navigation";
 
 export default async function Page() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

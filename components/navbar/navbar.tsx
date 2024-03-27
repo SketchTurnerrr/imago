@@ -5,12 +5,10 @@ import Compass from "@/public/compass.svg";
 import ThumbsUp from "@/public/thumbs-up.svg";
 import Message from "@/public/message.svg";
 import { useEffect, useRef, useState } from "react";
-import gsap from "gsap";
-import { ScrollTrigger } from "gsap/all";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
 import { IConversationReadStatus } from "@/app/global";
+import { createClient } from "@/lib/supabase/client";
 
 interface INavbar {
   photo:
@@ -29,7 +27,7 @@ interface INavbar {
 export function Navbar({ photo, status, userId }: INavbar) {
   const router = useRouter();
   const [rtStatus, setRTStatus] = useState(status);
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const pathname = usePathname();
 
   const items = [

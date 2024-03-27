@@ -1,9 +1,9 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { Subscription } from "./subscription";
 import { redirect } from "next/navigation";
 
 export default async function SubscriptionPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

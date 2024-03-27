@@ -5,11 +5,11 @@ import { ReactQueryDevtools } from "@tanstack/react-query-devtools";
 import React, { useEffect } from "react";
 import { ThemeProvider } from "@/components/theme-provider";
 import { Toaster } from "@/components/ui/toaster";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
+import { createClient } from "@/lib/supabase/client";
 
 export function Providers({ children }: { children: React.ReactNode }) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {

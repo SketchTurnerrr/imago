@@ -1,4 +1,4 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import { Prompt } from "@/components/prompt";
 import { redirect } from "next/navigation";
@@ -14,7 +14,7 @@ export default async function Page({
     t: "ph" | "p";
   };
 }) {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

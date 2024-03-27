@@ -1,8 +1,8 @@
-import { createServerClient } from '@/lib/supabase-server';
-import { SignIn } from './login';
+import { createClient } from "@/lib/supabase/server";
+import { SignIn } from "./login";
 
 export default async function LoginPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

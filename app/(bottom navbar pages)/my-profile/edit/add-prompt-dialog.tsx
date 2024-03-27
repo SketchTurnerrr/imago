@@ -32,12 +32,11 @@ import { useRouter } from "next/navigation";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import {
-  User,
-  createClientComponentClient,
-} from "@supabase/auth-helpers-nextjs";
+
 import { useState } from "react";
 import promptQuestions from "./options";
+import { User } from "@supabase/supabase-js";
+import { createClient } from "@/lib/supabase/client";
 
 const FormSchema = z.object({
   question: z.string({
@@ -54,7 +53,7 @@ export function AddPromptDialog({ user }: { user: User }) {
     resolver: zodResolver(FormSchema),
   });
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   async function onSubmit(data: z.infer<typeof FormSchema>) {
     if (user) {

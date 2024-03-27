@@ -1,6 +1,5 @@
-import { createServerClient } from "@/lib/supabase-server";
 import { formatDistance } from "date-fns";
-import uk from "date-fns/locale/uk";
+import { uk } from "date-fns/locale/uk";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
@@ -8,10 +7,11 @@ import { redirect } from "next/navigation";
 import { SkippedProfiles } from "./skipped-profiles";
 import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function SkippedProfilesPage() {
   redirect("/discover");
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

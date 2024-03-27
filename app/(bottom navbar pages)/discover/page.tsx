@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
-import { createServerClient } from "@/lib/supabase-server";
 import { Suspense } from "react";
 import Loading from "./loading";
 import { Profile } from "@/components/profile";
+import { createClient } from "@/lib/supabase/server";
 
 type authedProfileType = {
   gender: string;
@@ -23,7 +23,7 @@ export default async function DiscoverPage({
   searchParams,
 }: searchParamsProps) {
   // console.log("searchParams :", searchParams);
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

@@ -1,4 +1,4 @@
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
 interface QueryProps {
@@ -16,7 +16,7 @@ export function useGetProfiles({
   type = "discover",
   profileId,
 }: QueryProps) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   return useQuery({
     queryKey: ["profile", profileId],

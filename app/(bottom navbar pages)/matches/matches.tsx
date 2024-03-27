@@ -1,6 +1,6 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
@@ -11,7 +11,7 @@ interface IMatches {
 }
 
 export function Matches({ userId, conversations }: IMatches) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const [rtConversations, setRTConversations] =
     useState<IConversations[]>(conversations);
   // console.log("rtConversations :", rtConversations);

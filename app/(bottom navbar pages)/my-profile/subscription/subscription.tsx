@@ -13,11 +13,11 @@ import {
 } from "@/components/ui/card";
 import { cn } from "@/lib/utils";
 import { toast } from "@/components/ui/use-toast";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import { useRouter } from "next/navigation";
 import { differenceInMinutes } from "date-fns";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { GoBack } from "@/components/go-back";
+import { createClient } from "@/lib/supabase/client";
 
 export function Subscription({
   userId,
@@ -33,7 +33,7 @@ export function Subscription({
 
   const [signatureBase64, setSignatureBase64] = useState("");
 
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
 
   useEffect(() => {

@@ -1,11 +1,10 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Toggle } from "@/components/ui/toggle";
+import { createClient } from "@/lib/supabase/client";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
-import {
-  createClientComponentClient,
-  User,
-} from "@supabase/auth-helpers-nextjs";
+import { User } from "@supabase/supabase-js";
+
 import { redirect, useRouter } from "next/navigation";
 import { useState } from "react";
 
@@ -20,7 +19,7 @@ export function Denomination({
 
   const router = useRouter();
   const handleSubmit = async () => {
-    const supabase = createClientComponentClient<Database>();
+    const supabase = createClient();
     if (user) {
       await supabase
         .from("profiles")

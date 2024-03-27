@@ -1,12 +1,12 @@
 import { Profile } from "@/components/profile";
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 
 export default async function SkippedProfilesPage({
   params,
 }: {
   params: { id: string };
 }) {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

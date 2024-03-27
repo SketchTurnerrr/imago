@@ -10,24 +10,18 @@ import {
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
-  FormLabel,
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-
 import ThumbsUp from "@/public/thumbs-up.svg";
-
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
 import Image from "next/image";
 import { useState } from "react";
-
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { Prompt } from "./prompt";
+import { createClient } from "@/lib/supabase/client";
 
 interface ILikeDialog {
   itemId: string;
@@ -54,7 +48,7 @@ export function LikeDialog({
   question,
   answer,
 }: ILikeDialog) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const [open, setOpen] = useState(false);
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),

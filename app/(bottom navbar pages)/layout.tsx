@@ -1,10 +1,10 @@
 import { Navbar } from "@/components/navbar/navbar";
-import { createServerClient } from "@/lib/supabase-server";
 import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Tables, Enums } from "@/types/database.types";
 import { QueryData } from "@supabase/supabase-js";
 import { IConversationReadStatus } from "../global";
+import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {
   title: "Discover",
@@ -16,7 +16,7 @@ export default async function DiscoverLayout({
 }: {
   children: React.ReactNode;
 }) {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

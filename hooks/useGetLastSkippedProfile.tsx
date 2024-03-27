@@ -1,8 +1,8 @@
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import { useQuery } from "@tanstack/react-query";
 
 export function useGetLastSkippedProfile(id: string) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
 
   return useQuery({
     queryKey: ["profile", id],

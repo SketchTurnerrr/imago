@@ -1,8 +1,8 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { Denomination } from "./denomination";
 
 export default async function Page() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

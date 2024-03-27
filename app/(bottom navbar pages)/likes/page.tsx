@@ -1,8 +1,8 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { Likes } from "./likes";
 
 export default async function LikesPage() {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   const {
     data: { session },

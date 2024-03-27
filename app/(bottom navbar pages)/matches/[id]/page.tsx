@@ -1,4 +1,4 @@
-import { createServerClient } from "@/lib/supabase-server";
+import { createClient } from "@/lib/supabase/server";
 import { Conversation } from "./conversation";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
@@ -9,7 +9,7 @@ export default async function ConversationPage({
 }: {
   params: { id: string };
 }) {
-  const supabase = createServerClient();
+  const supabase = createClient();
 
   // const cookieStore = cookies();
   // console.log('cookieStore :', cookieStore.get('userAgent'));

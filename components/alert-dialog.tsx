@@ -10,7 +10,7 @@ import {
   AlertDialogTrigger,
 } from "@/components/ui/alert-dialog";
 import { Button } from "@/components/ui/button";
-import { createClientComponentClient } from "@supabase/auth-helpers-nextjs";
+import { createClient } from "@/lib/supabase/client";
 import { useRouter } from "next/navigation";
 
 interface IAlert {
@@ -26,7 +26,7 @@ export function AlertDialogDots({
   alertDescription,
   conversationId,
 }: IAlert) {
-  const supabase = createClientComponentClient<Database>();
+  const supabase = createClient();
   const router = useRouter();
   const endConversation = async () => {
     await supabase.from("conversations").delete().match({ id: conversationId });
