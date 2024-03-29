@@ -5,55 +5,25 @@ import Cross from "@/public/cross.svg";
 import Cake from "@/public/cake.svg";
 import MapPin from "@/public/map-pin.svg";
 import Loading from "@/app/(bottom navbar pages)/discover/loading";
-import { FullProfile, IPhotoLike, IPromptLike } from "@/types";
+import { ReadOnlyProfileType } from "@/types";
 
-interface IProfile {
-  profile: FullProfile | null;
-  authedProfile?: {
-    gender: string;
-    skipped_profiles: string[];
-    onboarded: boolean;
-  };
-  likeData?: IPhotoLike | IPromptLike | undefined;
-}
-
-export function ReadOnlyProfile({ profile }: IProfile) {
-  if (!profile) {
-    return (
-      <div className="mt-20">
-        <Loading />
-      </div>
-    );
-  }
-
+export function ReadOnlyProfile({ profile }: { profile: ReadOnlyProfileType }) {
   const dob = format(parseISO(String(profile.date_of_birth)), "yyyy/MM/dd");
   const date = parse(dob, "yyyy/MM/dd", new Date());
   const age = differenceInYears(new Date(), date);
 
-  const {
-    question: question0,
-    answer: answer0,
-    id: promptId0,
-  } = profile.prompts?.[0] || "";
-  const {
-    question: question1,
-    answer: answer1,
-    id: promptId1,
-  } = profile.prompts?.[1] || "";
-  const {
-    question: question2,
-    answer: answer2,
-    id: promptId2,
-  } = profile.prompts?.[2] || "";
+  const { question: question0, answer: answer0 } = profile.prompts?.[0] || "";
+  const { question: question1, answer: answer1 } = profile.prompts?.[1] || "";
+  const { question: question2, answer: answer2 } = profile.prompts?.[2] || "";
 
-  const { src: src0, id: photoId0 } = profile.photos?.[0] || "";
-  const { src: src1, id: photoId1 } = profile.photos?.[1] || "";
-  const { src: src2, id: photoId2 } = profile.photos?.[2] || "";
-  const { src: src3, id: photoId3 } = profile.photos?.[3] || "";
-  const { src: src4, id: photoId4 } = profile.photos?.[4] || "";
-  const { src: src5, id: photoId5 } = profile.photos?.[5] || "";
+  const { src: src0 } = profile.photos?.[0] || "";
+  const { src: src1 } = profile.photos?.[1] || "";
+  const { src: src2 } = profile.photos?.[2] || "";
+  const { src: src3 } = profile.photos?.[3] || "";
+  const { src: src4 } = profile.photos?.[4] || "";
+  const { src: src5 } = profile.photos?.[5] || "";
 
-  const photo = (src: string | null, id: string) => {
+  const photo = (src: string | null) => {
     if (!src) {
       return null;
     } else {
@@ -75,7 +45,7 @@ export function ReadOnlyProfile({ profile }: IProfile) {
     }
   };
 
-  const prompt = (question: string, answer: string, id: string) => {
+  const prompt = (question: string, answer: string) => {
     if (!question) {
       return null;
     } else {
@@ -90,9 +60,9 @@ export function ReadOnlyProfile({ profile }: IProfile) {
 
   return (
     <main className="mt-12 flex flex-col space-y-4 p-4 md:items-center">
-      {photo(src0, photoId0)}
+      {photo(src0)}
 
-      {prompt(question0, answer0, promptId0)}
+      {prompt(question0, answer0)}
 
       {/*       
       ----- INFO 
@@ -119,34 +89,34 @@ export function ReadOnlyProfile({ profile }: IProfile) {
       ----- PHOTO1
       */}
 
-      {photo(src1, photoId1)}
+      {photo(src1)}
 
       {/*       
       ----- PHOTO2
       */}
 
-      {photo(src2, photoId2)}
+      {photo(src2)}
 
-      {prompt(question1, answer1, promptId1)}
+      {prompt(question1, answer1)}
 
       {/*       
       ----- PHOTO3
       */}
 
-      {photo(src3, photoId3)}
+      {photo(src3)}
 
-      {prompt(question2, answer2, promptId2)}
+      {prompt(question2, answer2)}
 
       {/*       
       ----- PHOTO4
       */}
 
-      {photo(src4, photoId4)}
+      {photo(src4)}
       {/*       
       ----- PHOTO5
       */}
 
-      {photo(src5, photoId5)}
+      {photo(src5)}
       <div className="pb-20"></div>
     </main>
   );

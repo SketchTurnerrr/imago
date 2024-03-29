@@ -1,20 +1,20 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/client";
-import { IConversations } from "@/types";
+import { IConversation } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 
 interface IMatches {
-  conversations: IConversations[];
+  conversations: IConversation[];
   userId: string;
 }
 
 export function Matches({ userId, conversations }: IMatches) {
   const supabase = createClient();
   const [rtConversations, setRTConversations] =
-    useState<IConversations[]>(conversations);
+    useState<IConversation[]>(conversations);
   // console.log("rtConversations :", rtConversations);
 
   useEffect(() => {
@@ -35,11 +35,11 @@ export function Matches({ userId, conversations }: IMatches) {
               .select(
                 "*, has_unread_messages, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content,sender_id)",
               )
-              .returns<IConversations[]>();
+              .returns<IConversation[]>();
             if (error) {
               console.log("error :", error);
             } else {
-              setRTConversations(newConversation as IConversations[]);
+              setRTConversations(newConversation as IConversation[]);
             }
           }
 
@@ -49,11 +49,11 @@ export function Matches({ userId, conversations }: IMatches) {
               .select(
                 "*, has_unread_messages, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content,sender_id)",
               )
-              .returns<IConversations[]>();
+              .returns<IConversation[]>();
             if (error) {
               console.log("error :", error);
             } else {
-              setRTConversations(newConversation as IConversations[]);
+              setRTConversations(newConversation as IConversation[]);
             }
           }
           if (payload.eventType === "DELETE") {

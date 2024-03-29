@@ -18,7 +18,6 @@ export default async function Page() {
     .select("*, photos(*)")
     .order("updated_at", { foreignTable: "photos", ascending: false })
     .eq("id", session?.user.id)
-    .returns<ProfileWithPhotos>()
     .single();
 
   // console.log('data :', data);

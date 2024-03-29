@@ -13,10 +13,11 @@ export default async function Page() {
 
   const { data } = await supabase
     .from("profiles")
-    .select("*, prompts(*)")
+    .select("onboarded, prompts(*)")
     .eq("id", session.user.id)
-    .returns<FullProfile>()
     .single();
+
+  if (!data) return;
 
   return <OnboardingPrompts user={session.user} data={data} />;
 }

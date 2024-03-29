@@ -310,25 +310,25 @@ export type Database = {
       };
       photos: {
         Row: {
-          created_at: string;
+          created_at: Date;
           id: string;
           profile_id: string;
           src: string;
-          updated_at: string;
+          updated_at: Date;
         };
         Insert: {
-          created_at?: string;
+          created_at?: Date;
           id?: string;
           profile_id: string;
           src: string;
-          updated_at?: string;
+          updated_at?: Date;
         };
         Update: {
-          created_at?: string;
+          created_at?: Date;
           id?: string;
           profile_id?: string;
           src?: string;
-          updated_at?: string;
+          updated_at?: Date;
         };
         Relationships: [
           {
@@ -352,7 +352,7 @@ export type Database = {
           age: number;
           coordinates: Json;
           created_at: string;
-          date_of_birth: string;
+          date_of_birth: Date;
           denomination: string;
           email: string | null;
           first_name: string;
@@ -367,7 +367,7 @@ export type Database = {
           age?: number;
           coordinates?: Json;
           created_at?: string;
-          date_of_birth?: string;
+          date_of_birth?: Date;
           denomination?: string;
           email?: string | null;
           first_name?: string;
@@ -382,7 +382,7 @@ export type Database = {
           age?: number;
           coordinates?: Json;
           created_at?: string;
-          date_of_birth?: string;
+          date_of_birth?: Date;
           denomination?: string;
           email?: string | null;
           first_name?: string;
@@ -687,7 +687,7 @@ export type Database = {
           age: number | null;
           coordinates: Json | null;
           created_at: string | null;
-          date_of_birth: string | null;
+          date_of_birth: Date | null;
           denomination: string | null;
           email: string | null;
           first_name: string | null;
@@ -702,7 +702,7 @@ export type Database = {
           age?: number | null;
           coordinates?: Json | null;
           created_at?: string | null;
-          date_of_birth?: string | null;
+          date_of_birth?: Date | null;
           denomination?: string | null;
           email?: string | null;
           first_name?: string | null;
@@ -717,7 +717,7 @@ export type Database = {
           age?: number | null;
           coordinates?: Json | null;
           created_at?: string | null;
-          date_of_birth?: string | null;
+          date_of_birth?: Date | null;
           denomination?: string | null;
           email?: string | null;
           first_name?: string | null;

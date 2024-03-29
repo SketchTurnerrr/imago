@@ -3,6 +3,7 @@ import { PhotoGrid } from "@/components/photo-grid/photo-grid";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/lib/supabase/client";
+import { Photo } from "@/types";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { User } from "@supabase/supabase-js";
 
@@ -11,7 +12,7 @@ import { redirect, useRouter } from "next/navigation";
 
 interface PageProps {
   user: User;
-  photos: PhotosType[] | null;
+  photos: Photo[] | null;
   onboarded: boolean | undefined;
 }
 

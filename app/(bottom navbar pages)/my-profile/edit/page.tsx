@@ -16,7 +16,6 @@ export default async function Page() {
     .select("*, prompts(*), photos(*)")
     .order("updated_at", { foreignTable: "photos", ascending: false })
     .eq("id", session.user.id)
-    .returns<FullProfile>()
     .single();
 
   // console.log("error :", error);

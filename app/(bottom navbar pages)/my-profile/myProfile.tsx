@@ -12,6 +12,7 @@ import {
   PopoverContent,
   PopoverTrigger,
 } from "@/components/ui/popover";
+import { ProfileWithPhotos } from "@/types";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   return (

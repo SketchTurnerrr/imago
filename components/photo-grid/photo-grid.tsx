@@ -6,11 +6,11 @@ import { useRef, useState } from "react";
 import { useRouter } from "next/navigation";
 import { toast } from "@/components/ui/use-toast";
 import { cn } from "@/lib/utils";
-
 import { createClient } from "@/lib/supabase/client";
+import { Photo } from "@/types";
 
 interface IPhotoGrid {
-  photos: PhotosType[];
+  photos: Photo[];
   user: { id: string };
 }
 export function PhotoGrid({ photos, user }: IPhotoGrid) {

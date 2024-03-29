@@ -3,6 +3,7 @@ import { Conversation } from "./conversation";
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import LoadingMessages from "./loading";
+import { IMessage, IParticipantsName } from "@/types";
 
 export default async function ConversationPage({
   params,
@@ -10,9 +11,6 @@ export default async function ConversationPage({
   params: { id: string };
 }) {
   const supabase = createClient();
-
-  // const cookieStore = cookies();
-  // console.log('cookieStore :', cookieStore.get('userAgent'));
 
   const {
     data: { session },
@@ -24,7 +22,7 @@ export default async function ConversationPage({
     )
     .eq("conversation_id", params.id)
     .order("created_at")
-    .returns<IMessages[]>();
+    .returns<IMessage[]>();
 
   const { data } = await supabase
     .from("conversations")
@@ -32,7 +30,7 @@ export default async function ConversationPage({
       "id, participant1(id,first_name), participant2(id,first_name), last_read_message_id",
     )
     .eq("id", params.id)
-    .returns<IParticipantsNames>()
+    .returns<IParticipantsName>()
     .single();
   // console.log('participant2 :', data?.participant2);
 

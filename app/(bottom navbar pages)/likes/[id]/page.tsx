@@ -3,7 +3,7 @@ import Image from "next/image";
 import { Prompt } from "@/components/prompt";
 import { redirect } from "next/navigation";
 import { Profile } from "@/components/profile";
-import { FullProfile, IPhotoLike, IPromptLike } from "@/types";
+import { FullProf, FullProfile, IPhotoLike, IPromptLike } from "@/types";
 
 export default async function Page({
   params,
@@ -25,7 +25,7 @@ export default async function Page({
     .from("profiles")
     .select("*, prompts(*), photos(src,id)")
     .eq("id", params.id)
-    .returns<FullProfile[]>();
+    .returns<FullProf[]>();
 
   // ph photoId
   // p promptId

@@ -20,6 +20,12 @@ import { ReadOnlyProfile } from "@/components/read-only-profile";
 import { GoBack } from "@/components/go-back";
 import { cn } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import {
+  FullProf,
+  IMessage,
+  IParticipantsName,
+  ReadOnlyProfileType,
+} from "@/types";
 
 const FormSchema = z.object({
   message: z
@@ -31,10 +37,10 @@ const FormSchema = z.object({
 });
 
 interface IConversations {
-  messages: IMessages[];
+  messages: IMessage[];
   userId: string;
   conversationId: string;
-  participants: IParticipantsNames | null;
+  participants: IParticipantsName | null;
 }
 
 export function Conversation({
@@ -45,9 +51,8 @@ export function Conversation({
 }: IConversations) {
   const supabase = createClient();
   const [rtMessages, setRTMessages] = useState(messages);
-  const [readOnlyProfile, setReadOnlyProfile] = useState<FullProfile | null>(
-    null,
-  );
+  const [readOnlyProfile, setReadOnlyProfile] =
+    useState<ReadOnlyProfileType | null>(null);
   const scrollToLastMsgRef = useRef<HTMLDivElement>(null);
 
   const scrollToBottom = () => {
@@ -113,13 +118,13 @@ export function Conversation({
               "*, conversation_id(participant1(id,first_name), participant2(first_name)),sender_id(id, first_name,photos(src))",
             )
             .eq("id", payload.new.id)
-            .returns<IMessages[]>()
+            .returns<IMessage[]>()
             .maybeSingle();
 
           if (error) {
             console.log("error :", error);
           }
-          setRTMessages([...rtMessages, newMessage as IMessages]);
+          setRTMessages([...rtMessages, newMessage as IMessage]);
         },
       )
       .subscribe();
@@ -144,7 +149,6 @@ export function Conversation({
                 ? participants.participant2.id
                 : participants.participant1.id,
             )
-            .returns<FullProfile>()
             .single();
           setReadOnlyProfile(data);
         }
@@ -271,7 +275,7 @@ export function Conversation({
             </div>
           </TabsContent>
           <TabsContent value="profile" className="">
-            <ReadOnlyProfile profile={readOnlyProfile} />
+            <ReadOnlyProfile profile={readOnlyProfile!} />
           </TabsContent>
         </Tabs>
       </div>

@@ -3,6 +3,7 @@
 import { AddPromptDialog } from "@/app/(bottom navbar pages)/my-profile/edit/add-prompt-dialog";
 import { Button } from "@/components/ui/button";
 import { createClient } from "@/lib/supabase/client";
+import { FullProfile } from "@/types";
 import { ChevronRightIcon } from "@radix-ui/react-icons";
 import { User } from "@supabase/supabase-js";
 
@@ -11,7 +12,15 @@ import { redirect, useRouter } from "next/navigation";
 
 type PageProps = {
   user: User;
-  data: FullProfile | null;
+  data: {
+    onboarded: boolean;
+    prompts: {
+      answer: string;
+      id: string;
+      profile_id: string;
+      question: string;
+    }[];
+  };
 };
 
 export default function OnboardingPrompts({ user, data }: PageProps) {

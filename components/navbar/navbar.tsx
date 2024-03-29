@@ -7,8 +7,8 @@ import Message from "@/public/message.svg";
 import { useEffect, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { cn } from "@/lib/utils";
-import { IConversationReadStatus } from "@/types/global";
 import { createClient } from "@/lib/supabase/client";
+import { IConversationReadStatus } from "@/types";
 
 interface INavbar {
   photo:

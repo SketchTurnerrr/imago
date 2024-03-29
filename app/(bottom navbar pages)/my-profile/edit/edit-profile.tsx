@@ -7,6 +7,7 @@ import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
 import { PhotoGrid } from "@/components/photo-grid/photo-grid";
 import { createClient } from "@/lib/supabase/client";
+import { FullProfile } from "@/types";
 interface PageProps {
   user: User;
   data: FullProfile;

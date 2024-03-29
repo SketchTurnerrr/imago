@@ -9,7 +9,7 @@ export type PhotoLike = Tables<"photo_likes">;
 export type PromptLike = Tables<"prompt_likes">;
 export type Conversation = Tables<"conversations">;
 export type Message = Tables<"messages">;
-export type Subscription = Tables<"subscriptions">;
+export type SubscriptionType = Tables<"subscriptions">;
 export type SkippedProfile = Tables<"skipped_profiles">;
 
 export interface FullProfile extends Profile {
@@ -24,6 +24,16 @@ const fullProfileQuery = supabase
   .select("*, prompts(*), photos(*)");
 
 export type FullProf = QueryData<typeof fullProfileQuery>;
+
+const readonlyProfile = supabase
+  .from("profiles")
+  .select(
+    "date_of_birth, denomination, first_name, toponym, verified, prompts(question, answer), photos(src)",
+  )
+
+  .single();
+
+export type ReadOnlyProfileType = QueryData<typeof readonlyProfile>;
 
 export interface ProfileWithPhotos extends Profile {
   photos: Photo[];
@@ -48,7 +58,7 @@ export interface IPromptLike extends Omit<PromptLike, "prompt" | "liker"> {
   };
 }
 
-export interface IConversations
+export interface IConversation
   extends Omit<Conversation, "last_message" | "participant1" | "participant2"> {
   last_message: Message;
   participant1: {
@@ -63,7 +73,7 @@ export interface IConversations
   };
 }
 
-export interface IMessages
+export interface IMessage
   extends Omit<Message, "sender_id" | "conversation_id"> {
   sender_id: {
     id: string;
@@ -84,7 +94,7 @@ export interface IMessages
     };
   };
 }
-export interface IParticipantsNames
+export interface IParticipantsName
   extends Omit<Conversation, "participant1" | "participant2"> {
   participant1: {
     id: string;
