@@ -46,7 +46,7 @@ export function Profile({
     profileId,
   });
 
-  const [faultyPhotoId, setfaultyPhotoId] = useState<string | null>(null);
+  const [faultyPhotoId, setFaultyPhotoId] = useState<string | null>(null);
 
   const profileRef = useRef(null);
   const profile = data;
@@ -138,11 +138,13 @@ export function Profile({
                 ? "scale-90 blur-lg grayscale"
                 : "scale-100 blur-0 grayscale-0",
             )}
-            onLoad={() => {
+            onLoad={(e: any) => {
+              if (e.target.naturalWidth === 0) {
+                console.log("fired");
+
+                setFaultyPhotoId(id);
+              }
               setImgLoading(false);
-            }}
-            onError={() => {
-              setfaultyPhotoId(id);
             }}
           />
           {pathname === "/discover" && !faultyPhotoId && (
