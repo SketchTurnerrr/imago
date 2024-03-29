@@ -138,13 +138,15 @@ export function Profile({
                 ? "scale-90 blur-lg grayscale"
                 : "scale-100 blur-0 grayscale-0",
             )}
-            onLoad={(e: any) => {
+            onLoad={() => {
+              setImgLoading(false);
+            }}
+            onError={(e: any) => {
               if (e.target.naturalWidth === 0) {
                 console.log("fired");
 
                 setFaultyPhotoId(id);
               }
-              setImgLoading(false);
             }}
           />
           {pathname === "/discover" && !faultyPhotoId && (
