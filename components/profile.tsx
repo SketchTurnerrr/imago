@@ -46,6 +46,8 @@ export function Profile({
     profileId,
   });
 
+  const [faultyPhotoId, setfaultyPhotoId] = useState<string | null>(null);
+
   const profileRef = useRef(null);
   const profile = data;
 
@@ -126,7 +128,7 @@ export function Profile({
       return (
         <div className={"relative mx-auto"}>
           <Image
-            src={src}
+            src={faultyPhotoId === id ? "/error-image.jpg" : src}
             width={500}
             height={700}
             alt={profile.first_name}
@@ -139,8 +141,11 @@ export function Profile({
             onLoad={() => {
               setImgLoading(false);
             }}
+            onError={() => {
+              setfaultyPhotoId(id);
+            }}
           />
-          {pathname === "/discover" && (
+          {pathname === "/discover" && !faultyPhotoId && (
             <LikeDialog
               itemId={id}
               type="photo"
@@ -178,7 +183,7 @@ export function Profile({
   return (
     <main
       ref={profileRef}
-      className="flex min-h-[100svh] flex-col space-y-4 bg-[hsl(0,0%,95%)] p-4 opacity-0 dark:bg-background md:items-center"
+      className="overflow-x flex min-h-[100svh] flex-col space-y-4 bg-[hsl(0,0%,95%)] p-4 opacity-0 dark:bg-background md:items-center"
     >
       <div className="flex items-center justify-between md:w-[500px]">
         <div className="flex items-center gap-3">

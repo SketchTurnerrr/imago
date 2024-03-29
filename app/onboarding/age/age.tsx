@@ -115,7 +115,7 @@ export default function Age({
                   </PopoverContent>
                 </Popover>
                 <FormMessage />
-                <FormDescription className="text-center text-2xl font-bold text-black">
+                <FormDescription className="text-center text-2xl font-bold text-slate-800 dark:text-foreground">
                   Вам{" "}
                   {isNaN(new Date().getFullYear() - field.value?.getFullYear())
                     ? "17"

@@ -40,9 +40,13 @@ import { createClient } from "@/lib/supabase/client";
 
 const FormSchema = z.object({
   question: z.string({
-    required_error: "Please select an email to display.",
+    required_error: "Будь ласка, оберіть фразу",
   }),
-  answer: z.string().max(179, "Максимум 180 символів"),
+  answer: z
+    .string({
+      required_error: "Це поле обов'язкове",
+    })
+    .max(179, "Максимум 180 символів"),
 });
 
 export function AddPromptDialog({ user }: { user: User }) {
@@ -67,6 +71,7 @@ export function AddPromptDialog({ user }: { user: User }) {
     router.refresh();
 
     setOpen(false);
+    form.reset();
   }
 
   return (
@@ -109,9 +114,6 @@ export function AddPromptDialog({ user }: { user: User }) {
                       </SelectTrigger>
                     </FormControl>
                     <SelectContent className="max-h-[10rem] overflow-y-auto">
-                      {/* <SelectItem value="Моя улюблена книга Біблії">
-                        Моя улюблена книга Біблії
-                      </SelectItem> */}
                       {promptQuestions.map((prompt) => (
                         <SelectItem key={prompt} value={prompt}>
                           {prompt}

@@ -50,7 +50,7 @@ export function PhotoGrid({ photos, user }: IPhotoGrid) {
     try {
       setLoading(true);
       if (!e.target.files || e.target.files.length === 0) {
-        throw new Error("Please select a photo");
+        throw new Error("Будь ласка оберіть фото");
       }
 
       const file = e.target.files[0];
