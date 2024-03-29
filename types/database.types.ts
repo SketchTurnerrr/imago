@@ -314,21 +314,21 @@ export type Database = {
           id: string;
           profile_id: string;
           src: string;
-          updated_at: Date;
+          updated_at: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
           profile_id: string;
           src: string;
-          updated_at?: Date;
+          updated_at?: string;
         };
         Update: {
           created_at?: string;
           id?: string;
           profile_id?: string;
           src?: string;
-          updated_at?: Date;
+          updated_at?: string;
         };
         Relationships: [
           {
@@ -352,7 +352,7 @@ export type Database = {
           age: number;
           coordinates: Json;
           created_at: string;
-          date_of_birth: Date;
+          date_of_birth: string;
           denomination: string;
           email: string | null;
           first_name: string;
@@ -367,7 +367,7 @@ export type Database = {
           age?: number;
           coordinates?: Json;
           created_at?: string;
-          date_of_birth: Date;
+          date_of_birth?: string;
           denomination?: string;
           email?: string | null;
           first_name?: string;
@@ -382,7 +382,7 @@ export type Database = {
           age?: number;
           coordinates?: Json;
           created_at?: string;
-          date_of_birth?: Date;
+          date_of_birth?: string;
           denomination?: string;
           email?: string | null;
           first_name?: string;
@@ -687,7 +687,7 @@ export type Database = {
           age: number | null;
           coordinates: Json | null;
           created_at: string | null;
-          date_of_birth: Date | null;
+          date_of_birth: string | null;
           denomination: string | null;
           email: string | null;
           first_name: string | null;
@@ -702,7 +702,7 @@ export type Database = {
           age?: number | null;
           coordinates?: Json | null;
           created_at?: string | null;
-          date_of_birth: Date | null;
+          date_of_birth?: string | null;
           denomination?: string | null;
           email?: string | null;
           first_name?: string | null;
@@ -717,7 +717,7 @@ export type Database = {
           age?: number | null;
           coordinates?: Json | null;
           created_at?: string | null;
-          date_of_birth: Date | null;
+          date_of_birth?: string | null;
           denomination?: string | null;
           email?: string | null;
           first_name?: string | null;
@@ -781,7 +781,7 @@ export type Database = {
           owner: string | null;
           owner_id: string | null;
           public: boolean | null;
-          updated_at: Date | null;
+          updated_at: string | null;
         };
         Insert: {
           allowed_mime_types?: string[] | null;
@@ -793,7 +793,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           public?: boolean | null;
-          updated_at?: Date | null;
+          updated_at?: string | null;
         };
         Update: {
           allowed_mime_types?: string[] | null;
@@ -805,7 +805,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           public?: boolean | null;
-          updated_at?: Date | null;
+          updated_at?: string | null;
         };
         Relationships: [];
       };
@@ -841,7 +841,7 @@ export type Database = {
           owner: string | null;
           owner_id: string | null;
           path_tokens: string[] | null;
-          updated_at: Date | null;
+          updated_at: string | null;
           version: string | null;
         };
         Insert: {
@@ -854,7 +854,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           path_tokens?: string[] | null;
-          updated_at?: Date | null;
+          updated_at?: string | null;
           version?: string | null;
         };
         Update: {
@@ -867,7 +867,7 @@ export type Database = {
           owner?: string | null;
           owner_id?: string | null;
           path_tokens?: string[] | null;
-          updated_at?: Date | null;
+          updated_at?: string | null;
           version?: string | null;
         };
         Relationships: [
@@ -933,8 +933,8 @@ export type Database = {
         Returns: {
           name: string;
           id: string;
-          updated_at: Date;
-          created_at: Date;
+          updated_at: string;
+          created_at: string;
           last_accessed_at: string;
           metadata: Json;
         }[];

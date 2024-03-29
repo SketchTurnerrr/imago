@@ -20,12 +20,13 @@ import { Clock } from "lucide-react";
 import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { GoBack } from "./go-back";
 import { toast } from "@/components/ui/use-toast";
+import { FullProf, FullProfile, IPhotoLike, IPromptLike } from "@/types";
 
 interface IProfile {
-  serverProfiles?: FullProfile[];
+  serverProfiles?: FullProf[];
   userId: string;
   profileId?: string;
-  likeData: { like: PhotoLike | PromptLike; type: "ph" | "p" } | null;
+  likeData: { like: IPhotoLike | IPromptLike; type: "ph" | "p" } | null;
   gender?: "male" | "female";
   type: "discover" | "single";
   sub?: string | null;

@@ -18,13 +18,14 @@ import { differenceInMinutes } from "date-fns";
 import { CheckIcon } from "@radix-ui/react-icons";
 import { GoBack } from "@/components/go-back";
 import { createClient } from "@/lib/supabase/client";
+import { Subscription } from "@/types";
 
 export function Subscription({
   userId,
   sub,
 }: {
   userId: string;
-  sub: SubscriptionType | null;
+  sub: Subscription | null;
 }) {
   // console.log('sub :', sub);
   const [amount, setAmount] = useState(0);

@@ -1,5 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Likes } from "./likes";
+import { IPhotoLike, IPromptLike } from "@/types";
 
 export default async function LikesPage() {
   const supabase = createClient();
@@ -15,14 +16,14 @@ export default async function LikesPage() {
     .from("photo_likes")
     .select("*, photo(src, id), liker(first_name, id, gender, photos(src)) ")
     .eq("likee", session.user.id)
-    .returns<PhotoLike[]>();
+    .returns<IPhotoLike[]>();
 
   // console.log('error :', error);
   const { data: promptLikes } = await supabase
     .from("prompt_likes")
     .select("*, prompt(*), liker(first_name, id, gender, photos(src))")
     .eq("likee", session.user.id)
-    .returns<PromptLike[]>();
+    .returns<IPromptLike[]>();
 
   // console.log("promptLikes :", promptLikes);
   // console.log("photoLikes :", photoLikes);

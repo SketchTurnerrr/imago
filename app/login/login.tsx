@@ -12,13 +12,9 @@ import {
 import { Input } from "@/components/ui/input";
 import { useForm } from "react-hook-form";
 import Image from "next/image";
-
 import { useToast } from "@/components/ui/use-toast";
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import Logo from "@/public/logo.svg";
-import LogoDark from "@/public/logo-dark.svg";
-import { useTheme } from "next-themes";
 import { Session } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 
@@ -32,7 +28,6 @@ export function SignIn({ session }: { session: Session | null }) {
   const [disableOtpBtn, setDisableOtpBtn] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const supabase = createClient();
-  const { theme } = useTheme();
 
   if (session) {
     redirect("/discover");
@@ -89,7 +84,7 @@ export function SignIn({ session }: { session: Session | null }) {
       title: "Перевірте, будь ласка свою пошту",
       description: "У листі ви знайдете посилання для входу",
       duration: 10000,
-      style: { backgroundColor: "#3aff7f" },
+      variant: "success",
     });
   }
 

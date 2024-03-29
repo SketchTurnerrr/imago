@@ -3,7 +3,7 @@ import type { Metadata } from "next";
 import { redirect } from "next/navigation";
 import { Tables, Enums } from "@/types/database.types";
 import { QueryData } from "@supabase/supabase-js";
-import { IConversationReadStatus } from "../global";
+import { IConversationReadStatus } from "../../types/global";
 import { createClient } from "@/lib/supabase/server";
 
 export const metadata: Metadata = {

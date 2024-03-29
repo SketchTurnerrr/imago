@@ -5,6 +5,7 @@ import Cross from "@/public/cross.svg";
 import Cake from "@/public/cake.svg";
 import MapPin from "@/public/map-pin.svg";
 import Loading from "@/app/(bottom navbar pages)/discover/loading";
+import { FullProfile, IPhotoLike, IPromptLike } from "@/types";
 
 interface IProfile {
   profile: FullProfile | null;
@@ -13,7 +14,7 @@ interface IProfile {
     skipped_profiles: string[];
     onboarded: boolean;
   };
-  likeData?: PhotoLike | PromptLike | undefined;
+  likeData?: IPhotoLike | IPromptLike | undefined;
 }
 
 export function ReadOnlyProfile({ profile }: IProfile) {

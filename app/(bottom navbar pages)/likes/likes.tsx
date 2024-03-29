@@ -1,10 +1,11 @@
 import { Separator } from "@/components/ui/separator";
+import { IPhotoLike, IPromptLike } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
 
 interface PageProps {
-  photoLikes: PhotoLike[];
-  promptLikes: PromptLike[];
+  photoLikes: IPhotoLike[];
+  promptLikes: IPromptLike[];
 }
 
 export function Likes({ photoLikes, promptLikes }: PageProps) {

@@ -1,4 +1,5 @@
 import { createClient } from "@/lib/supabase/client";
+import { FullProf, FullProfile } from "@/types";
 import { useQuery } from "@tanstack/react-query";
 
 interface QueryProps {
@@ -32,7 +33,7 @@ export function useGetProfiles({
           .lte("age", ageFilter[1])
           // .match(denominationFilter.map(deno => ({'denomination': deno})))
           .neq("onboarded", false)
-          .returns<FullProfile[]>()
+          .returns<FullProf>()
           .limit(1)
           .single();
 

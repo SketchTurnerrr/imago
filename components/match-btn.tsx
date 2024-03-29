@@ -28,13 +28,14 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { Prompt } from "./prompt";
 import { createClient } from "@/lib/supabase/client";
+import { IPhotoLike, IPromptLike } from "@/types";
 
 interface IMatchDialog {
   liker: string;
   likee: string;
   firstName: string | null;
   src: string;
-  likeData: { like: PhotoLike | PromptLike; type: string } | null;
+  likeData: { like: IPhotoLike | IPromptLike; type: string } | null;
 }
 
 const FormSchema = z.object({
@@ -68,7 +69,6 @@ export function MatchDialog({
         participant1: liker,
         participant2: likee,
       })
-      .returns<ConversationsType>()
       .select()
       .single();
 

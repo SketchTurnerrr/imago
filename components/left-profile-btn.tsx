@@ -13,6 +13,7 @@ import {
   TooltipTrigger,
 } from "./ui/tooltip";
 import { createClient } from "@/lib/supabase/client";
+import { IPhotoLike, IPromptLike } from "@/types";
 
 export function LeftProfileBtn({
   userId,
@@ -22,7 +23,7 @@ export function LeftProfileBtn({
 }: {
   userId: string;
   profileId: string;
-  likeData: { like: PhotoLike | PromptLike; type: string } | null;
+  likeData: { like: IPhotoLike | IPromptLike; type: string } | null;
   refetch: () => void;
 }) {
   const router = useRouter();

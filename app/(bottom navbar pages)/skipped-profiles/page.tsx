@@ -8,6 +8,7 @@ import { SkippedProfiles } from "./skipped-profiles";
 import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/server";
+import { FullProfile, SkippedProfile } from "@/types";
 
 export default async function SkippedProfilesPage() {
   redirect("/discover");
@@ -21,7 +22,7 @@ export default async function SkippedProfilesPage() {
     redirect("/login");
   }
 
-  interface ISkippedProfiles extends Omit<SkippedProfilesType, "object"> {
+  interface ISkippedProfiles extends Omit<SkippedProfile, "object"> {
     object: FullProfile;
   }
 

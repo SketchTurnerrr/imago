@@ -1,11 +1,12 @@
 "use client";
+import { FullProfile, SkippedProfile } from "@/types";
 import { formatDistance } from "date-fns";
 import { uk } from "date-fns/locale";
 import { ChevronRight } from "lucide-react";
 import Image from "next/image";
 import Link from "next/link";
 
-interface ISkippedProfiles extends Omit<SkippedProfilesType, "object"> {
+interface ISkippedProfiles extends Omit<SkippedProfile, "object"> {
   object: FullProfile;
 }
 

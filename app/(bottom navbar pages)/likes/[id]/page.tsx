@@ -3,6 +3,7 @@ import Image from "next/image";
 import { Prompt } from "@/components/prompt";
 import { redirect } from "next/navigation";
 import { Profile } from "@/components/profile";
+import { FullProfile, IPhotoLike, IPromptLike } from "@/types";
 
 export default async function Page({
   params,
@@ -37,13 +38,13 @@ export default async function Page({
           .from("photo_likes")
           .select("id,photo(src), comment, liker(gender)")
           .eq("id", searchParams.likeId)
-          .returns<PhotoLike[]>()
+          .returns<IPhotoLike[]>()
           .single()
       : supabase
           .from("prompt_likes")
           .select("id,prompt(*), comment, liker(gender)")
           .eq("id", searchParams.likeId)
-          .returns<PromptLike[]>()
+          .returns<IPromptLike[]>()
           .single();
 
   const { data: like } = await likesQuery;
