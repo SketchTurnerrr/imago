@@ -46,8 +46,6 @@ export function Profile({
     profileId,
   });
 
-  const [faultyPhotoId, setFaultyPhotoId] = useState<string | null>(null);
-
   const profileRef = useRef(null);
   const profile = data;
 
@@ -128,7 +126,7 @@ export function Profile({
       return (
         <div className={"relative mx-auto"}>
           <Image
-            src={faultyPhotoId === id ? "/error-image.jpg" : src}
+            src={src}
             width={500}
             height={700}
             alt={profile.first_name}
@@ -141,15 +139,8 @@ export function Profile({
             onLoad={() => {
               setImgLoading(false);
             }}
-            onError={(e: any) => {
-              if (e.target.naturalWidth === 0) {
-                console.log("fired");
-
-                setFaultyPhotoId(id);
-              }
-            }}
           />
-          {pathname === "/discover" && !faultyPhotoId && (
+          {pathname === "/discover" && (
             <LikeDialog
               itemId={id}
               type="photo"
