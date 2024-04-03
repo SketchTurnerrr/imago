@@ -21,6 +21,9 @@ import { Popover, PopoverContent, PopoverTrigger } from "./ui/popover";
 import { GoBack } from "./go-back";
 import { toast } from "@/components/ui/use-toast";
 import { FullProf, FullProfile, IPhotoLike, IPromptLike } from "@/types";
+import { useGetTestProfiles } from "@/hooks/useGetTestProfiles";
+import { createClient } from "@/lib/supabase/client";
+import { useQuery } from "@tanstack/react-query";
 
 interface IProfile {
   serverProfiles?: FullProf[];
@@ -29,28 +32,29 @@ interface IProfile {
   likeData: { like: IPhotoLike | IPromptLike; type: "ph" | "p" } | null;
   gender?: "male" | "female";
   type: "discover" | "single";
-  subId?: string | null;
+  sub?: string | null;
 }
 
-export function Profile({
+export function TestProfile({
   userId,
   profileId,
   likeData,
   gender,
   type,
-  subId = null,
+
+  sub = null,
 }: IProfile) {
-  const { data, refetch } = useGetProfiles({
+  // const supabase = createClient();
+
+  const { data, refetch } = useGetTestProfiles({
     gender,
     type,
-    profileId,
     userId,
-    subId,
+    profileId,
   });
 
   const profileRef = useRef(null);
   const profile = data;
-  console.log("profile :", profile);
 
   const [imgLoading, setImgLoading] = useState(true);
 
@@ -95,32 +99,10 @@ export function Profile({
   if (!profile) {
     return null;
   }
+  //@ts-ignore
   const dob = format(parseISO(String(profile.date_of_birth)), "yyyy/MM/dd");
   const date = parse(dob, "yyyy/MM/dd", new Date());
   const age = differenceInYears(new Date(), date);
-
-  const {
-    question: question0,
-    answer: answer0,
-    id: promptId0,
-  } = profile.prompts[0] || "";
-  const {
-    question: question1,
-    answer: answer1,
-    id: promptId1,
-  } = profile.prompts[1] || "";
-  const {
-    question: question2,
-    answer: answer2,
-    id: promptId2,
-  } = profile.prompts[2] || "";
-
-  const { src: src0, id: photoId0 } = profile.photos[0] || "";
-  const { src: src1, id: photoId1 } = profile.photos[1] || "";
-  const { src: src2, id: photoId2 } = profile.photos[2] || "";
-  const { src: src3, id: photoId3 } = profile.photos[3] || "";
-  const { src: src4, id: photoId4 } = profile.photos[4] || "";
-  const { src: src5, id: photoId5 } = profile.photos[5] || "";
 
   const photo = (src: string, id: string) => {
     if (!src) {
@@ -132,7 +114,7 @@ export function Profile({
             src={src}
             width={500}
             height={700}
-            alt={profile.first_name}
+            alt="adad"
             className={cn(
               "rounded-lg duration-700 ease-in-out",
               imgLoading
@@ -143,18 +125,6 @@ export function Profile({
               setImgLoading(false);
             }}
           />
-          {pathname === "/discover" && (
-            <LikeDialog
-              itemId={id}
-              type="photo"
-              liker={userId}
-              likee={profile.id}
-              src={src}
-              firstName={profile.first_name}
-              question={null}
-              answer={null}
-            />
-          )}
         </div>
       );
     }
@@ -169,6 +139,7 @@ export function Profile({
       return (
         <Prompt
           liker={userId}
+          //@ts-ignore
           likee={profile.id}
           question={question}
           answer={answer}
@@ -186,26 +157,33 @@ export function Profile({
       <div className="flex items-center justify-between md:w-[500px]">
         <div className="flex items-center gap-3">
           <h1 className="text-4xl font-bold capitalize md:self-start">
-            {profile.first_name}
+            {
+              //@ts-ignore
+              profile.first_name
+            }
           </h1>
-          {profile.verified && (
-            <Popover>
-              <PopoverTrigger>
-                <BadgeIcon
-                  className="inline-block text-white"
-                  width={32}
-                  height={32}
-                />
-              </PopoverTrigger>
-              <PopoverContent className="w-fit border-none bg-secondary-foreground p-2 text-sm text-white dark:bg-secondary">
-                <p>Верифікований акаунт</p>
-              </PopoverContent>
-            </Popover>
-          )}
+
+          {
+            //@ts-ignore
+            profile.verified && (
+              <Popover>
+                <PopoverTrigger>
+                  <BadgeIcon
+                    className="inline-block text-white"
+                    width={32}
+                    height={32}
+                  />
+                </PopoverTrigger>
+                <PopoverContent className="w-fit border-none bg-secondary-foreground p-2 text-sm text-white dark:bg-secondary">
+                  <p>Верифікований акаунт</p>
+                </PopoverContent>
+              </Popover>
+            )
+          }
         </div>
         {/* POSTPONOED */}
 
-        {/* {!pathname.includes("likes") && userId === sub && (
+        {!pathname.includes("likes") && (
           <div className="flex items-center gap-2">
             <Button
               variant="ghost"
@@ -215,36 +193,30 @@ export function Profile({
               <Clock />
             </Button>
 
-            {type === "discover" && <Filter userId={userId} />}
+            {type === "discover" && (
+              <Filter refetch={refetch} userId={userId} />
+            )}
           </div>
-        )} */}
+        )}
       </div>
       {
         <LeftProfileBtn
           likeData={likeData}
           userId={userId}
+          //@ts-ignore
           profileId={profile.id}
           refetch={refetch}
         />
       }
-      {pathname.includes("likes") && (
-        <MatchDialog
-          likee={profile.id}
-          liker={userId}
-          src={profile.photos[0].src}
-          firstName={profile.first_name}
-          likeData={likeData}
-        />
-      )}
 
-      {src0 && (
+      {
         <div className={"relative mx-auto"}>
           <Image
-            src={src0}
+            src={"/dan.jpg"}
             priority
+            alt="add"
             width={500}
             height={700}
-            alt={profile.first_name}
             className={cn(
               "rounded-lg duration-700 ease-in-out",
               imgLoading
@@ -255,22 +227,10 @@ export function Profile({
               setImgLoading(false);
             }}
           />
-          {pathname === "/discover" && (
-            <LikeDialog
-              itemId={photoId0}
-              type="photo"
-              liker={userId}
-              likee={profile.id}
-              src={src0}
-              firstName={profile.first_name}
-              question={null}
-              answer={null}
-            />
-          )}
         </div>
-      )}
+      }
 
-      {prompt(question0, answer0, promptId0)}
+      {prompt("питання 1", "відповідь 1", "adwd")}
 
       {/*       
       ----- INFO 
@@ -284,11 +244,19 @@ export function Profile({
           </div>
           <div className="flex items-center gap-3">
             <Cross />
-            {profile.denomination}
+            {
+              //@ts-ignore
+
+              profile.denomination
+            }
           </div>
           <div className="flex items-center gap-3">
             <MapPin />
-            {profile.toponym}
+            {
+              //@ts-ignore
+
+              profile.toponym
+            }
           </div>
         </div>
       </div>
@@ -297,34 +265,34 @@ export function Profile({
       ----- PHOTO1
       */}
 
-      {photo(src1, photoId1)}
+      {photo("/dan.jpg", "dadfas")}
 
       {/*       
       ----- PHOTO2
       */}
 
-      {photo(src2, photoId2)}
+      {photo("/dan.jpg", "dadfzxcas")}
 
-      {prompt(question1, answer1, promptId1)}
+      {prompt("питання 2", "відповідь 2", "adadawd")}
 
       {/*       
       ----- PHOTO3
       */}
 
-      {photo(src3, photoId3)}
+      {photo("/dan.jpg", "dadfzxcxzcas")}
 
-      {prompt(question2, answer2, promptId2)}
+      {prompt("питання 3", "відповідь 3", "adazccdawd")}
 
       {/*       
       ----- PHOTO4
       */}
 
-      {photo(src4, photoId4)}
+      {photo("/dan.jpg", "dadfazxczcxs")}
       {/*       
       ----- PHOTO5
       */}
 
-      {photo(src5, photoId5)}
+      {photo("/dan.jpg", "dadfzxczxcs")}
       <div className="pb-20"></div>
     </main>
   );

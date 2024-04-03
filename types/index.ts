@@ -1,6 +1,9 @@
 import { createClient } from "@/lib/supabase/server";
 import { Tables } from "@/types/database.types";
 import { QueryData } from "@supabase/supabase-js";
+import { SupabaseClient } from "@supabase/supabase-js";
+
+export type TypedSupabaseClient = SupabaseClient<Database>;
 
 export type Profile = Tables<"profiles">;
 export type Prompt = Tables<"prompts">;

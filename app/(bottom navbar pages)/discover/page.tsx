@@ -49,12 +49,13 @@ export default async function DiscoverPage({
   const gender =
     currentUser && currentUser.gender === "male" ? "female" : "male";
 
-  const { data: filter, error: filterError } = await supabase
+  const { data: filters, error: filterError } = await supabase
     .from("filters")
     .select("age, denomination")
     .eq("profile_id", session.user.id)
     .single();
 
+  console.log("filters :", filters);
   const { data: sub } = await supabase
     .from("subscriptions")
     .select("profile_id")
@@ -107,14 +108,12 @@ export default async function DiscoverPage({
   // if (!profiles) return;
 
   return (
-    <Suspense fallback={<Loading />}>
-      <Profile
-        likeData={null}
-        userId={session.user.id}
-        gender={gender}
-        type="discover"
-        sub={sub?.profile_id}
-      />
-    </Suspense>
+    <Profile
+      likeData={null}
+      userId={session.user.id}
+      gender={gender}
+      type="discover"
+      subId={sub && sub.profile_id}
+    />
   );
 }

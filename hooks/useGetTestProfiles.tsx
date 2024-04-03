@@ -2,57 +2,50 @@ import { unstable_noStore as noStore } from "next/cache";
 import { createClient } from "@/lib/supabase/client";
 import { FullProf, FullProfile } from "@/types";
 import { useQuery } from "@tanstack/react-query";
-
 interface QueryProps {
   gender: string | undefined;
+  ageFilter?: number[];
+  denominationFilter?: string[];
   type: "discover" | "single";
   profileId?: string;
-  userId?: string;
-  subId?: string | null;
+  userId: string;
 }
 
-export function useGetProfiles({
+export function useGetTestProfiles({
   gender = "male",
   type = "discover",
-  profileId,
   userId,
-  subId,
+  profileId,
 }: QueryProps) {
   const supabase = createClient();
+  console.log("profileId :", userId);
 
   return useQuery({
-    queryKey: ["profile", profileId],
+    queryKey: ["test-profile", userId],
     queryFn: async () => {
       noStore();
+      const { data: filters } = await supabase
+        .from("filters")
+        .select("age, denomination")
+        .eq("profile_id", userId)
+        .single();
 
-      if (type === "discover" && userId) {
-        let filters = null;
-
-        // Check if the user has a subscription
-        if (subId) {
-          const { data: filtersData } = await supabase
-            .from("filters")
-            .select("age, denomination")
-            .eq("profile_id", userId)
-            .single();
-          filters = filtersData;
-        }
-
+      if (type === "discover") {
         let query = supabase
-          .from("random_profiles")
-          .select("*, prompts(*), photos(id,src)")
-          .neq("onboarded", false)
+          //@ts-ignore
+          .from("random_test_profiles")
+          .select("*")
           .eq("gender", gender);
 
-        if (filters && subId && filters.denomination.length > 0) {
+        if (filters && filters.denomination.length > 0) {
           query = query.in("denomination", filters.denomination);
         }
 
-        if (filters && subId && filters.age) {
+        if (filters && filters.age) {
           query = query.gte("age", filters.age[0]).lte("age", filters.age[1]);
         }
 
-        const { data } = await query.returns<FullProf>().limit(1).single();
+        const { data } = await query.limit(1).single();
 
         return data;
       }

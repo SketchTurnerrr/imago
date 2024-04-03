@@ -23,12 +23,16 @@ import { MultiSelect } from "../multi-select";
 import { debounce } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
 
-export function Filter({ userId }: { userId: string }) {
+export function Filter({
+  userId,
+  refetch,
+}: {
+  userId: string;
+  refetch: () => void;
+}) {
   const [maxDist, setMaxDist] = useState<number[]>([50]);
   const [age, setAge] = useState<number[]>([17, 24]);
-  const router = useRouter();
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
+
   const supabase = createClient();
 
   const onDistChange = (dist: number[]) => {
@@ -51,7 +55,9 @@ export function Filter({ userId }: { userId: string }) {
     updateAgeFilterDebounced();
   };
 
-  function handleSubmit() {}
+  function handleSubmit() {
+    refetch();
+  }
 
   return (
     <Sheet>

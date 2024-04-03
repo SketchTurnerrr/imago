@@ -1,8 +1,6 @@
 import { createClient } from "@/lib/supabase/server";
 import { Conversation } from "./conversation";
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import LoadingMessages from "./loading";
 import { IMessage, IParticipantsName } from "@/types";
 
 export default async function ConversationPage({
@@ -43,13 +41,11 @@ export default async function ConversationPage({
   }
 
   return (
-    <Suspense fallback={<LoadingMessages />}>
-      <Conversation
-        conversationId={params.id}
-        messages={messages ?? []}
-        userId={session.user.id}
-        participants={data}
-      />
-    </Suspense>
+    <Conversation
+      conversationId={params.id}
+      messages={messages ?? []}
+      userId={session.user.id}
+      participants={data}
+    />
   );
 }

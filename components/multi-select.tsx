@@ -40,36 +40,59 @@ const denominationOptions = [
 
 export function MultiSelect({ userId }: { userId: string }) {
   const inputRef = useRef<HTMLInputElement>(null);
+  const [initialLoad, setInitialLoad] = useState(false);
   const [open, setOpen] = useState(false);
   const [selected, setSelected] = useState<Denominations[]>([]);
   const [inputValue, setInputValue] = useState("");
   const supabase = createClient();
 
   useEffect(() => {
-    async function setFilters() {
-      const { error: existsError, count } = await supabase
+    async function fetchFilters() {
+      const { data, error } = await supabase
         .from("filters")
-        .select("", { head: true, count: "exact" });
+        .select("denomination")
+        .eq("profile_id", userId)
+        .single();
 
-      if (count === 0 && selected.length > 0) {
-        const { error } = await supabase.from("filters").insert({
-          denomination: selected.map((denomination) => denomination.value),
-          profile_id: userId,
-        });
-        console.log("error :", error);
-      } else {
-        const { error } = await supabase
+      if (data && data.denomination) {
+        setSelected(
+          data.denomination.map((value) => ({ value, label: value })),
+        );
+      }
+
+      setInitialLoad(true);
+    }
+
+    fetchFilters();
+  }, [userId]);
+
+  useEffect(() => {
+    async function setFilters() {
+      if (initialLoad) {
+        const { error: existsError, count } = await supabase
           .from("filters")
-          .update({
+          .select("", { head: true, count: "exact" });
+
+        if (count === 0 && selected.length > 0) {
+          const { error } = await supabase.from("filters").insert({
             denomination: selected.map((denomination) => denomination.value),
-          })
-          .eq("profile_id", userId);
-        console.log("error :", error);
+            profile_id: userId,
+          });
+          console.log("error :", error);
+        } else {
+          const { error } = await supabase
+            .from("filters")
+            .update({
+              denomination: selected.map((denomination) => denomination.value),
+            })
+            .eq("profile_id", userId);
+          console.log("error :", error);
+        }
       }
     }
 
     setFilters();
-  }, [selected, supabase, userId]);
+  }, [initialLoad, selected, supabase, userId]);
 
   const handleUnselect = useCallback((denomination: Denominations) => {
     setSelected((prev) => prev.filter((s) => s.value !== denomination.value));
@@ -100,8 +123,6 @@ export function MultiSelect({ userId }: { userId: string }) {
   const selectables = denominationOptions.filter(
     (denomination) => !selected.includes(denomination),
   );
-
-  // const params = selected.map((i) => i.value);
 
   return (
     <Command

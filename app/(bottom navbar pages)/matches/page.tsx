@@ -1,8 +1,6 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
 import { Matches } from "./matches";
-import LoadingConversations from "./loading";
-import { Suspense } from "react";
 import { IConversation } from "@/types";
 
 export default async function MatchesPage() {
@@ -23,9 +21,5 @@ export default async function MatchesPage() {
     )
     .returns<IConversation[]>();
 
-  return (
-    <Suspense fallback={<LoadingConversations />}>
-      <Matches conversations={data ?? []} userId={session.user.id} />
-    </Suspense>
-  );
+  return <Matches conversations={data ?? []} userId={session.user.id} />;
 }
