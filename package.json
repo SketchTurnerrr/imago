@@ -10,7 +10,6 @@
     "gen-types": "npx supabase gen types typescript --linked > types/database.types.ts"
   },
   "dependencies": {
-    "@gsap/react": "^2.1.0",
     "@hookform/resolvers": "^3.3.1",
     "@next/third-parties": "^14.0.4",
     "@radix-ui/react-alert-dialog": "^1.0.4",

@@ -24,6 +24,11 @@ export function useGetTestProfiles({
     queryKey: ["test-profile", userId],
     queryFn: async () => {
       noStore();
+      const { data: filters } = await supabase
+        .from("filters")
+        .select("age, denomination")
+        .eq("profile_id", userId)
+        .single();
 
       if (type === "discover") {
         let query = supabase
@@ -31,6 +36,14 @@ export function useGetTestProfiles({
           .from("random_test_profiles")
           .select("*")
           .eq("gender", gender);
+
+        if (filters && filters.denomination.length > 0) {
+          query = query.in("denomination", filters.denomination);
+        }
+
+        if (filters && filters.age) {
+          query = query.gte("age", filters.age[0]).lte("age", filters.age[1]);
+        }
 
         const { data } = await query.limit(1).single();
 
