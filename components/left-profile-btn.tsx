@@ -20,11 +20,13 @@ export function LeftProfileBtn({
   profileId,
   likeData,
   refetch,
+  animateSkip,
 }: {
   userId: string;
   profileId: string;
   likeData: { like: IPhotoLike | IPromptLike; type: string } | null;
   refetch: () => void;
+  animateSkip: () => void;
 }) {
   const router = useRouter();
   const pathname = usePathname();
@@ -49,6 +51,7 @@ export function LeftProfileBtn({
     }
 
     if (pathname.includes("discover")) {
+      animateSkip();
       // skipProfile({ profileId, currentUserId: userId });
       refetch();
     }

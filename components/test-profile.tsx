@@ -7,6 +7,7 @@ import MapPin from "@/public/map-pin.svg";
 import BadgeIcon from "@/public/badge-check.svg";
 import { useEffect, useLayoutEffect, useRef, useState } from "react";
 import gsap, { Power2 } from "gsap";
+import { useGSAP } from "@gsap/react";
 import { LeftProfileBtn } from "@/components/left-profile-btn";
 import { Prompt } from "@/components/prompt";
 import { LikeDialog } from "@/components/like-dialog";
@@ -22,8 +23,9 @@ import { GoBack } from "./go-back";
 import { toast } from "@/components/ui/use-toast";
 import { FullProf, FullProfile, IPhotoLike, IPromptLike } from "@/types";
 import { useGetTestProfiles } from "@/hooks/useGetTestProfiles";
-import { createClient } from "@/lib/supabase/client";
-import { useQuery } from "@tanstack/react-query";
+import { NextProfileFiller } from "./nextProfileFiller";
+
+gsap.registerPlugin(useGSAP);
 
 interface IProfile {
   serverProfiles?: FullProf[];
@@ -54,6 +56,7 @@ export function TestProfile({
   });
 
   const profileRef = useRef(null);
+  const skipProfileRef = useRef<HTMLDivElement>(null);
   const profile = data;
 
   const [imgLoading, setImgLoading] = useState(true);
@@ -76,25 +79,35 @@ export function TestProfile({
     }
   }, []);
 
-  useLayoutEffect(() => {
-    const ctx = gsap.context(() => {
+  useGSAP(
+    () => {
       gsap.fromTo(
         profileRef.current,
         {
           y: "20%",
           autoAlpha: 0,
-          duration: 1,
+          duration: 5,
           ease: Power2.easeInOut,
+          delay: 1,
         },
         {
           autoAlpha: 1,
           y: 0,
         },
       );
-    }, profileRef);
+      // gsap.fromTo(
+      //   skipProfileRef.current,
+      //   {
+      //     autoAlpha: 1,
+      //   },
+      //   {
+      //     autoAlpha: 0,
+      //   },
+      // );
+    },
 
-    return () => ctx.revert();
-  }, [profile]);
+    { dependencies: [profile] },
+  );
 
   if (!profile) {
     return null;
@@ -149,11 +162,33 @@ export function TestProfile({
     }
   };
 
+  const animateSkip = () => {
+    // Animate the component in
+    gsap.fromTo(
+      skipProfileRef.current,
+      { opacity: 0, display: "flex" },
+      { opacity: 1, duration: 0.5 },
+    );
+
+    // Animate the component out after 1 second
+    setTimeout(() => {
+      gsap.to(skipProfileRef.current, {
+        opacity: 0,
+        duration: 0.5,
+        onComplete: () => {
+          // Hide the component after animation completes
+          skipProfileRef.current.style.display = "none";
+        },
+      });
+    }, 1500); // 1000 milliseconds = 1 second
+  };
+
   return (
     <main
       ref={profileRef}
-      className="overflow-x flex min-h-[100svh] flex-col space-y-4 bg-[hsl(0,0%,95%)] p-4 opacity-0 dark:bg-background md:items-center"
+      className="overflow-x relative flex min-h-[100svh] flex-col space-y-4 bg-[hsl(0,0%,95%)] p-4 opacity-0 dark:bg-background md:items-center"
     >
+      {<NextProfileFiller hey={skipProfileRef} />}
       <div className="flex items-center justify-between md:w-[500px]">
         <div className="flex items-center gap-3">
           <h1 className="text-4xl font-bold capitalize md:self-start">
@@ -204,6 +239,7 @@ export function TestProfile({
           likeData={likeData}
           userId={userId}
           //@ts-ignore
+          animateSkip={animateSkip}
           profileId={profile.id}
           refetch={refetch}
         />

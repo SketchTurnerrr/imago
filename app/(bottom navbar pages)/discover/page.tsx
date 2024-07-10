@@ -3,6 +3,7 @@ import { Suspense } from "react";
 import Loading from "./loading";
 import { Profile } from "@/components/profile";
 import { createClient } from "@/lib/supabase/server";
+import { TestProfile } from "@/components/test-profile";
 
 type authedProfileType = {
   gender: string;
@@ -108,12 +109,12 @@ export default async function DiscoverPage({
   // if (!profiles) return;
 
   return (
-    <Profile
+    <TestProfile
       likeData={null}
       userId={session.user.id}
       gender={gender}
       type="discover"
-      subId={sub && sub.profile_id}
+      // subId={sub && sub.profile_id}
     />
   );
 }

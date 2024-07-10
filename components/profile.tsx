@@ -50,7 +50,6 @@ export function Profile({
 
   const profileRef = useRef(null);
   const profile = data;
-  console.log("profile :", profile);
 
   const [imgLoading, setImgLoading] = useState(true);
 
