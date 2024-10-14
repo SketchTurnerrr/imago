@@ -39,7 +39,7 @@ export function useGetProfiles({
         }
 
         let query = supabase
-          .from("random_profiles")
+          .from("profiles")
           .select("*, prompts(*), photos(id,src)")
           .neq("onboarded", false)
           .eq("gender", gender);
