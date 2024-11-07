@@ -19,16 +19,15 @@ export default async function DiscoverLayout({
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) redirect("/login");
+  if (!user) redirect("/login");
 
   const { data } = await supabase
     .from("profiles")
-    .select('photos("src"), onboarded')
-    .order("updated_at", { foreignTable: "photos", ascending: false })
-    .eq("id", session?.user.id)
+    .select('photos("url"), onboarded')
+    .eq("id", user?.id)
     .single();
 
   if (data?.onboarded === false) {
@@ -42,7 +41,7 @@ export default async function DiscoverLayout({
 
   return (
     <>
-      <Navbar photo={data?.photos} status={status!} userId={session.user.id} />
+      <Navbar photo={data?.photos} status={status!} userId={user.id} />
 
       {children}
     </>

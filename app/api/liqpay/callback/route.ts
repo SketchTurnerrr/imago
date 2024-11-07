@@ -37,7 +37,7 @@ export async function POST(req: NextRequest): Promise<any> {
       const decodedData = decodeBase64Data(String(data));
       // Process the decoded data as needed
       if (decodedData.status === "subscribed") {
-        const cookieStore = cookies();
+        const cookieStore = await cookies();
         console.log("cookiesList :", cookieStore.getAll());
 
         const supabase = createClient();

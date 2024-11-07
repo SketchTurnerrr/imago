@@ -1,11 +1,11 @@
-import { GoBack } from "@/components/go-back";
+import { GoBackBtn } from "@/components/go-back-btn";
 import Image from "next/image";
 
 export default function DonatePage() {
   return (
     <div className="p-4 md:mx-auto md:max-w-[500px] ">
       <div className="mb-10 flex items-center gap-3">
-        <GoBack />
+        <GoBackBtn />
         <h1 className="text-3xl font-bold">Підтримати</h1>
       </div>
       <Image

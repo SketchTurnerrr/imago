@@ -5,20 +5,20 @@ import Image from "next/image";
 import Link from "next/link";
 import { redirect } from "next/navigation";
 import { SkippedProfiles } from "./skipped-profiles";
-import { GoBack } from "@/components/go-back";
 import { Separator } from "@/components/ui/separator";
 import { createClient } from "@/lib/supabase/server";
 import { FullProfile, SkippedProfile } from "@/types";
+import { GoBackBtn } from "@/components/go-back-btn";
 
 export default async function SkippedProfilesPage() {
   redirect("/discover");
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/login");
   }
 
@@ -35,7 +35,7 @@ export default async function SkippedProfilesPage() {
   return (
     <div className="flex flex-col gap-4 p-4 pb-20 md:mx-auto md:w-fit">
       <h1 className="mb-0 flex w-full items-center gap-3 self-start text-3xl font-bold md:mb-4">
-        <GoBack />
+        <GoBackBtn />
         Переглянуті профілі
       </h1>
       <Separator className="md:hidden" />

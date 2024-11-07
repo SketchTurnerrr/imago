@@ -1,30 +1,48 @@
 "use client";
-import { usePathname } from "next/navigation";
 import { LikeDialog } from "./like-dialog";
 
-interface IPrompt {
-  question: string | null;
-  answer: string | null;
+interface PromptProps {
   id: string;
-  liker: string;
-  likee: string;
+  question: string;
+  answer: string;
+  display: boolean;
+  liker?: string;
+  likee?: string;
+  type?: "like" | "discover" | "chat" | "single";
 }
 
-export function Prompt({ question, answer, id, liker, likee }: IPrompt) {
-  const pathname = usePathname();
+export function Prompt({
+  id,
+  answer,
+  question,
+  display,
+  liker,
+  likee,
+  type,
+}: PromptProps) {
+  async function editPrompt() {}
+
+  if (!display) {
+    return (
+      <div className="relative flex flex-col rounded-lg border border-slate-100 p-4 text-sm font-bold shadow-sm">
+        <p>{question}</p>
+        <p className="mt-2 border-l border-gray-300 pl-2 text-gray-500">
+          {answer}
+        </p>
+      </div>
+    );
+  }
 
   return (
-    <div className="relative space-y-4 rounded-lg bg-white px-4 py-16 dark:bg-secondary md:w-[500px]">
+    <div className="relative space-y-4 rounded-lg bg-purple-50 px-4 py-16 dark:bg-secondary ">
       <p className="text-md font-semibold">{question}</p>
       <h2 className="text-3xl font-bold">{answer}</h2>
-      {pathname === "/discover" && (
+      {type !== "chat" && type !== "like" && (
         <LikeDialog
           itemId={id}
           type="prompt"
           liker={liker}
           likee={likee}
-          firstName={null}
-          src={null}
           question={question}
           answer={answer}
         />

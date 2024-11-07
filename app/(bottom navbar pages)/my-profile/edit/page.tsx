@@ -1,25 +1,21 @@
 import { createClient } from "@/lib/supabase/server";
-import { EditProfilePage } from "./edit-profile";
 import { redirect } from "next/navigation";
+import EditProfilePage from "./edit-profile";
 
 export default async function Page() {
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) redirect("/login");
+  if (!user) redirect("/login");
 
   const { data, error } = await supabase
     .from("profiles")
     .select("*, prompts(*), photos(*)")
-    .order("updated_at", { foreignTable: "photos", ascending: false })
-    .eq("id", session.user.id)
+    .eq("id", user.id)
     .single();
 
-  // console.log("error :", error);
-  if (!data) return;
-
-  return <EditProfilePage user={session.user} data={data} />;
+  return <EditProfilePage userId={user.id} />;
 }

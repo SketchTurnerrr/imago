@@ -1,4 +1,3 @@
-import { Profile } from "@/components/profile";
 import { createClient } from "@/lib/supabase/server";
 
 export default async function SkippedProfilesPage({
@@ -9,19 +8,12 @@ export default async function SkippedProfilesPage({
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return null;
   }
 
-  return (
-    <Profile
-      type="single"
-      likeData={null}
-      profileId={params.id}
-      userId={session?.user.id}
-    />
-  );
+  return null;
 }

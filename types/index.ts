@@ -8,8 +8,6 @@ export type TypedSupabaseClient = SupabaseClient<Database>;
 export type Profile = Tables<"profiles">;
 export type Prompt = Tables<"prompts">;
 export type Photo = Tables<"photos">;
-export type PhotoLike = Tables<"photo_likes">;
-export type PromptLike = Tables<"prompt_likes">;
 export type Conversation = Tables<"conversations">;
 export type Message = Tables<"messages">;
 export type SubscriptionType = Tables<"subscriptions">;
@@ -24,7 +22,8 @@ const supabase = createClient();
 
 const fullProfileQuery = supabase
   .from("profiles")
-  .select("*, prompts(*), photos(*)");
+  .select("*, prompts(*), photos(*)")
+  .single();
 
 export type FullProf = QueryData<typeof fullProfileQuery>;
 
@@ -38,28 +37,36 @@ const readonlyProfile = supabase
 
 export type ReadOnlyProfileType = QueryData<typeof readonlyProfile>;
 
+const likesQuery = supabase
+  .from("likes")
+  .select(
+    "*, photo:photos(id, url), prompt:prompts(*), sender:profiles!likes_receiver_fkey(id,name,gender, photos(url))",
+  );
+
+export type LikesType = QueryData<typeof likesQuery>;
+
 export interface ProfileWithPhotos extends Profile {
   photos: Photo[];
 }
 
-export interface IPhotoLike extends Omit<PhotoLike, "liker" | "photo"> {
-  photo: { src: string; id: string };
-  liker: {
-    first_name: string;
-    gender: string;
-    id: string;
-    photos: Photo[];
-  };
-}
-export interface IPromptLike extends Omit<PromptLike, "prompt" | "liker"> {
-  prompt: Prompt;
-  liker: {
-    first_name: string;
-    gender: string;
-    id: string;
-    photos: Photo[];
-  };
-}
+// export interface IPhotoLike extends Omit<PhotoLike, "liker" | "photo"> {
+//   photo: { src: string; id: string };
+//   liker: {
+//     first_name: string;
+//     gender: string;
+//     id: string;
+//     photos: Photo[];
+//   };
+// }
+// export interface IPromptLike extends Omit<PromptLike, "prompt" | "liker"> {
+//   prompt: Prompt;
+//   liker: {
+//     first_name: string;
+//     gender: string;
+//     id: string;
+//     photos: Photo[];
+//   };
+// }
 
 export interface IConversation
   extends Omit<Conversation, "last_message" | "participant1" | "participant2"> {

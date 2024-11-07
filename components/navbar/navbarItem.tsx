@@ -17,10 +17,9 @@ export function NavLink({ icon: Icon, active, href }: NavLinkProps) {
         )}
         href={href}
       >
-        {/* {isUnread.length > 0 && item.url === "/matches" && (
-          <div className="unread-count before:content-[attr(data-unread)]"></div>
-        )} */}
-        <Icon />
+        <div>
+          <Icon />
+        </div>
       </Link>
     </div>
   );

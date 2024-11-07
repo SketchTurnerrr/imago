@@ -1,19 +1,17 @@
 "use client";
 import Image from "next/image";
 import Link from "next/link";
-import Compass from "@/public/compass.svg";
-import ThumbsUp from "@/public/thumbs-up.svg";
-import Message from "@/public/message.svg";
 import { useEffect, useMemo, useRef, useState } from "react";
 import { usePathname, useRouter } from "next/navigation";
 import { createClient } from "@/lib/supabase/client";
 import { IConversationReadStatus } from "@/types";
 import { NavLink } from "./navbarItem";
+import { Compass, MessageSquare, ThumbsUp } from "lucide-react";
 
 interface INavbar {
   photo:
     | {
-        src: string;
+        url: string;
       }[]
     | undefined;
   status: {
@@ -44,7 +42,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
       },
       {
         href: "/matches",
-        icon: Message as React.ReactNode,
+        icon: MessageSquare,
         active: pathname === "/matches",
       },
     ],
@@ -118,7 +116,7 @@ export function Navbar({ photo, status, userId }: INavbar) {
             <Image
               priority
               className={"aspect-square rounded-full object-cover"}
-              src={(photo && photo[0].src) || "/error-image.jpg"}
+              src={(photo && photo[0].url) || "/error-image.jpg"}
               width={30}
               height={30}
               alt="icon"

@@ -37,75 +37,23 @@ export type Database = {
       conversations: {
         Row: {
           created_at: string;
-          has_unread_messages: boolean;
           id: string;
-          last_message: string | null;
-          last_read_message_id: string | null;
-          participant1: string | null;
-          participant2: string | null;
+          lastMessageTime: number;
+          participantIds: string[];
         };
         Insert: {
           created_at?: string;
-          has_unread_messages?: boolean;
           id?: string;
-          last_message?: string | null;
-          last_read_message_id?: string | null;
-          participant1?: string | null;
-          participant2?: string | null;
+          lastMessageTime: number;
+          participantIds: string[];
         };
         Update: {
           created_at?: string;
-          has_unread_messages?: boolean;
           id?: string;
-          last_message?: string | null;
-          last_read_message_id?: string | null;
-          participant1?: string | null;
-          participant2?: string | null;
+          lastMessageTime?: number;
+          participantIds?: string[];
         };
-        Relationships: [
-          {
-            foreignKeyName: "conversations_last_message_fkey";
-            columns: ["last_message"];
-            isOneToOne: false;
-            referencedRelation: "messages";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "conversations_last_read_message_id_fkey";
-            columns: ["last_read_message_id"];
-            isOneToOne: false;
-            referencedRelation: "messages";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "conversations_participant1_fkey";
-            columns: ["participant1"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "conversations_participant1_fkey";
-            columns: ["participant1"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "conversations_participant2_fkey";
-            columns: ["participant2"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "conversations_participant2_fkey";
-            columns: ["participant2"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       filters: {
         Row: {
@@ -137,11 +85,63 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
+        ];
+      };
+      likes: {
+        Row: {
+          comment: string | null;
+          created_at: string;
+          id: string;
+          photo: string | null;
+          prompt: string | null;
+          receiver: string | null;
+          sender: string | null;
+        };
+        Insert: {
+          comment?: string | null;
+          created_at?: string;
+          id?: string;
+          photo?: string | null;
+          prompt?: string | null;
+          receiver?: string | null;
+          sender?: string | null;
+        };
+        Update: {
+          comment?: string | null;
+          created_at?: string;
+          id?: string;
+          photo?: string | null;
+          prompt?: string | null;
+          receiver?: string | null;
+          sender?: string | null;
+        };
+        Relationships: [
           {
-            foreignKeyName: "filters_profile_id_fkey";
-            columns: ["profile_id"];
-            isOneToOne: true;
-            referencedRelation: "random_profiles";
+            foreignKeyName: "likes_photo_fkey";
+            columns: ["photo"];
+            isOneToOne: false;
+            referencedRelation: "photos";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "likes_prompt_fkey";
+            columns: ["prompt"];
+            isOneToOne: false;
+            referencedRelation: "prompts";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "likes_receiver_fkey";
+            columns: ["receiver"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "likes_sender_fkey";
+            columns: ["sender"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -177,24 +177,10 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "matches_profile_id_1_fkey";
-            columns: ["profile_id_1"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
             foreignKeyName: "matches_profile_id_2_fkey";
             columns: ["profile_id_2"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "matches_profile_id_2_fkey";
-            columns: ["profile_id_2"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -223,112 +209,35 @@ export type Database = {
         };
         Relationships: [
           {
-            foreignKeyName: "messages_conversation_id_fkey";
-            columns: ["conversation_id"];
-            isOneToOne: false;
-            referencedRelation: "conversations";
-            referencedColumns: ["id"];
-          },
-          {
             foreignKeyName: "messages_sender_id_fkey";
             columns: ["sender_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "messages_sender_id_fkey";
-            columns: ["sender_id"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      photo_likes: {
-        Row: {
-          comment: string | null;
-          created_at: string;
-          id: string;
-          likee: string;
-          liker: string;
-          photo: string;
-        };
-        Insert: {
-          comment?: string | null;
-          created_at?: string;
-          id?: string;
-          likee: string;
-          liker: string;
-          photo: string;
-        };
-        Update: {
-          comment?: string | null;
-          created_at?: string;
-          id?: string;
-          likee?: string;
-          liker?: string;
-          photo?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "photo_likes_likee_fkey";
-            columns: ["likee"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "photo_likes_likee_fkey";
-            columns: ["likee"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "photo_likes_liker_fkey";
-            columns: ["liker"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "photo_likes_liker_fkey";
-            columns: ["liker"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "photo_likes_photo_fkey";
-            columns: ["photo"];
-            isOneToOne: false;
-            referencedRelation: "photos";
             referencedColumns: ["id"];
           },
         ];
       };
       photos: {
         Row: {
-          created_at: Date;
+          created_at: string;
           id: string;
+          order: number;
           profile_id: string;
-          src: string;
-          updated_at: Date;
+          url: string;
         };
         Insert: {
-          created_at?: Date;
+          created_at?: string;
           id?: string;
+          order: number;
           profile_id: string;
-          src: string;
-          updated_at?: Date;
+          url: string;
         };
         Update: {
-          created_at?: Date;
+          created_at?: string;
           id?: string;
+          order?: number;
           profile_id?: string;
-          src?: string;
-          updated_at?: Date;
+          url?: string;
         };
         Relationships: [
           {
@@ -336,135 +245,54 @@ export type Database = {
             columns: ["profile_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "photos_profile_id_fkey";
-            columns: ["profile_id"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
             referencedColumns: ["id"];
           },
         ];
       };
       profiles: {
         Row: {
-          age: number;
           coordinates: Json;
           created_at: string;
-          date_of_birth: Date;
+          custom_location: string | null;
+          date_of_birth: string;
           denomination: string;
           email: string | null;
-          first_name: string;
           gender: string;
           id: string;
-          location: unknown | null;
+          location: string;
+          name: string;
           onboarded: boolean;
-          toponym: string;
           verified: boolean;
         };
         Insert: {
-          age?: number;
           coordinates?: Json;
           created_at?: string;
-          date_of_birth?: Date;
+          custom_location?: string | null;
+          date_of_birth?: string;
           denomination?: string;
           email?: string | null;
-          first_name?: string;
           gender?: string;
           id: string;
-          location?: unknown | null;
+          location?: string;
+          name?: string;
           onboarded?: boolean;
-          toponym?: string;
           verified?: boolean;
         };
         Update: {
-          age?: number;
           coordinates?: Json;
           created_at?: string;
-          date_of_birth?: Date;
+          custom_location?: string | null;
+          date_of_birth?: string;
           denomination?: string;
           email?: string | null;
-          first_name?: string;
           gender?: string;
           id?: string;
-          location?: unknown | null;
+          location?: string;
+          name?: string;
           onboarded?: boolean;
-          toponym?: string;
           verified?: boolean;
         };
-        Relationships: [
-          {
-            foreignKeyName: "profiles_id_fkey";
-            columns: ["id"];
-            isOneToOne: true;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
-      prompt_likes: {
-        Row: {
-          comment: string | null;
-          created_at: string;
-          id: string;
-          likee: string;
-          liker: string;
-          prompt: string;
-        };
-        Insert: {
-          comment?: string | null;
-          created_at?: string;
-          id?: string;
-          likee: string;
-          liker: string;
-          prompt: string;
-        };
-        Update: {
-          comment?: string | null;
-          created_at?: string;
-          id?: string;
-          likee?: string;
-          liker?: string;
-          prompt?: string;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "prompt_likes_likee_fkey";
-            columns: ["likee"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "prompt_likes_likee_fkey";
-            columns: ["likee"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "prompt_likes_liker_fkey";
-            columns: ["liker"];
-            isOneToOne: false;
-            referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "prompt_likes_liker_fkey";
-            columns: ["liker"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "prompt_likes_prompt_fkey";
-            columns: ["prompt"];
-            isOneToOne: false;
-            referencedRelation: "prompts";
-            referencedColumns: ["id"];
-          },
-        ];
+        Relationships: [];
       };
       prompts: {
         Row: {
@@ -491,13 +319,6 @@ export type Database = {
             columns: ["profile_id"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "prompts_profile_id_fkey";
-            columns: ["profile_id"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -527,24 +348,10 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "removed_profiles_object_fkey";
-            columns: ["object"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
             foreignKeyName: "removed_profiles_subject_fkey";
             columns: ["subject"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "removed_profiles_subject_fkey";
-            columns: ["subject"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -577,24 +384,10 @@ export type Database = {
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "skipped_profiles_object_fkey";
-            columns: ["object"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
-          {
             foreignKeyName: "skipped_profiles_subject_fkey";
             columns: ["subject"];
             isOneToOne: false;
             referencedRelation: "profiles";
-            referencedColumns: ["id"];
-          },
-          {
-            foreignKeyName: "skipped_profiles_subject_fkey";
-            columns: ["subject"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
             referencedColumns: ["id"];
           },
         ];
@@ -638,13 +431,6 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-          {
-            foreignKeyName: "subscriptions_profile_id_fkey";
-            columns: ["profile_id"];
-            isOneToOne: true;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
         ];
       };
       verification_selfies: {
@@ -671,73 +457,11 @@ export type Database = {
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
-          {
-            foreignKeyName: "verification_selfies_profile_id_fkey";
-            columns: ["profile_id"];
-            isOneToOne: false;
-            referencedRelation: "random_profiles";
-            referencedColumns: ["id"];
-          },
         ];
       };
     };
     Views: {
-      random_profiles: {
-        Row: {
-          age: number | null;
-          coordinates: Json | null;
-          created_at: string | null;
-          date_of_birth: Date | null;
-          denomination: string | null;
-          email: string | null;
-          first_name: string | null;
-          gender: string | null;
-          id: string | null;
-          location: unknown | null;
-          onboarded: boolean | null;
-          toponym: string | null;
-          verified: boolean | null;
-        };
-        Insert: {
-          age?: number | null;
-          coordinates?: Json | null;
-          created_at?: string | null;
-          date_of_birth?: Date | null;
-          denomination?: string | null;
-          email?: string | null;
-          first_name?: string | null;
-          gender?: string | null;
-          id?: string | null;
-          location?: unknown | null;
-          onboarded?: boolean | null;
-          toponym?: string | null;
-          verified?: boolean | null;
-        };
-        Update: {
-          age?: number | null;
-          coordinates?: Json | null;
-          created_at?: string | null;
-          date_of_birth?: Date | null;
-          denomination?: string | null;
-          email?: string | null;
-          first_name?: string | null;
-          gender?: string | null;
-          id?: string | null;
-          location?: unknown | null;
-          onboarded?: boolean | null;
-          toponym?: string | null;
-          verified?: boolean | null;
-        };
-        Relationships: [
-          {
-            foreignKeyName: "profiles_id_fkey";
-            columns: ["id"];
-            isOneToOne: true;
-            referencedRelation: "users";
-            referencedColumns: ["id"];
-          },
-        ];
-      };
+      [_ in never]: never;
     };
     Functions: {
       is_conversation_participant: {
@@ -842,6 +566,7 @@ export type Database = {
           owner_id: string | null;
           path_tokens: string[] | null;
           updated_at: string | null;
+          user_metadata: Json | null;
           version: string | null;
         };
         Insert: {
@@ -855,6 +580,7 @@ export type Database = {
           owner_id?: string | null;
           path_tokens?: string[] | null;
           updated_at?: string | null;
+          user_metadata?: Json | null;
           version?: string | null;
         };
         Update: {
@@ -868,6 +594,7 @@ export type Database = {
           owner_id?: string | null;
           path_tokens?: string[] | null;
           updated_at?: string | null;
+          user_metadata?: Json | null;
           version?: string | null;
         };
         Relationships: [
@@ -876,6 +603,104 @@ export type Database = {
             columns: ["bucket_id"];
             isOneToOne: false;
             referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      s3_multipart_uploads: {
+        Row: {
+          bucket_id: string;
+          created_at: string;
+          id: string;
+          in_progress_size: number;
+          key: string;
+          owner_id: string | null;
+          upload_signature: string;
+          user_metadata: Json | null;
+          version: string;
+        };
+        Insert: {
+          bucket_id: string;
+          created_at?: string;
+          id: string;
+          in_progress_size?: number;
+          key: string;
+          owner_id?: string | null;
+          upload_signature: string;
+          user_metadata?: Json | null;
+          version: string;
+        };
+        Update: {
+          bucket_id?: string;
+          created_at?: string;
+          id?: string;
+          in_progress_size?: number;
+          key?: string;
+          owner_id?: string | null;
+          upload_signature?: string;
+          user_metadata?: Json | null;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_bucket_id_fkey";
+            columns: ["bucket_id"];
+            isOneToOne: false;
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
+        ];
+      };
+      s3_multipart_uploads_parts: {
+        Row: {
+          bucket_id: string;
+          created_at: string;
+          etag: string;
+          id: string;
+          key: string;
+          owner_id: string | null;
+          part_number: number;
+          size: number;
+          upload_id: string;
+          version: string;
+        };
+        Insert: {
+          bucket_id: string;
+          created_at?: string;
+          etag: string;
+          id?: string;
+          key: string;
+          owner_id?: string | null;
+          part_number: number;
+          size?: number;
+          upload_id: string;
+          version: string;
+        };
+        Update: {
+          bucket_id?: string;
+          created_at?: string;
+          etag?: string;
+          id?: string;
+          key?: string;
+          owner_id?: string | null;
+          part_number?: number;
+          size?: number;
+          upload_id?: string;
+          version?: string;
+        };
+        Relationships: [
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_bucket_id_fkey";
+            columns: ["bucket_id"];
+            isOneToOne: false;
+            referencedRelation: "buckets";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "s3_multipart_uploads_parts_upload_id_fkey";
+            columns: ["upload_id"];
+            isOneToOne: false;
+            referencedRelation: "s3_multipart_uploads";
             referencedColumns: ["id"];
           },
         ];
@@ -918,6 +743,41 @@ export type Database = {
           size: number;
           bucket_id: string;
         }[];
+      };
+      list_multipart_uploads_with_delimiter: {
+        Args: {
+          bucket_id: string;
+          prefix_param: string;
+          delimiter_param: string;
+          max_keys?: number;
+          next_key_token?: string;
+          next_upload_token?: string;
+        };
+        Returns: {
+          key: string;
+          id: string;
+          created_at: string;
+        }[];
+      };
+      list_objects_with_delimiter: {
+        Args: {
+          bucket_id: string;
+          prefix_param: string;
+          delimiter_param: string;
+          max_keys?: number;
+          start_after?: string;
+          next_token?: string;
+        };
+        Returns: {
+          name: string;
+          id: string;
+          metadata: Json;
+          updated_at: string;
+        }[];
+      };
+      operation: {
+        Args: Record<PropertyKey, never>;
+        Returns: string;
       };
       search: {
         Args: {
@@ -1029,4 +889,19 @@ export type Enums<
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
   ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+  : never;
+
+export type CompositeTypes<
+  PublicCompositeTypeNameOrOptions extends
+    | keyof PublicSchema["CompositeTypes"]
+    | { schema: keyof Database },
+  CompositeTypeName extends PublicCompositeTypeNameOrOptions extends {
+    schema: keyof Database;
+  }
+    ? keyof Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"]
+    : never = never,
+> = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
+  ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
+  : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
+  ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
   : never;

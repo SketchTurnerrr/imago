@@ -6,21 +6,21 @@ export default async function Page() {
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/login");
   }
 
-  const { data } = await supabase
+  const { data, error } = await supabase
     .from("profiles")
     .select("*, photos(*)")
-    .order("updated_at", { foreignTable: "photos", ascending: false })
-    .eq("id", session?.user.id)
+    .eq("id", user?.id)
     .single();
 
-  // console.log('data :', data);
+  console.log("error :", error);
+  console.log("data :", data);
   if (!data) {
     redirect("/");
   }

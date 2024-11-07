@@ -6,10 +6,10 @@ export default async function SubscriptionPage() {
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session || session) {
+  if (!user || user) {
     redirect("/my-profile");
   }
 

@@ -22,10 +22,8 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { useForm } from "react-hook-form";
-import { redirect, useRouter } from "next/navigation";
 import { uk } from "date-fns/locale/uk";
 import { createClient } from "@/lib/supabase/client";
-import { User } from "@supabase/supabase-js";
 
 const formSchema = z.object({
   dob: z.date({
@@ -33,29 +31,24 @@ const formSchema = z.object({
   }),
 });
 
-export default function Age({
-  user,
-  onboarded,
+export function Age({
+  userId,
+  onComplete,
 }: {
-  user: User | undefined;
-  onboarded: boolean | undefined;
+  userId: string;
+  onComplete: () => void;
 }) {
   const supabase = createClient();
-  const router = useRouter();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
-    const age = new Date()?.getFullYear() - values.dob?.getFullYear();
-
-    if (user) {
+    if (userId) {
       await supabase
         .from("profiles")
         .update({
-          date_of_birth: values.dob,
-          age: age,
+          date_of_birth: values.dob.toLocaleDateString(),
         })
-        .eq("id", user.id);
-
-      router.push("gender");
+        .eq("id", userId);
+      onComplete();
     }
   }
 
@@ -63,13 +56,11 @@ export default function Age({
     resolver: zodResolver(formSchema),
   });
 
-  if (onboarded) {
-    redirect("/discover");
-  }
-
   return (
-    <div className="flex h-[100svh] flex-col justify-between p-4 md:mx-auto md:w-[500px]">
-      <h1 className="mt-20 text-5xl font-bold">Коли ви народились?</h1>
+    <>
+      <h1 className="mt-20 text-center text-4xl font-bold">
+        Коли ви народились?
+      </h1>
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
@@ -116,23 +107,20 @@ export default function Age({
                 </Popover>
                 <FormMessage />
                 <FormDescription className="text-center text-2xl font-bold text-slate-800 dark:text-foreground">
-                  Вам{" "}
-                  {isNaN(new Date().getFullYear() - field.value?.getFullYear())
-                    ? "17"
-                    : new Date().getFullYear() - field.value?.getFullYear()}
+                  {field.value
+                    ? `Вам  ${
+                        new Date().getFullYear() - field.value?.getFullYear()
+                      }`
+                    : null}
                 </FormDescription>
               </FormItem>
             )}
           />
-          <Button
-            type="submit"
-            size="icon"
-            className="self-end rounded-full bg-purple-400"
-          >
-            <ChevronRightIcon className="h-7 w-7" />
+          <Button type="submit" className="self-end">
+            Далі <ChevronRightIcon className="ml-2 h-4 w-4" />
           </Button>
         </form>
       </Form>
-    </div>
+    </>
   );
 }

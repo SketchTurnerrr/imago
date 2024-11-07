@@ -1,34 +1,24 @@
 import { createClient } from "@/lib/supabase/server";
 import { Likes } from "./likes";
-import { IPhotoLike, IPromptLike } from "@/types";
 
 export default async function LikesPage() {
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     return <div>a</div>;
   }
-  const { data: photoLikes, error } = await supabase
-    .from("photo_likes")
-    .select("*, photo(src, id), liker(first_name, id, gender, photos(src)) ")
-    .eq("likee", session.user.id)
-    .returns<IPhotoLike[]>();
+  const { data: likes, error } = await supabase
+    .from("likes")
+    .select(
+      "*, photo:photos(id, url), prompt:prompts(*), sender:profiles!likes_receiver_fkey(id, name,gender, photos(url))",
+    )
+    .eq("receiver", user.id);
 
-  // console.log('error :', error);
-  const { data: promptLikes } = await supabase
-    .from("prompt_likes")
-    .select("*, prompt(*), liker(first_name, id, gender, photos(src))")
-    .eq("likee", session.user.id)
-    .returns<IPromptLike[]>();
+  console.log("error :", error);
 
-  // console.log("promptLikes :", promptLikes);
-  // console.log("photoLikes :", photoLikes);
-
-  return (
-    <Likes photoLikes={photoLikes ?? []} promptLikes={promptLikes ?? []} />
-  );
+  return <Likes likes={likes ?? []} />;
 }

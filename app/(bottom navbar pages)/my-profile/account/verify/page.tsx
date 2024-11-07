@@ -1,5 +1,5 @@
 "use client";
-import { GoBack } from "@/components/go-back";
+import { GoBackBtn } from "@/components/go-back-btn";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/lib/supabase/client";
@@ -15,9 +15,9 @@ export default function VerifyPage() {
   useEffect(() => {
     async function getUser() {
       const {
-        data: { session },
-      } = await supabase.auth.getSession();
-      if (session) setUserId(session.user.id);
+        data: { user },
+      } = await supabase.auth.getUser();
+      if (user) setUserId(user.id);
     }
 
     getUser();
@@ -69,7 +69,7 @@ export default function VerifyPage() {
   return (
     <section className="p-4 md:mx-auto md:w-[500px]">
       <div className="flex items-center gap-3">
-        <GoBack />
+        <GoBackBtn />
         <h1 className="text-3xl font-bold">Верифікація акаунту</h1>
       </div>
 

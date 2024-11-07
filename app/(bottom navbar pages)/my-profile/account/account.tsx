@@ -1,4 +1,4 @@
-import { GoBack } from "@/components/go-back";
+import { GoBackBtn } from "@/components/go-back-btn";
 import { SignOut } from "@/components/signout-btn";
 import { Button } from "@/components/ui/button";
 import { Separator } from "@/components/ui/separator";
@@ -9,7 +9,7 @@ export function Account() {
   return (
     <section className="mx-auto p-4 md:w-[500px]">
       <div className="flex items-center gap-3">
-        <GoBack />
+        <GoBackBtn />
         <h1 className="text-3xl font-bold">Акаунт</h1>
       </div>
       <div className="mb-20 flex h-[100svh] flex-col p-4 pt-20">
@@ -26,8 +26,6 @@ export function Account() {
             <ChevronRightIcon className="h-5 w-5" />
           </div>
         </Link>
-        <Separator className="my-4" />
-        <SignOut />
       </div>
     </section>
   );

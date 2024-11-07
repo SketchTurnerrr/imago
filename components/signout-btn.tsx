@@ -9,14 +9,11 @@ export function SignOut() {
     await supabase.auth.signOut();
   };
   return (
-    <div
-      className="flex cursor-pointer items-center justify-between text-xl font-bold"
-      onClick={signout}
-    >
+    <div className="flex  items-center justify-between text-xl font-bold">
       Вийти
-      <span>
+      <Button onClick={signout} variant="ghost" size="icon">
         <LogOutIcon />
-      </span>
+      </Button>
     </div>
   );
 }

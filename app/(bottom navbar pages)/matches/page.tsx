@@ -7,10 +7,10 @@ export default async function MatchesPage() {
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/login");
   }
 
@@ -21,5 +21,5 @@ export default async function MatchesPage() {
     )
     .returns<IConversation[]>();
 
-  return <Matches conversations={data ?? []} userId={session.user.id} />;
+  return <Matches conversations={data ?? []} userId={user.id} />;
 }

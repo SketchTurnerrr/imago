@@ -15,7 +15,7 @@ import Image from "next/image";
 import { useToast } from "@/components/ui/use-toast";
 import { redirect } from "next/navigation";
 import { useState } from "react";
-import { Session } from "@supabase/supabase-js";
+import { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
@@ -24,12 +24,12 @@ const formSchema = z.object({
   }),
 });
 
-export function SignIn({ session }: { session: Session | null }) {
+export function SignIn({ user }: { user: User | null }) {
   const [disableOtpBtn, setDisableOtpBtn] = useState(false);
   const [secondsLeft, setSecondsLeft] = useState(60);
   const supabase = createClient();
 
-  if (session) {
+  if (user) {
     redirect("/discover");
   }
 

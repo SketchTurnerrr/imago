@@ -3,16 +3,15 @@ import { Conversation } from "./conversation";
 import { redirect } from "next/navigation";
 import { IMessage, IParticipantsName } from "@/types";
 
-export default async function ConversationPage({
-  params,
-}: {
-  params: { id: string };
+export default async function ConversationPage(props: {
+  params: Promise<{ id: string }>;
 }) {
+  const params = await props.params;
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
   const { data: messages, error } = await supabase
     .from("messages")
     .select(
@@ -32,7 +31,7 @@ export default async function ConversationPage({
     .single();
   // console.log('participant2 :', data?.participant2);
 
-  if (!session) {
+  if (!user) {
     redirect("/login");
   }
 
@@ -44,7 +43,7 @@ export default async function ConversationPage({
     <Conversation
       conversationId={params.id}
       messages={messages ?? []}
-      userId={session.user.id}
+      userId={user.id}
       participants={data}
     />
   );

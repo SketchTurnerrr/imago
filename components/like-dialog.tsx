@@ -1,12 +1,12 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import {
-  LDialog,
-  LDialogContent,
-  LDialogHeader,
-  LDialogTitle,
-  LDialogTrigger,
-} from "@/components/ui/custom-like-dialog";
+  Dialog,
+  DialogContent,
+  DialogHeader,
+  DialogTitle,
+  DialogTrigger,
+} from "@/components/ui/dialog";
 import {
   Form,
   FormControl,
@@ -15,23 +15,24 @@ import {
   FormMessage,
 } from "@/components/ui/form";
 import { Input } from "@/components/ui/input";
-import ThumbsUp from "@/public/thumbs-up.svg";
+
 import Image from "next/image";
 import { useState } from "react";
 import { zodResolver } from "@hookform/resolvers/zod";
 import { useForm } from "react-hook-form";
 import * as z from "zod";
-import { createClient } from "@/lib/supabase/client";
+import { ThumbsUp } from "lucide-react";
+import { toast, useToast } from "./ui/use-toast";
 
 interface ILikeDialog {
   itemId: string;
-  liker: string;
-  likee: string;
+  liker?: string;
+  likee?: string;
   type: "prompt" | "photo" | "match";
-  firstName: string | null;
-  src: string | null;
-  question: string | null;
-  answer: string | null;
+  name?: string | undefined;
+  url?: string | null;
+  question?: string | null;
+  answer?: string | null;
 }
 
 const FormSchema = z.object({
@@ -43,74 +44,76 @@ export function LikeDialog({
   liker,
   likee,
   type,
-  firstName,
-  src,
+  name,
+  url,
   question,
   answer,
 }: ILikeDialog) {
-  const supabase = createClient();
   const [open, setOpen] = useState(false);
+  const { toast } = useToast();
   const form = useForm<z.infer<typeof FormSchema>>({
     resolver: zodResolver(FormSchema),
     defaultValues: {
       comment: "",
     },
   });
+
   const handleLike = async (data: z.infer<typeof FormSchema>) => {
     const { comment } = data;
 
-    if (type === "photo" && itemId) {
-      const { error } = await supabase.from("photo_likes").insert({
-        photo: itemId,
-        liker: liker,
-        likee: likee,
-        comment: comment ? comment : null,
-      });
-
-      console.log(" like error:", error);
+    if (type === "photo" && itemId && liker && likee) {
+      try {
+      } catch (error) {
+        toast({
+          title: "Йой",
+          description: "Ви вже вподобали це фото",
+          variant: "warning",
+        });
+      }
     }
 
-    if (type === "prompt") {
-      const { error } = await supabase.from("prompt_likes").insert({
-        prompt: itemId,
-        liker: liker,
-        likee: likee,
-        comment: comment ? comment : null,
-      });
-      console.log(" like error:", error);
+    if (type === "prompt" && itemId && liker && likee) {
+      try {
+      } catch (error) {
+        toast({
+          title: "Йой",
+          description: "Ви вже вподобали цю відповідь",
+          variant: "warning",
+        });
+      }
     }
 
     setOpen(false);
   };
 
   return (
-    <LDialog open={open} onOpenChange={setOpen}>
-      <LDialogTrigger asChild>
+    <Dialog open={open} onOpenChange={setOpen}>
+      <DialogTrigger asChild>
         <Button
           size="icon"
           className="absolute bottom-2 right-2 h-12 w-12 rounded-full bg-white text-primary hover:bg-white"
         >
           <ThumbsUp />
         </Button>
-      </LDialogTrigger>
-      <LDialogContent className="max-w-[350px] border-none bg-transparent shadow-none">
-        <LDialogHeader>
-          <LDialogTitle className="text-3xl">
-            {type === "photo" ? firstName : ""}
-          </LDialogTitle>
-        </LDialogHeader>
+      </DialogTrigger>
+      <DialogContent className="max-w-[350px] border-none bg-transparent shadow-none lg:border-inherit lg:bg-background lg:shadow-md">
+        <DialogHeader>
+          <DialogTitle className="text-3xl">
+            {type === "photo" ? name : ""}
+          </DialogTitle>
+        </DialogHeader>
         <div className="flex flex-col gap-2">
-          {src && (
+          {url && (
             <Image
-              src={src}
-              alt={firstName!}
+              src={url}
+              alt={name!}
               width={300}
               height={300}
               className="aspect-square w-full rounded-lg object-cover"
             />
           )}
           {type === "prompt" && (
-            <div className="relative space-y-4 rounded-lg bg-primary px-4 py-10 text-primary-foreground md:w-[500px]">
+            <div className="relative space-y-4 rounded-lg bg-primary px-4 py-10 text-primary-foreground ">
               <p className="text-md font-semibold">{question}</p>
               <h2 className="text-3xl font-bold">{answer}</h2>
             </div>
@@ -128,7 +131,7 @@ export function LikeDialog({
                     <FormControl>
                       <Input
                         {...field}
-                        className="bg-white"
+                        className=""
                         maxLength={140}
                         autoComplete="off"
                         placeholder="Залишити коментар"
@@ -139,17 +142,13 @@ export function LikeDialog({
                   </FormItem>
                 )}
               />
-              <Button
-                className="text-base font-bold"
-                type="submit"
-                // onClick={handleLike}
-              >
+              <Button className="text-base font-bold" type="submit">
                 Вподобати
               </Button>
             </form>
           </Form>
         </div>
-      </LDialogContent>
-    </LDialog>
+      </DialogContent>
+    </Dialog>
   );
 }

@@ -1,8 +1,8 @@
 import { redirect } from "next/navigation";
 import { Suspense } from "react";
 import Loading from "./loading";
-import { Profile } from "@/components/profile";
 import { createClient } from "@/lib/supabase/server";
+import { Profile } from "@/components/random-profile-feed";
 
 type authedProfileType = {
   gender: string;
@@ -26,10 +26,10 @@ export default async function DiscoverPage({
   const supabase = createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
 
-  if (!session) {
+  if (!user) {
     redirect("/login");
   }
 
@@ -37,8 +37,8 @@ export default async function DiscoverPage({
 
   const { data: currentUser } = await supabase
     .from("profiles")
-    .select("gender, onboarded")
-    .eq("id", session.user.id)
+    .select("gender, onboarded, id")
+    .eq("id", user.id)
     .single();
 
   // const { data: filters } = await supabase
@@ -52,14 +52,14 @@ export default async function DiscoverPage({
   const { data: filters, error: filterError } = await supabase
     .from("filters")
     .select("age, denomination")
-    .eq("profile_id", session.user.id)
+    .eq("profile_id", user.id)
     .single();
 
   console.log("filters :", filters);
   const { data: sub } = await supabase
     .from("subscriptions")
     .select("profile_id")
-    .eq("profile_id", session.user.id)
+    .eq("profile_id", user.id)
     .single();
   // console.log("filter :", filter);
   // console.log("filterError :", filterError);
@@ -109,10 +109,9 @@ export default async function DiscoverPage({
 
   return (
     <Profile
-      likeData={null}
-      userId={session.user.id}
-      gender={gender}
+      currentUserId={user.id}
       type="discover"
+      gender={gender}
       subId={sub && sub.profile_id}
     />
   );

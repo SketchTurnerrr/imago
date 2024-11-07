@@ -2,113 +2,80 @@ import { createClient } from "@/lib/supabase/server";
 import Image from "next/image";
 import { Prompt } from "@/components/prompt";
 import { redirect } from "next/navigation";
-import { Profile } from "@/components/profile";
-import { FullProf, FullProfile, IPhotoLike, IPromptLike } from "@/types";
+import { FullProf, FullProfile } from "@/types";
+import { Profile } from "@/components/random-profile-feed";
 
-export default async function Page({
-  params,
-  searchParams,
-}: {
-  params: { id: string };
-  searchParams: {
-    likeId: string;
-    t: "ph" | "p";
-  };
-}) {
-  const supabase = createClient();
+export default async function Page(props: { params: Promise<{ id: string }> }) {
+  const params = await props.params;
+  const supabase = await createClient();
 
   const {
-    data: { session },
-  } = await supabase.auth.getSession();
+    data: { user },
+  } = await supabase.auth.getUser();
+  if (!user) {
+    return; //TODO;
+  }
 
-  const { data: profile } = await supabase
-    .from("profiles")
-    .select("*, prompts(*), photos(src,id)")
+  const { data: like } = await supabase
+    .from("likes")
+    .select(
+      "*, photo:photos(id, url), prompt:prompts(*), sender:profiles!likes_sender_fkey(id,name,gender, photos(url))",
+    )
     .eq("id", params.id)
-    .returns<FullProf[]>();
-
-  // ph photoId
-  // p promptId
-
-  const type = searchParams.t;
-
-  const likesQuery =
-    type === "ph"
-      ? supabase
-          .from("photo_likes")
-          .select("id,photo(src), comment, liker(gender)")
-          .eq("id", searchParams.likeId)
-          .returns<IPhotoLike[]>()
-          .single()
-      : supabase
-          .from("prompt_likes")
-          .select("id,prompt(*), comment, liker(gender)")
-          .eq("id", searchParams.likeId)
-          .returns<IPromptLike[]>()
-          .single();
-
-  const { data: like } = await likesQuery;
+    .single();
 
   if (!like) {
     redirect("/likes");
   }
 
-  const renderLike =
-    "photo" in like ? (
-      <div className="mx-auto p-4 md:w-[500px] md:px-0">
-        <div className="relative">
-          <Image
-            src={like.photo.src}
-            width={500}
-            height={100}
-            alt={"k"}
-            className="aspect-[32/9] rounded-lg object-cover"
-          />
+  const renderLike = !like.prompt ? (
+    <div className="mx-auto p-4 md:w-[500px] md:px-0">
+      <div className="h relative">
+        <Image
+          src={like.photo?.url!}
+          width={500}
+          height={500}
+          alt={"k"}
+          className="aspect-[16/9] rounded-lg object-cover"
+        />
 
-          <div className="absolute -bottom-2 rounded-lg bg-indigo-200 p-2">
-            {like.comment
-              ? like.comment
-              : like.liker.gender === "male"
-              ? "Вподобав" + " ваше фото"
-              : "Вподобала" + " ваше фото"}
-
-            <span className="_clip-path absolute -bottom-[4px] -left-[3px] h-[0.6rem] w-[0.6rem] rotate-[207deg] bg-inherit"></span>
-          </div>
-        </div>
-      </div>
-    ) : (
-      <div className="relative mx-auto my-4 p-4 md:w-[500px] md:px-0">
-        <div className="relative space-y-4 rounded-lg bg-secondary px-2 py-6">
-          <h2 className="truncate text-xl font-semibold">
-            {like.prompt.answer}
-          </h2>
-        </div>
-        <div className="absolute -bottom-2 rounded-lg bg-indigo-200 p-2">
+        <div className="absolute -bottom-2 rounded-lg bg-indigo-200 p-2 text-background">
           {like.comment
             ? like.comment
-            : like.liker.gender === "male"
-            ? "Вподобав" + " вашу відповідь"
-            : "Вподобала" + " вашу відповідь"}
-
-          <span className="_clip-path absolute -bottom-[4px] -left-[3px] h-[0.6rem] w-[0.6rem] rotate-[207deg] bg-inherit"></span>
+            : like?.sender?.gender === "male"
+            ? "Вподобав" + " ваше фото"
+            : "Вподобала" + " ваше фото"}
         </div>
       </div>
-    );
-
-  if (!profile || !session) {
-    return; //TODO;
-  }
+    </div>
+  ) : (
+    <div className="relative mx-auto my-4 p-4 md:w-[500px] md:px-0">
+      <div className="relative space-y-4 rounded-lg bg-secondary p-4">
+        <p>{like.prompt ? like.prompt.question : null}</p>
+        <p className="truncate text-xl font-semibold">
+          {like.prompt ? like.prompt?.answer : null}
+        </p>
+      </div>
+      <div className="absolute -bottom-4 rounded-lg bg-indigo-200 p-2 text-background">
+        {like.comment
+          ? like.comment
+          : like?.sender?.gender === "male"
+          ? "Вподобав" + " вашу відповідь"
+          : "Вподобала" + " вашу відповідь"}
+      </div>
+    </div>
+  );
 
   return (
     <>
       {renderLike}
 
       <Profile
-        type="single"
-        userId={session.user.id}
-        serverProfiles={profile}
-        profileId={params.id}
-        likeData={{ like, type }}
+        type="like"
+        gender={like.sender?.gender!}
+        like={like}
+        currentUserId={user.id}
+        senderId={like.sender?.id!}
       />
     </>
   );
