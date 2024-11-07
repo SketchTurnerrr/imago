@@ -31,13 +31,7 @@ const formSchema = z.object({
   }),
 });
 
-export function Age({
-  userId,
-  onComplete,
-}: {
-  userId: string;
-  onComplete: () => void;
-}) {
+export function Age({ userId }: { userId: string }) {
   const supabase = createClient();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -48,7 +42,6 @@ export function Age({
           date_of_birth: values.dob.toLocaleDateString(),
         })
         .eq("id", userId);
-      onComplete();
     }
   }
 

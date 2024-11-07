@@ -1,6 +1,5 @@
 import { useRef, useState } from "react";
 import { Button } from "./ui/button";
-import MatchIcon from "@/public/hand-waving.svg";
 import {
   Dialog,
   DialogContent,
@@ -11,6 +10,7 @@ import {
 } from "./ui/dialog";
 import Image from "next/image";
 import { Textarea } from "./ui/textarea";
+import { HandWavingIcon } from "./svg/match-icon";
 
 export function MatchBtn({ like }: { like: any }) {
   const [isOpen, setIsOpen] = useState(false);
@@ -45,7 +45,7 @@ export function MatchBtn({ like }: { like: any }) {
         size="icon"
         onClick={() => setIsOpen(true)}
       >
-        <MatchIcon />
+        <HandWavingIcon />
       </Button>
 
       <Dialog open={isOpen} onOpenChange={setIsOpen}>

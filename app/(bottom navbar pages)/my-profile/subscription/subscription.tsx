@@ -16,9 +16,9 @@ import { toast } from "@/components/ui/use-toast";
 import { useRouter } from "next/navigation";
 import { differenceInMinutes } from "date-fns";
 import { CheckIcon } from "@radix-ui/react-icons";
-import { GoBack } from "@/components/go-back";
 import { createClient } from "@/lib/supabase/client";
 import { SubscriptionType } from "@/types";
+import { GoBackBtn } from "@/components/go-back-btn";
 
 export function Subscription({
   userId,
@@ -141,7 +141,7 @@ export function Subscription({
   return (
     <>
       <div className="flex items-center gap-3 p-4">
-        <GoBack />
+        <GoBackBtn />
         <h1 className="text-4xl font-bold">Підписка</h1>
       </div>
 

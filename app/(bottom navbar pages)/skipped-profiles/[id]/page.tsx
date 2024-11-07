@@ -1,11 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 
-export default async function SkippedProfilesPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const supabase = createClient();
+export default async function SkippedProfilesPage() {
+  const supabase = await createClient();
 
   const {
     data: { user },

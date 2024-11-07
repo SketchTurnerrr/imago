@@ -1,5 +1,4 @@
 import { createClient } from "@/lib/supabase/server";
-import { Conversation } from "./conversation";
 import { redirect } from "next/navigation";
 import { IMessage, IParticipantsName } from "@/types";
 
@@ -7,7 +6,7 @@ export default async function ConversationPage(props: {
   params: Promise<{ id: string }>;
 }) {
   const params = await props.params;
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },
@@ -39,12 +38,5 @@ export default async function ConversationPage(props: {
     redirect("/matches");
   }
 
-  return (
-    <Conversation
-      conversationId={params.id}
-      messages={messages ?? []}
-      userId={user.id}
-      participants={data}
-    />
-  );
+  return <div></div>;
 }

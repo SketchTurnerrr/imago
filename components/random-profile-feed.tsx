@@ -1,7 +1,6 @@
 "use client";
 import { Button } from "@/components/ui/button";
 import { Card, CardContent, CardHeader, CardTitle } from "@/components/ui/card";
-import Cross from "@/public/cross.svg";
 import { differenceInYears, parse } from "date-fns";
 import { LikeDialog } from "./like-dialog";
 import { Prompt } from "./prompt";
@@ -12,6 +11,7 @@ import { useGetProfiles } from "@/hooks/useProfiles";
 import { useEffect } from "react";
 import Image from "next/image";
 import { ArrowRight, CakeIcon, MapPin } from "lucide-react";
+import { CrossIcon } from "./svg/cross-icon";
 
 interface ProfileProps {
   type: "like" | "chat" | "discover" | "single";
@@ -207,7 +207,7 @@ export function Profile({
             </span>
 
             <span className="flex items-center gap-2">
-              <Cross />
+              <CrossIcon />
               {profile.denomination}
             </span>
             <span className="flex items-center gap-2">

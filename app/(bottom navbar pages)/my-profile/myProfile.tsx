@@ -1,7 +1,6 @@
 "use client";
 import { Separator } from "@/components/ui/separator";
 import { GearIcon, Pencil2Icon, SymbolIcon } from "@radix-ui/react-icons";
-import BadgeIcon from "@/public/badge-check.svg";
 import Image from "next/image";
 import Link from "next/link";
 
@@ -15,6 +14,7 @@ import { ProfileWithPhotos } from "@/types";
 import { ThemeChanger } from "@/components/theme-changer";
 import { Button } from "@/components/ui/button";
 import { SignOut } from "@/components/signout-btn";
+import { BadgeIcon } from "@/components/svg/badge-icon";
 
 export function ProfilePage({ profile }: { profile: ProfileWithPhotos }) {
   return (

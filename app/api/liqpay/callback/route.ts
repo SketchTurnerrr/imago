@@ -40,7 +40,7 @@ export async function POST(req: NextRequest): Promise<any> {
         const cookieStore = await cookies();
         console.log("cookiesList :", cookieStore.getAll());
 
-        const supabase = createClient();
+        const supabase = await createClient();
 
         const { error } = await supabase.from("subscriptions").insert({
           profile_id: decodedData.order_id,

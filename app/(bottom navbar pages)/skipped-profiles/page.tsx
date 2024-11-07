@@ -12,7 +12,7 @@ import { GoBackBtn } from "@/components/go-back-btn";
 
 export default async function SkippedProfilesPage() {
   redirect("/discover");
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

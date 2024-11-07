@@ -2,7 +2,7 @@ import { createClient } from "@/lib/supabase/server";
 import { Likes } from "./likes";
 
 export default async function LikesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

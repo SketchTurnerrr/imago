@@ -29,6 +29,7 @@ export function SignIn({ user }: { user: User | null }) {
   const [secondsLeft, setSecondsLeft] = useState(60);
   const supabase = createClient();
 
+  console.log("user :", user);
   if (user) {
     redirect("/discover");
   }

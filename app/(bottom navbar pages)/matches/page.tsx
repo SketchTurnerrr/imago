@@ -4,7 +4,7 @@ import { Matches } from "./matches";
 import { IConversation } from "@/types";
 
 export default async function MatchesPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

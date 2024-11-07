@@ -3,7 +3,7 @@ import { Subscription } from "./subscription";
 import { redirect } from "next/navigation";
 
 export default async function SubscriptionPage() {
-  const supabase = createClient();
+  const supabase = await createClient();
 
   const {
     data: { user },

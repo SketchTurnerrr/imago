@@ -267,7 +267,7 @@ export function OnboardingFlow({ userId }: { userId: string }) {
   }
 
   function DateOfBirthStep() {
-    return <Age userId={userId} onComplete={nextStep} />;
+    return <Age userId={userId} />;
   }
 
   function GenderStep() {

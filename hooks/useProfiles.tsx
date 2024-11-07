@@ -51,7 +51,7 @@ export function useGetProfiles({
           query = query.gte("age", filters.age[0]).lte("age", filters.age[1]);
         }
 
-        const { data } = await query.returns<FullProf>().limit(1).single();
+        const { data } = await query.limit(1).single();
 
         return data;
       }

@@ -1,29 +1,9 @@
 import { redirect } from "next/navigation";
-import { Suspense } from "react";
-import Loading from "./loading";
 import { createClient } from "@/lib/supabase/server";
 import { Profile } from "@/components/random-profile-feed";
 
-type authedProfileType = {
-  gender: string;
-  skipped_profiles: Array<string>;
-  onboarded: boolean;
-};
-
-type searchParamsProps = {
-  params?: {
-    num?: string;
-  };
-  searchParams?: {
-    denomination?: string[];
-  };
-};
-
-export default async function DiscoverPage({
-  searchParams,
-}: searchParamsProps) {
-  // console.log("searchParams :", searchParams);
-  const supabase = createClient();
+export default async function DiscoverPage() {
+  const supabase = await createClient();
 
   const {
     data: { user },

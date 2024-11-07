@@ -30,14 +30,14 @@ export function SkippedProfiles({
           >
             <Image
               className="aspect-square h-14 w-14 rounded-full object-cover"
-              src={profile.object.photos[0]?.src || "/placeholder.png"}
+              src={profile.object.photos[0]?.url || "/placeholder.png"}
               alt="a"
               width={50}
               height={50}
             />
             <div className="self-center">
               <p className="font-bold dark:font-normal">
-                {profile.object.first_name}
+                {profile.object.name}
               </p>
               <p className="text-muted-foreground">{when}</p>
             </div>

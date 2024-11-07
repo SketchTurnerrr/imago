@@ -1,9 +1,9 @@
 "use client";
 import { GoBackBtn } from "@/components/go-back-btn";
+import { BadgeIcon } from "@/components/svg/badge-icon";
 import { Button } from "@/components/ui/button";
 import { toast } from "@/components/ui/use-toast";
 import { createClient } from "@/lib/supabase/client";
-import BadgeIcon from "@/public/badge-check.svg";
 import { CheckCircledIcon, ReloadIcon } from "@radix-ui/react-icons";
 import { ChangeEvent, useEffect, useRef, useState } from "react";
 

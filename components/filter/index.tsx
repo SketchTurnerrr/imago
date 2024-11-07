@@ -1,4 +1,3 @@
-import FilterIcon from "@/public/filter.svg";
 import { Button } from "@/components/ui/button";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
@@ -22,6 +21,7 @@ import { usePathname, useRouter, useSearchParams } from "next/navigation";
 import { MultiSelect } from "../multi-select";
 import { debounce } from "@/lib/utils";
 import { createClient } from "@/lib/supabase/client";
+import { ListFilter } from "lucide-react";
 
 export function Filter({
   userId,
@@ -63,7 +63,7 @@ export function Filter({
     <Sheet>
       <SheetTrigger asChild>
         <Button variant="ghost" className="px-1">
-          <FilterIcon />
+          <ListFilter />
         </Button>
       </SheetTrigger>
       <SheetContent>

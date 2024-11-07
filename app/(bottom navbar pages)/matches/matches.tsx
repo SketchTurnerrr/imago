@@ -106,7 +106,7 @@ export function Matches({ userId, conversations }: IMatches) {
             {conversation?.participant2?.id === userId ? (
               <Image
                 className="aspect-square rounded-full object-cover"
-                src={conversation?.participant1.photos[0]?.src}
+                src={conversation?.participant1.photos[0]?.url}
                 width={75}
                 height={75}
                 alt="me"
@@ -114,7 +114,7 @@ export function Matches({ userId, conversations }: IMatches) {
             ) : (
               <Image
                 className="aspect-square rounded-full object-cover"
-                src={conversation?.participant2.photos[0]?.src}
+                src={conversation?.participant2.photos[0]?.url}
                 width={75}
                 height={75}
                 alt="me"
@@ -133,10 +133,9 @@ export function Matches({ userId, conversations }: IMatches) {
               </p>
             </div>
           </Link>
-          {conversation.has_unread_messages &&
-            userId !== conversation.last_message.sender_id && (
-              <div className="unread-count absolute right-10  before:content-[attr(data-unread)]"></div>
-            )}
+          {conversation && userId !== conversation.last_message.sender_id && (
+            <div className="unread-count absolute right-10  before:content-[attr(data-unread)]"></div>
+          )}
         </div>
       ))}
     </>

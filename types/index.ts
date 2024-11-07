@@ -18,7 +18,7 @@ export interface FullProfile extends Profile {
   photos: Photo[];
 }
 
-const supabase = createClient();
+const supabase = await createClient();
 
 const fullProfileQuery = supabase
   .from("profiles")
