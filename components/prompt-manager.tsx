@@ -24,7 +24,7 @@ export function PromptManager({ onComplete, userId }: PromptManagerProps) {
       <h1 className="mb-4 mt-20 text-4xl font-bold">Додайте три фрази</h1>
       {prompts.map((prompt) => (
         <Prompt
-          likee={prompt.profile_id}
+          receiver={prompt.profile_id}
           key={prompt.id}
           id={prompt.id}
           display={false}

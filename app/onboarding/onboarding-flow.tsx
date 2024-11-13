@@ -31,7 +31,7 @@ import { locations } from "@/lib/constants";
 
 import Image from "next/image";
 import { useRouter } from "next/navigation";
-import { Age } from "./age/age";
+import { Age } from "./age";
 import { PhotoManager } from "@/components/photo-manager";
 import { PromptManager } from "@/components/prompt-manager";
 import { createClient } from "@/lib/supabase/client";
