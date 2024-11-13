@@ -19,9 +19,7 @@ import { User } from "@supabase/supabase-js";
 import { createClient } from "@/lib/supabase/client";
 
 const formSchema = z.object({
-  email: z.string().email({ message: "Це не схоже на адресу" }).min(2, {
-    message: "Username must be at least 2 characters.",
-  }),
+  email: z.string().email({ message: "Це не схоже на адресу" }),
 });
 
 export function SignIn({ user }: { user: User | null }) {
@@ -47,7 +45,7 @@ export function SignIn({ user }: { user: User | null }) {
     await supabase.auth.signInWithOAuth({
       provider: "google",
       options: {
-        redirectTo: `${location.origin}/auth/callback`,
+        redirectTo: "https://localhost:3000/discover",
       },
     });
   }
@@ -55,17 +53,13 @@ export function SignIn({ user }: { user: User | null }) {
   async function onSubmit(values: z.infer<typeof formSchema>) {
     try {
       setDisableOtpBtn(true);
-      await supabase.auth.signInWithOtp({
+      const { error } = await supabase.auth.signInWithOtp({
         email: values.email,
         options: {
-          emailRedirectTo: `${location.origin}/auth/callback`,
-          data: {
-            email: values.email,
-            name: null,
-            avatar_url: null,
-          },
+          emailRedirectTo: "https://localhost:3000/discover",
         },
       });
+      console.log("error :", error);
 
       const timeout = setInterval(() => {
         return setSecondsLeft((prev) => prev - 1);

@@ -11,9 +11,11 @@ import { AlertDialogDots } from "./alert-dialog";
 
 interface ITDM {
   conversationId: string;
+  matchId: string;
 }
 
-export function ThreeDotsMenu({ conversationId }: ITDM) {
+export function ThreeDotsMenu({ conversationId, matchId }: ITDM) {
+  console.log("matchId :", matchId);
   return (
     <DropdownMenu>
       <DropdownMenuTrigger>
@@ -22,6 +24,7 @@ export function ThreeDotsMenu({ conversationId }: ITDM) {
       <DropdownMenuContent>
         <AlertDialogDots
           conversationId={conversationId}
+          matchId={matchId}
           triggerName="Залишити розмову"
           alertDescription="Ця дія незворотна"
           alertTitle="Ви впевнені?"

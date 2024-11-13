@@ -173,7 +173,7 @@ export function OnboardingFlow({ userId }: { userId: string }) {
       case 2:
         return !!form.getValues("denomination");
       case 3:
-        return !!form.getValues("dateOfBirth");
+        return true;
       case 4:
         return !!form.getValues("location");
       case 5:
@@ -267,7 +267,7 @@ export function OnboardingFlow({ userId }: { userId: string }) {
   }
 
   function DateOfBirthStep() {
-    return <Age userId={userId} />;
+    return <Age userId={userId} onComplete={nextStep} />;
   }
 
   function GenderStep() {

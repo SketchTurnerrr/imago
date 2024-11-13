@@ -49,24 +49,76 @@ export interface ProfileWithPhotos extends Profile {
   photos: Photo[];
 }
 
-// export interface IPhotoLike extends Omit<PhotoLike, "liker" | "photo"> {
-//   photo: { src: string; id: string };
-//   liker: {
-//     first_name: string;
-//     gender: string;
-//     id: string;
-//     photos: Photo[];
-//   };
-// }
-// export interface IPromptLike extends Omit<PromptLike, "prompt" | "liker"> {
-//   prompt: Prompt;
-//   liker: {
-//     first_name: string;
-//     gender: string;
-//     id: string;
-//     photos: Photo[];
-//   };
-// }
+const conversationQuery = supabase
+  .from("conversations")
+  .select(
+    "*, party_1:profiles(id, photos(url), name), party_2:profiles(id, photos(url), name), last_message:messages!conversations_last_message_fkey(content, created_at)",
+  );
+
+export type ConversationType = QueryData<typeof conversationQuery>;
+
+const matchesQuery = supabase
+  .from("matches")
+  .select(
+    "id, initiator:profiles!matches_initiator_fkey(id, name, photos(url)), receiver:profiles!matches_receiver_fkey(id, name, photos(url)), comment, created_at",
+  );
+
+export type MatchesType = QueryData<typeof matchesQuery>;
+
+const partiesQuery = supabase
+  .from("conversations")
+  .select(
+    "*, party_1:profiles!conversations_party_1_fkey(id, name), party_2:profiles!conversations_party_2_fkey(id, name)",
+  )
+  .single();
+
+export type PartiesType = QueryData<typeof partiesQuery>;
+
+const messageQuery = supabase.from("messages").select(
+  `
+      id, 
+      content, 
+      created_at, 
+      sender_id:profiles!messages_sender_id_fkey(
+        id, 
+        name, 
+        photos(url)
+      ), 
+      conversation_id:conversations!messages_conversation_id_fkey(
+        id,
+        party_1:profiles!conversations_party_1_fkey(id, name),
+        party_2:profiles!conversations_party_2_fkey(id, name)
+      )
+    `,
+);
+
+export type MessagesType = IMessage[];
+interface IMessage {
+  id: string;
+  content: string;
+  created_at: string;
+  sender_id: {
+    id: string;
+    name: string;
+    photos: { url: string }[];
+  };
+  conversation_id: {
+    id: string;
+    match_id: string;
+    party_1: {
+      id: string;
+      name: string;
+    };
+    party_2: {
+      id: string;
+      name: string;
+    };
+  };
+}
+
+//  "id, content, created_at, sender_id:profiles!messages_sender_id_fkey(id, name, photos(url)), conversation_id:conversations!messages_conversation_id_fkey(id)";
+
+// export type MessagesType = QueryData<typeof messageQuery>;
 
 export interface IConversation
   extends Omit<Conversation, "last_message" | "participant1" | "participant2"> {
@@ -83,27 +135,27 @@ export interface IConversation
   };
 }
 
-export interface IMessage
-  extends Omit<Message, "sender_id" | "conversation_id"> {
-  sender_id: {
-    id: string;
-    first_name: string;
-    photos: {
-      src: string;
-    }[];
-  };
-  conversation_id: {
-    id: string;
-    participant1: {
-      id: string;
-      first_name: string;
-    };
-    participant2: {
-      id: string;
-      first_name: string;
-    };
-  };
-}
+// export interface IMessage
+//   extends Omit<Message, "sender_id" | "conversation_id"> {
+//   sender_id: {
+//     id: string;
+//     first_name: string;
+//     photos: {
+//       src: string;
+//     }[];
+//   };
+//   conversation_id: {
+//     id: string;
+//     participant1: {
+//       id: string;
+//       first_name: string;
+//     };
+//     participant2: {
+//       id: string;
+//       first_name: string;
+//     };
+//   };
+// }
 export interface IParticipantsName
   extends Omit<Conversation, "participant1" | "participant2"> {
   participant1: {

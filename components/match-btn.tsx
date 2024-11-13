@@ -11,10 +11,12 @@ import {
 import Image from "next/image";
 import { Textarea } from "./ui/textarea";
 import { HandWavingIcon } from "./svg/match-icon";
+import { useCreateMatch } from "@/hooks/useMatch";
 
-export function MatchBtn({ like }: { like: any }) {
+export function MatchBtn({ like, userId }: { like: any; userId: string }) {
   const [isOpen, setIsOpen] = useState(false);
   const commentRef = useRef<HTMLTextAreaElement | null>(null);
+  const createMatch = useCreateMatch();
 
   if (!like) return null;
 
@@ -28,11 +30,16 @@ export function MatchBtn({ like }: { like: any }) {
   console.log("likeId :", like);
 
   const handleMatch = async () => {
-    const comment = commentRef.current?.value || ""; // Get the value from the ref
+    const comment = commentRef.current?.value || "";
     try {
       setIsOpen(false);
-      // Here you could navigate to the new conversation if you want
-      // router.push(`/conversations/${conversationId}`);
+
+      console.log(" ge:");
+      createMatch.mutate({
+        receiverId: receiverId,
+        initiatorId: userId,
+        comment: comment,
+      });
     } catch (error) {
       console.log("error :", error);
     }

@@ -17,7 +17,7 @@ interface ProfileProps {
   type: "like" | "chat" | "discover" | "single";
   like?: any;
   currentUserId: string;
-  gender: string;
+  gender?: string;
   subId?: string | null;
   senderId?: string;
 }
@@ -53,8 +53,8 @@ function PhotoComponent({
         <LikeDialog
           itemId={photo.id}
           type="photo"
-          liker={currentUserId}
-          likee={profileId}
+          sender={currentUserId}
+          receiver={profileId}
           url={photo.url}
           name={name}
         />
@@ -85,8 +85,8 @@ function PromptComponent({
       question={prompt.question}
       answer={prompt.answer}
       display={true}
-      liker={currentUserId}
-      likee={profileId}
+      sender={currentUserId}
+      receiver={profileId}
       id={prompt.id}
     />
   );
@@ -123,7 +123,7 @@ function ButtonSection({
         // Like page: show remove and match buttons
         <>
           <RemoveLikeBtn currentUserId={currentUserId} itemId={like.itemId} />
-          <MatchBtn like={like} />
+          <MatchBtn like={like} userId={currentUserId} />
         </>
       ) : null}
     </div>
@@ -162,7 +162,7 @@ export function Profile({
   });
 
   if (!profile) {
-    return <div>Something went wrong </div>;
+    return;
   }
 
   const sortedPhotos = profile.photos.sort((a, b) => a.order - b.order);
@@ -180,7 +180,9 @@ export function Profile({
     <>
       <Card className="bg-[hsl(0, 0%, 12%)] mx-auto mb-[120px] w-full max-w-md rounded-none border-none shadow-none md:max-w-lg">
         <CardHeader className="px-4 pb-0">
-          <CardTitle className="text-4xl">{profile.name}</CardTitle>
+          {type !== "chat" && (
+            <CardTitle className="text-4xl">{profile.name}</CardTitle>
+          )}
         </CardHeader>
         <CardContent className="space-y-4 p-4">
           {sortedPhotos[0] && (

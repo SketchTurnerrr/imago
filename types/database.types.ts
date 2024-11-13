@@ -38,22 +38,57 @@ export type Database = {
         Row: {
           created_at: string;
           id: string;
-          lastMessageTime: number;
-          participantIds: string[];
+          last_message: string | null;
+          match_id: string;
+          party_1: string;
+          party_2: string;
         };
         Insert: {
           created_at?: string;
           id?: string;
-          lastMessageTime: number;
-          participantIds: string[];
+          last_message?: string | null;
+          match_id: string;
+          party_1: string;
+          party_2: string;
         };
         Update: {
           created_at?: string;
           id?: string;
-          lastMessageTime?: number;
-          participantIds?: string[];
+          last_message?: string | null;
+          match_id?: string;
+          party_1?: string;
+          party_2?: string;
         };
-        Relationships: [];
+        Relationships: [
+          {
+            foreignKeyName: "conversations_last_message_fkey";
+            columns: ["last_message"];
+            isOneToOne: false;
+            referencedRelation: "messages";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "conversations_match_id_fkey";
+            columns: ["match_id"];
+            isOneToOne: false;
+            referencedRelation: "matches";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "conversations_party_1_fkey";
+            columns: ["party_1"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+          {
+            foreignKeyName: "conversations_party_2_fkey";
+            columns: ["party_2"];
+            isOneToOne: false;
+            referencedRelation: "profiles";
+            referencedColumns: ["id"];
+          },
+        ];
       };
       filters: {
         Row: {
@@ -148,37 +183,40 @@ export type Database = {
       };
       matches: {
         Row: {
+          comment: string | null;
           created_at: string;
           id: string;
-          profile_id_1: string;
-          profile_id_2: string;
-          status: string;
+          initiator: string;
+          receiver: string;
+          status: string | null;
         };
         Insert: {
+          comment?: string | null;
           created_at?: string;
           id?: string;
-          profile_id_1: string;
-          profile_id_2: string;
-          status: string;
+          initiator: string;
+          receiver: string;
+          status?: string | null;
         };
         Update: {
+          comment?: string | null;
           created_at?: string;
           id?: string;
-          profile_id_1?: string;
-          profile_id_2?: string;
-          status?: string;
+          initiator?: string;
+          receiver?: string;
+          status?: string | null;
         };
         Relationships: [
           {
-            foreignKeyName: "matches_profile_id_1_fkey";
-            columns: ["profile_id_1"];
+            foreignKeyName: "matches_initiator_fkey";
+            columns: ["initiator"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
           },
           {
-            foreignKeyName: "matches_profile_id_2_fkey";
-            columns: ["profile_id_2"];
+            foreignKeyName: "matches_receiver_fkey";
+            columns: ["receiver"];
             isOneToOne: false;
             referencedRelation: "profiles";
             referencedColumns: ["id"];
@@ -827,14 +865,14 @@ export type Tables<
     ? R
     : never
   : PublicTableNameOrOptions extends keyof (PublicSchema["Tables"] &
-      PublicSchema["Views"])
-  ? (PublicSchema["Tables"] &
-      PublicSchema["Views"])[PublicTableNameOrOptions] extends {
-      Row: infer R;
-    }
-    ? R
-    : never
-  : never;
+        PublicSchema["Views"])
+    ? (PublicSchema["Tables"] &
+        PublicSchema["Views"])[PublicTableNameOrOptions] extends {
+        Row: infer R;
+      }
+      ? R
+      : never
+    : never;
 
 export type TablesInsert<
   PublicTableNameOrOptions extends
@@ -850,12 +888,12 @@ export type TablesInsert<
     ? I
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-      Insert: infer I;
-    }
-    ? I
-    : never
-  : never;
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Insert: infer I;
+      }
+      ? I
+      : never
+    : never;
 
 export type TablesUpdate<
   PublicTableNameOrOptions extends
@@ -871,12 +909,12 @@ export type TablesUpdate<
     ? U
     : never
   : PublicTableNameOrOptions extends keyof PublicSchema["Tables"]
-  ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
-      Update: infer U;
-    }
-    ? U
-    : never
-  : never;
+    ? PublicSchema["Tables"][PublicTableNameOrOptions] extends {
+        Update: infer U;
+      }
+      ? U
+      : never
+    : never;
 
 export type Enums<
   PublicEnumNameOrOptions extends
@@ -888,8 +926,8 @@ export type Enums<
 > = PublicEnumNameOrOptions extends { schema: keyof Database }
   ? Database[PublicEnumNameOrOptions["schema"]]["Enums"][EnumName]
   : PublicEnumNameOrOptions extends keyof PublicSchema["Enums"]
-  ? PublicSchema["Enums"][PublicEnumNameOrOptions]
-  : never;
+    ? PublicSchema["Enums"][PublicEnumNameOrOptions]
+    : never;
 
 export type CompositeTypes<
   PublicCompositeTypeNameOrOptions extends
@@ -903,5 +941,5 @@ export type CompositeTypes<
 > = PublicCompositeTypeNameOrOptions extends { schema: keyof Database }
   ? Database[PublicCompositeTypeNameOrOptions["schema"]]["CompositeTypes"][CompositeTypeName]
   : PublicCompositeTypeNameOrOptions extends keyof PublicSchema["CompositeTypes"]
-  ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
-  : never;
+    ? PublicSchema["CompositeTypes"][PublicCompositeTypeNameOrOptions]
+    : never;

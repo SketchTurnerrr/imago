@@ -6,8 +6,8 @@ interface PromptProps {
   question: string;
   answer: string;
   display: boolean;
-  liker?: string;
-  likee?: string;
+  sender?: string;
+  receiver?: string;
   type?: "like" | "discover" | "chat" | "single";
 }
 
@@ -16,8 +16,8 @@ export function Prompt({
   answer,
   question,
   display,
-  liker,
-  likee,
+  sender,
+  receiver,
   type,
 }: PromptProps) {
   async function editPrompt() {}
@@ -41,8 +41,8 @@ export function Prompt({
         <LikeDialog
           itemId={id}
           type="prompt"
-          liker={liker}
-          likee={likee}
+          sender={sender}
+          receiver={receiver}
           question={question}
           answer={answer}
         />

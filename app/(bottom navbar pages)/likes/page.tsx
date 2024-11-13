@@ -14,7 +14,7 @@ export default async function LikesPage() {
   const { data: likes, error } = await supabase
     .from("likes")
     .select(
-      "*, photo:photos(id, url), prompt:prompts(*), sender:profiles!likes_receiver_fkey(id, name,gender, photos(url))",
+      "*, photo:photos(id, url), prompt:prompts(*), sender:profiles!likes_sender_fkey(id, name,gender, photos(url))",
     )
     .eq("receiver", user.id);
 

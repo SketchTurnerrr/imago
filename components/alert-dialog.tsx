@@ -18,6 +18,7 @@ interface IAlert {
   alertTitle: string;
   alertDescription: string;
   conversationId: string;
+  matchId: string;
 }
 
 export function AlertDialogDots({
@@ -25,11 +26,13 @@ export function AlertDialogDots({
   alertTitle,
   alertDescription,
   conversationId,
+  matchId,
 }: IAlert) {
   const supabase = createClient();
   const router = useRouter();
   const endConversation = async () => {
     await supabase.from("conversations").delete().match({ id: conversationId });
+    await supabase.from("matches").delete().eq("id", matchId);
     // console.log('participantId :', participantId);
     router.replace("/discover");
     // console.log('conversationId :', conversationId);

@@ -1,6 +1,7 @@
 import { createClient } from "@/lib/supabase/server";
 import { redirect } from "next/navigation";
-import { IMessage, IParticipantsName } from "@/types";
+import { Conversation } from "./conversation";
+import { MessagesType } from "@/types";
 
 export default async function ConversationPage(props: {
   params: Promise<{ id: string }>;
@@ -11,32 +12,44 @@ export default async function ConversationPage(props: {
   const {
     data: { user },
   } = await supabase.auth.getUser();
-  const { data: messages, error } = await supabase
-    .from("messages")
-    .select(
-      "*, conversation_id(participant1(id,first_name), participant2(id,first_name)),sender_id(id, first_name,photos(src))",
-    )
-    .eq("conversation_id", params.id)
-    .order("created_at")
-    .returns<IMessage[]>();
-
-  const { data } = await supabase
-    .from("conversations")
-    .select(
-      "id, participant1(id,first_name), participant2(id,first_name), last_read_message_id",
-    )
-    .eq("id", params.id)
-    .returns<IParticipantsName>()
-    .single();
-  // console.log('participant2 :', data?.participant2);
 
   if (!user) {
     redirect("/login");
   }
 
-  if (!data) {
+  const { data: messages, error } = await supabase
+    .from("messages")
+    .select(
+      `
+      id, 
+      content, 
+      created_at, 
+      sender_id:profiles!messages_sender_id_fkey(
+        id, 
+        name, 
+        photos(url)
+      ), 
+      conversation_id:conversations!messages_conversation_id_fkey(
+        id,
+        match_id,
+        party_1:profiles!conversations_party_1_fkey(id, name),
+        party_2:profiles!conversations_party_2_fkey(id, name)
+      )
+    `,
+    )
+    .eq("conversation_id", params.id)
+    .returns<MessagesType>();
+
+  if (error) {
+    console.error("Error fetching messages:", error);
     redirect("/matches");
   }
 
-  return <div></div>;
+  return (
+    <Conversation
+      conversationId={params.id}
+      messages={messages ?? []}
+      userId={user.id}
+    />
+  );
 }

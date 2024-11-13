@@ -23,11 +23,12 @@ import { useForm } from "react-hook-form";
 import * as z from "zod";
 import { ThumbsUp } from "lucide-react";
 import { toast, useToast } from "./ui/use-toast";
+import { createClient } from "@/lib/supabase/client";
 
 interface ILikeDialog {
   itemId: string;
-  liker?: string;
-  likee?: string;
+  sender?: string;
+  receiver?: string;
   type: "prompt" | "photo" | "match";
   name?: string | undefined;
   url?: string | null;
@@ -41,8 +42,8 @@ const FormSchema = z.object({
 
 export function LikeDialog({
   itemId,
-  liker,
-  likee,
+  sender,
+  receiver,
   type,
   name,
   url,
@@ -59,9 +60,10 @@ export function LikeDialog({
   });
 
   const handleLike = async (data: z.infer<typeof FormSchema>) => {
+    const supabase = createClient();
     const { comment } = data;
 
-    if (type === "photo" && itemId && liker && likee) {
+    if (type === "photo" && itemId && sender && receiver) {
       try {
       } catch (error) {
         toast({
@@ -72,8 +74,16 @@ export function LikeDialog({
       }
     }
 
-    if (type === "prompt" && itemId && liker && likee) {
+    if (type === "prompt" && itemId && sender && receiver) {
       try {
+        const { data: like } = await supabase.from("likes").insert([
+          {
+            prompt: itemId,
+            sender: sender,
+            receiver: receiver,
+            comment: comment,
+          },
+        ]);
       } catch (error) {
         toast({
           title: "Йой",

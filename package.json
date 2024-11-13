@@ -67,7 +67,8 @@
     "@tanstack/eslint-plugin-query": "^5.59.7",
     "@tanstack/react-query-devtools": "^5.59.16",
     "@types/google.maps": "^3.58.1",
-    "prettier-plugin-tailwindcss": "^0.5.14"
+    "prettier-plugin-tailwindcss": "^0.5.14",
+    "supabase": "^1.219.2"
   },
   "pnpm": {
     "overrides": {

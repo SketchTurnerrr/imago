@@ -1,7 +1,7 @@
 import { redirect } from "next/navigation";
 import { createClient } from "@/lib/supabase/server";
-import { Matches } from "./matches";
 import { IConversation } from "@/types";
+import { Matches } from "./matches";
 
 export default async function MatchesPage() {
   const supabase = await createClient();
@@ -17,9 +17,9 @@ export default async function MatchesPage() {
   const { data, error } = await supabase
     .from("conversations")
     .select(
-      "*, participant1(id, photos(src), first_name), participant2(id, photos(src), first_name), last_message(content,sender_id)",
-    )
-    .returns<IConversation[]>();
+      "*, party_1:profiles!conversations_party_1_fkey(id, photos(url), name), party_2:profiles!conversations_party_2_fkey(id, photos(url), name), last_message:messages!conversations_last_message_fkey(content, created_at)",
+    );
+  console.log("error :", error);
 
   return <Matches conversations={data ?? []} userId={user.id} />;
 }

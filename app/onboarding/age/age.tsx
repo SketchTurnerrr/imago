@@ -31,7 +31,13 @@ const formSchema = z.object({
   }),
 });
 
-export function Age({ userId }: { userId: string }) {
+export function Age({
+  userId,
+  onComplete,
+}: {
+  userId: string;
+  onComplete: () => void;
+}) {
   const supabase = createClient();
 
   async function onSubmit(values: z.infer<typeof formSchema>) {
@@ -43,6 +49,7 @@ export function Age({ userId }: { userId: string }) {
         })
         .eq("id", userId);
     }
+    onComplete();
   }
 
   const form = useForm<z.infer<typeof formSchema>>({

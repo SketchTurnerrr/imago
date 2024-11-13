@@ -56,7 +56,7 @@ export function useGetProfiles({
         return data;
       }
 
-      if (type === "like" && profileId) {
+      if ((type === "like" || type === "chat") && profileId) {
         const { data } = await supabase
           .from("profiles")
           .select("*, prompts(*), photos(url,id, order)")
