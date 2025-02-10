@@ -36,7 +36,7 @@ export default async function Page(props: { params: Promise<{ id: string }> }) {
           width={500}
           height={500}
           alt={"k"}
-          className="aspect-[16/9] rounded-lg object-cover"
+          className="aspect-16/9 rounded-lg object-cover"
         />
 
         <div className="absolute -bottom-2 rounded-lg bg-indigo-200 p-2 text-background">

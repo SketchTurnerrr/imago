@@ -35,7 +35,7 @@ export default function EditProfilePage({ userId }: { userId: string }) {
           return (
             <div
               key={prompt.id}
-              className="relative flex flex-col rounded-lg border border-gray-100 bg-slate-50 p-4 text-sm font-bold shadow-sm dark:border-none dark:bg-secondary"
+              className="relative flex flex-col rounded-lg border border-gray-100 bg-slate-50 p-4 text-sm font-bold shadow-xs dark:border-none dark:bg-secondary"
             >
               <p>{prompt.question}</p>
               <p className="mt-2 font-normal text-slate-500">{prompt.answer}</p>

@@ -56,7 +56,7 @@ export function Matches({ conversations, userId }: MatchesProps) {
                   className="aspect-square rounded-full object-cover"
                 />
 
-                <div className="flex-grow">
+                <div className="grow">
                   <h2 className="font-semibold">{otherUser?.name}</h2>
                   <p className="truncate text-sm text-gray-500">
                     {conversation?.last_message?.content}

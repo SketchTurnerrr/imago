@@ -24,7 +24,7 @@ export function Prompt({
 
   if (!display) {
     return (
-      <div className="relative flex flex-col rounded-lg border border-slate-100 p-4 text-sm font-bold shadow-sm">
+      <div className="relative flex flex-col rounded-lg border border-slate-100 p-4 text-sm font-bold shadow-xs">
         <p>{question}</p>
         <p className="mt-2 border-l border-gray-300 pl-2 text-gray-500">
           {answer}

@@ -49,11 +49,14 @@ export interface ProfileWithPhotos extends Profile {
   photos: Photo[];
 }
 
-const conversationQuery = supabase
-  .from("conversations")
-  .select(
-    "*, party_1:profiles(id, photos(url), name), party_2:profiles(id, photos(url), name), last_message:messages!conversations_last_message_fkey(content, created_at)",
-  );
+const conversationQuery = supabase.from("conversations").select(
+  `
+    *,
+    party_1:profiles!conversations_party_1_fkey(id, name, photos(url)),
+    party_2:profiles!conversations_party_2_fkey(id, name, photos(url)),
+    last_message:messages!conversations_last_message_fkey(content, created_at)
+    `,
+);
 
 export type ConversationType = QueryData<typeof conversationQuery>;
 

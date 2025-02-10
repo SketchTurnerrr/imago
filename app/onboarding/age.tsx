@@ -64,7 +64,7 @@ export function Age({
       <Form {...form}>
         <form
           onSubmit={form.handleSubmit(onSubmit)}
-          className="flex h-full flex-col justify-between pt-10 "
+          className="flex h-full flex-col justify-between pt-10"
         >
           <FormField
             control={form.control}
@@ -91,22 +91,16 @@ export function Age({
                   </PopoverTrigger>
                   <PopoverContent className="w-auto p-0" align="start">
                     <Calendar
-                      captionLayout="dropdown-buttons"
                       mode="single"
                       selected={field.value}
                       onSelect={field.onChange}
-                      fromYear={1977}
-                      toYear={2006}
-                      disabled={(date: Date) =>
-                        date > new Date() || date < new Date("1972-01-01")
-                      }
-                      initialFocus
-                      className="border-none"
+                      startMonth={new Date(1977, 0, 1)}
+                      endMonth={new Date(2006, 0, 1)}
                     />
                   </PopoverContent>
                 </Popover>
                 <FormMessage />
-                <FormDescription className="text-center text-2xl font-bold text-slate-800 dark:text-foreground">
+                <FormDescription className="dark:text-foreground text-center text-2xl font-bold text-slate-800">
                   {field.value
                     ? `Вам  ${
                         new Date().getFullYear() - field.value?.getFullYear()

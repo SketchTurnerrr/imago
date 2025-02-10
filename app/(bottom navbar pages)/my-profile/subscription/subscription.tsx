@@ -168,7 +168,7 @@ export function Subscription({
                 className={cn(
                   "flex cursor-pointer items-center justify-between rounded-lg p-4",
                   amount === 77
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-[#f7f7f7]"
+                    ? "bg-linear-to-r from-purple-600 to-purple-500 text-[#f7f7f7]"
                     : "bg-accent",
                 )}
               >
@@ -186,7 +186,7 @@ export function Subscription({
                 className={cn(
                   "flex cursor-pointer items-center justify-between rounded-lg p-4",
                   amount === 40
-                    ? "bg-gradient-to-r from-purple-600 to-purple-500 text-[#f7f7f7]"
+                    ? "bg-linear-to-r from-purple-600 to-purple-500 text-[#f7f7f7]"
                     : "bg-accent",
                 )}
               >
@@ -202,7 +202,7 @@ export function Subscription({
           )}
 
           {sub && (
-            <div className="flex cursor-pointer items-center justify-between rounded-lg bg-gradient-to-r from-purple-600 to-purple-500 p-4 text-white">
+            <div className="flex cursor-pointer items-center justify-between rounded-lg bg-linear-to-r from-purple-600 to-purple-500 p-4 text-white">
               <div>
                 <h2 className="mb-2 font-bold">
                   {sub.amount === 77 ? "Щомісячна" : "Річна"}

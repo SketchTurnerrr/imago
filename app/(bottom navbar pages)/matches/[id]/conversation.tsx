@@ -125,7 +125,7 @@ export function Conversation({
                     className={`flex ${isCurrentUser ? "justify-end" : "justify-start"}`}
                   >
                     {!isCurrentUser && showAvatar ? (
-                      <div className="mr-2 flex-shrink-0">
+                      <div className="mr-2 shrink-0">
                         <Image
                           src={
                             otherUser
