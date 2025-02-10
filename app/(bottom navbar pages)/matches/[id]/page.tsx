@@ -14,7 +14,7 @@ export default async function ConversationPage(props: {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/sign-in");
   }
 
   const { data: messages, error } = await supabase

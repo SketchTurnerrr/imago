@@ -18,7 +18,7 @@ export function Providers({ children }: { children: React.ReactNode }) {
         router.refresh();
       }
     });
-  }, [supabase]);
+  }, [supabase, router]);
 
   const [queryClient] = React.useState(
     () =>

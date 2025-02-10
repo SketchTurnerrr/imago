@@ -22,7 +22,7 @@ export default async function DiscoverLayout({
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  if (!user) redirect("/sign-in");
 
   const { data } = await supabase
     .from("profiles")

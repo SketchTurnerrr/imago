@@ -9,7 +9,7 @@ export default async function Page() {
     data: { user },
   } = await supabase.auth.getUser();
 
-  if (!user) redirect("/login");
+  if (!user) redirect("/sign-in");
 
   const { data, error } = await supabase
     .from("profiles")

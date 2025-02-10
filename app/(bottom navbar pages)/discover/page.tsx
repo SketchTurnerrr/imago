@@ -10,7 +10,7 @@ export default async function DiscoverPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/sign-in");
   }
 
   // await new Promise((resolve) => setTimeout(resolve, 4000));

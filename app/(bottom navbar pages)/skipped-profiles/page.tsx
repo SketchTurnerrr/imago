@@ -19,7 +19,7 @@ export default async function SkippedProfilesPage() {
   } = await supabase.auth.getUser();
 
   if (!user) {
-    redirect("/login");
+    redirect("/sign-in");
   }
 
   interface ISkippedProfiles extends Omit<SkippedProfile, "object"> {
